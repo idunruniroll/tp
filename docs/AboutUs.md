@@ -38,12 +38,12 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 * Role: Developer
 * Responsibilities: Data
 
-### Jean Doe
+### Dong Yuanhao
 
-<img src="images/johndoe.png" width="200px">
+<img src="images/dong-yh241.png" width="200px">
 
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
+[[github](http://github.com/dong-yh241)]
+[[portfolio](team/dong-yh.md)]
 
 * Role: Developer
 * Responsibilities: Dev Ops + Threading
