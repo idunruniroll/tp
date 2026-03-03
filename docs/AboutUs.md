@@ -17,7 +17,7 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 [[github](https://github.com/zow1e)]
 [[portfolio](team/johndoe.md)]
 
-- Role: Project Advisor
+* Role: Team Project Advisor
 
 ### Ng Yu Hao Benedict
 
