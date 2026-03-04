@@ -1,6 +1,6 @@
 # GradeBookPlus
 
-[![CI Status](https://github.com/AY2526S2-CS2103T-F12-3/tp/workflows/Java%20CI/badge.svg)](https://github.com/AY2526S2-CS2103T-F12-3/tp/actions)
+[![Java CI](https://github.com/AY2526S2-CS2103T-F12-3/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-F12-3/tp/actions/workflows/gradle.yml)
 
 GradeBookPlus is a desktop app for **academic educators** to manage and interpret student assessment results. It consolidates grades across assignments and tests into a single system, reducing manual record-keeping and providing clearer insight into overall class performance and academic trends.
 
