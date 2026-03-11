@@ -3,38 +3,40 @@ package seedu.address.model.course;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
+import java.util.ArrayList;
 
-import seedu.address.model.assessment.UniqueAssessmentList;
-import seedu.address.model.grade.UniqueGradeList;
-import seedu.address.model.student.UniqueStudentList;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.grade.Grade;
+import seedu.address.model.student.Student;
 
 public class Course {
-    private final CourseCode courseCode;
-    private final UniqueStudentList students;
-    private final UniqueAssessmentList assessments;
-    private final UniqueGradeList grades;
+    private final static ArrayList<Course> courseCodeList;
+    private final static ArrayList<Student> students;
+    private final static ArrayList<Assessment> assessments;
+    private final static ArrayList<Grade> grades;
+    private final String courseCode;
 
-    public Course(CourseCode courseCode) {
+    public Course(String courseCode) {
         requireAllNonNull(courseCode);
         this.courseCode = courseCode;
-        this.students = new UniqueStudentList();
-        this.assessments = new UniqueAssessmentList();
-        this.grades = new UniqueGradeList();
+        this.students = Student.getStudentsList(); // function to be created; students that exist in this course
+        this.assessments = Student.getAssessmentsList(); // function to be created; assessments that exist in this course
+        this.grades = Student.getGradesList(); // function to be created ; grades of students that exist in this course
     }
 
-    public CourseCode getCourseCode() {
+    public String getCourseCode() {
         return courseCode;
     }
 
-    public UniqueStudentList getStudents() {
+    public ArrayList<Student> getStudents() {
         return students;
     }
 
-    public UniqueAssessmentList getAssessments() {
+    public ArrayList<Assessment> getAssessments() {
         return assessments;
     }
 
-    public UniqueGradeList getGrades() {
+    public ArrayList<Grade> getGrades() {
         return grades;
     }
 
