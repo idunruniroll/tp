@@ -1,28 +1,31 @@
+/**
+ * Represents a course.
+ *
+ * @author zow1e
+ */
+
 package seedu.address.model.course;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.util.Objects;
 
-import seedu.address.model.assessment.UniqueAssessmentList;
-import seedu.address.model.grade.UniqueGradeList;
-import seedu.address.model.student.UniqueStudentList;
+// import seedu.address.model.assessment.UniqueAssessmentList;
+// import seedu.address.model.grade.UniqueGradeList;
+// import seedu.address.model.student.UniqueStudentList;
 
 public class Course {
-    private final CourseCode courseCode;
-    private final UniqueStudentList students;
-    private final UniqueAssessmentList assessments;
-    private final UniqueGradeList grades;
+    private final String courseCode;
+    // private final UniqueStudentList students;
+    // private final UniqueAssessmentList assessments;
+    // private final UniqueGradeList grades;
 
-    public Course(CourseCode courseCode) {
+    public Course(String courseCode) {
         requireAllNonNull(courseCode);
         this.courseCode = courseCode;
-        this.students = new UniqueStudentList();
-        this.assessments = new UniqueAssessmentList();
-        this.grades = new UniqueGradeList();
     }
 
-    public CourseCode getCourseCode() {
+    public String getCourseCode() {
         return courseCode;
     }
 
@@ -61,8 +64,19 @@ public class Course {
                 && grades.equals(otherCourse.grades);
     }
 
+    // @Override
+    // public int hashCode() {
+    //     return Objects.hash(courseCode, students, assessments, grades);
+    // }
+
+    /**
+     * Returns a string representation of this course for display.
+     *
+     * @return formatted display string of the course
+     */
     @Override
-    public int hashCode() {
-        return Objects.hash(courseCode, students, assessments, grades);
+    public String toString() {
+        String fullDesc = "[" + getCourseCode() + "]";
+        return fullDesc;
     }
 }
