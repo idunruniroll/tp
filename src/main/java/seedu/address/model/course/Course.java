@@ -1,20 +1,20 @@
+/**
+ * Represents a course.
+ * @author zow1e
+ */
 package seedu.address.model.course;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-
 import java.util.Objects;
 import java.util.ArrayList;
 
-import seedu.address.model.assessment.Assessment;
-import seedu.address.model.grade.Grade;
-import seedu.address.model.student.Student;
-
 public class Course {
-    private final static ArrayList<Course> courseCodeList;
-    private final static ArrayList<Student> students;
-    private final static ArrayList<Assessment> assessments;
-    private final static ArrayList<Grade> grades;
     private final String courseCode;
+
+    // Placeholder fields - implement when needed
+    private final java.util.List<String> students;
+    private final java.util.List<String> assessments;
+    private final java.util.List<String> grades;
 
     public Course(String courseCode) {
         requireAllNonNull(courseCode);
@@ -45,7 +45,7 @@ public class Course {
             return true;
         }
         return otherCourse != null
-                && otherCourse.getCourseCode().equals(getCourseCode());
+            && otherCourse.getCourseCode().equals(getCourseCode());
     }
 
     @Override
@@ -57,14 +57,16 @@ public class Course {
             return false;
         }
         Course otherCourse = (Course) other;
-        return courseCode.equals(otherCourse.courseCode)
-                && students.equals(otherCourse.students)
-                && assessments.equals(otherCourse.assessments)
-                && grades.equals(otherCourse.grades);
+        return courseCode.equals(otherCourse.courseCode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseCode, students, assessments, grades);
+        return Objects.hash(courseCode);
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getCourseCode() + "]";
     }
 }
