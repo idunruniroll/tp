@@ -6,6 +6,7 @@ package seedu.address.model.course;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Objects;
+import java.util.ArrayList;
 
 public class Course {
     private final String courseCode;
@@ -18,26 +19,25 @@ public class Course {
     public Course(String courseCode) {
         requireAllNonNull(courseCode);
         this.courseCode = courseCode;
-        this.students = new java.util.ArrayList<>();
-        this.assessments = new java.util.ArrayList<>();
-        this.grades = new java.util.ArrayList<>();
+        this.students = Student.getStudentsList(); // function to be created; students that exist in this course
+        this.assessments = Student.getAssessmentsList(); // function to be created; assessments that exist in this course
+        this.grades = Student.getGradesList(); // function to be created ; grades of students that exist in this course
     }
 
     public String getCourseCode() {
         return courseCode;
     }
 
-    // Placeholder getters - return empty for now
-    public java.util.List<String> getStudents() {
-        return new java.util.ArrayList<>(students);
+    public ArrayList<Student> getStudents() {
+        return students;
     }
 
-    public java.util.List<String> getAssessments() {
-        return new java.util.ArrayList<>(assessments);
+    public ArrayList<Assessment> getAssessments() {
+        return assessments;
     }
 
-    public java.util.List<String> getGrades() {
-        return new java.util.ArrayList<>(grades);
+    public ArrayList<Grade> getGrades() {
+        return grades;
     }
 
     public boolean isSameCourse(Course otherCourse) {
