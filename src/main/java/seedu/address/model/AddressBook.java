@@ -2,17 +2,22 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.UniqueAssessmentList;
+import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.grade.UniqueGradeList;
-import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.UniquePersonList;
+import seedu.address.model.student.Student;
 
 /**
  * Wraps all data at the address-book level
@@ -23,21 +28,13 @@ public class AddressBook implements ReadOnlyAddressBook {
     private final UniquePersonList persons;
     private final UniqueAssessmentList assessments;
     private final UniqueGradeList grades;
+    private final CourseList courses;
 
-    /*
-     * The 'unusual' code block below is a non-static initialization block,
-     * sometimes used to avoid duplication
-     * between constructors. See
-     * https://docs.oracle.com/javase/tutorial/java/javaOO/initial.html
-     *
-     * Note that non-static init blocks are not recommended to use. There are other
-     * ways to avoid duplication
-     * among constructors.
-     */
     {
         persons = new UniquePersonList();
         assessments = new UniqueAssessmentList();
         grades = new UniqueGradeList();
+        courses = new CourseList();
     }
 
     public AddressBook() {
@@ -69,6 +66,12 @@ public class AddressBook implements ReadOnlyAddressBook {
         this.grades.setGrades(grades);
     }
 
+    public void setCourses(List<Course> courseList) {
+        requireNonNull(courseList);
+        courses.getCourses().clear();
+        courses.getCourses().addAll(courseList);
+    }
+
     /**
      * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
@@ -78,6 +81,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         setPersons(newData.getPersonList());
         setAssessments(newData.getAssessmentList());
         setGrades(newData.getGradeList());
+        setCourses(newData.getCourseList());
     }
 
     //// person-level operations
@@ -157,6 +161,49 @@ public class AddressBook implements ReadOnlyAddressBook {
         return grades.asUnmodifiableObservableList();
     }
 
+    //// course-level operations
+
+    public boolean hasCourse(String courseCode) {
+        requireNonNull(courseCode);
+        return courses.getCourses().stream()
+                .anyMatch(c -> c.getCourseCode().equalsIgnoreCase(courseCode.trim()));
+    }
+
+    public void addCourse(Course course) {
+        requireNonNull(course);
+        courses.addCourse(course);
+    }
+
+    public Optional<Course> getCourse(String courseCode) {
+        requireNonNull(courseCode);
+        return courses.getCourses().stream()
+                .filter(c -> c.getCourseCode().equalsIgnoreCase(courseCode.trim()))
+                .findFirst();
+    }
+
+    /** Adds a student to the specified course. Course must exist. */
+    public void addStudentToCourse(String courseCode, Student student) {
+        requireNonNull(courseCode);
+        requireNonNull(student);
+        getCourse(courseCode).ifPresent(c -> c.addStudent(student));
+    }
+
+    /**
+     * Removes a student from the specified course and deletes all their grade records.
+     * Course and student must exist.
+     */
+    public void removeStudentFromCourse(String courseCode, String studentId) {
+        requireNonNull(courseCode);
+        requireNonNull(studentId);
+        getCourse(courseCode).ifPresent(c -> c.removeStudent(studentId));
+        grades.removeIf(g -> g.getStudentId().value.equalsIgnoreCase(studentId));
+    }
+
+    @Override
+    public List<Course> getCourseList() {
+        return new ArrayList<>(courses.getCourses());
+    }
+
     //// util methods
 
     @Override
@@ -164,6 +211,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         return AddressBook.class.getCanonicalName() + "{persons=" + getPersonList()
                 + ", assessments=" + getAssessmentList()
                 + ", grades=" + getGradeList()
+                + ", courses=" + getCourseList()
                 + "}";
     }
 

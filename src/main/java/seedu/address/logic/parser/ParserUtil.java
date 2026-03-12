@@ -160,4 +160,34 @@ public class ParserUtil {
             throw new ParseException(Score.MESSAGE_CONSTRAINTS);
         }
     }
+
+    /**
+     * Parses a course code string.
+     * Leading/trailing whitespace is trimmed and the value is uppercased.
+     *
+     * @throws ParseException if blank.
+     */
+    public static String parseCourseCode(String value) throws ParseException {
+        requireNonNull(value);
+        String trimmed = value.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException("Course code cannot be blank.");
+        }
+        return trimmed.toUpperCase();
+    }
+
+    /**
+     * Parses a student ID string.
+     * Leading/trailing whitespace is trimmed and the value is uppercased.
+     *
+     * @throws ParseException if blank.
+     */
+    public static String parseStudentId(String value) throws ParseException {
+        requireNonNull(value);
+        String trimmed = value.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException("Student ID cannot be blank.");
+        }
+        return trimmed.toUpperCase();
+    }
 }
