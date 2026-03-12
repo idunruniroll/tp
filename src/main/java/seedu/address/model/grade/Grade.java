@@ -1,6 +1,6 @@
 package seedu.address.model.grade;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
@@ -13,7 +13,9 @@ public class Grade {
     private final Score score;
 
     public Grade(StudentId studentId, AssessmentName assessmentName, Score score) {
-        requireAllNonNull(studentId, assessmentName, score);
+        requireNonNull(studentId);
+        requireNonNull(assessmentName);
+        requireNonNull(score);
         this.studentId = studentId;
         this.assessmentName = assessmentName;
         this.score = score;
@@ -36,8 +38,13 @@ public class Grade {
             return true;
         }
         return otherGrade != null
-                && otherGrade.getStudentId().equals(getStudentId())
-                && otherGrade.getAssessmentName().equals(getAssessmentName());
+                && studentId.equals(otherGrade.studentId)
+                && assessmentName.equals(otherGrade.assessmentName);
+    }
+
+    @Override
+    public String toString() {
+        return studentId + " / " + assessmentName + " / " + score;
     }
 
     @Override
@@ -57,10 +64,5 @@ public class Grade {
     @Override
     public int hashCode() {
         return Objects.hash(studentId, assessmentName, score);
-    }
-
-    @Override
-    public String toString() {
-        return studentId + " / " + assessmentName + " / " + score;
     }
 }
