@@ -90,6 +90,7 @@ public class AddressBookTest {
         String expected = AddressBook.class.getCanonicalName() + "{persons=" + addressBook.getPersonList()
                 + ", assessments=" + addressBook.getAssessmentList()
                 + ", grades=" + addressBook.getGradeList()
+                + ", courses=" + addressBook.getCourseList()
                 + "}";
         assertEquals(expected, addressBook.toString());
     }
@@ -110,6 +111,22 @@ public class AddressBookTest {
         public ObservableList<Person> getPersonList() {
             return persons;
         }
+
+        @Override
+        public ObservableList<seedu.address.model.assessment.Assessment> getAssessmentList() {
+            return FXCollections.emptyObservableList();
+        }
+
+        @Override
+        public ObservableList<seedu.address.model.grade.Grade> getGradeList() {
+            return FXCollections.emptyObservableList();
+        }
+
+        @Override
+        public java.util.List<seedu.address.model.course.Course> getCourseList() {
+            return java.util.Collections.emptyList();
+        }
+    }
 
         @Override
         public ObservableList<Assessment> getAssessmentList() {
