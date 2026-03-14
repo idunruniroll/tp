@@ -1,11 +1,16 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.course.Course;
+import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
+import seedu.address.model.student.Student;
 
 /**
  * The API of the Model component.
@@ -53,7 +58,8 @@ public interface Model {
     ReadOnlyAddressBook getAddressBook();
 
     /**
-     * Returns true if a person with the same identity as {@code person} exists in the address book.
+     * Returns true if a person with the same identity as {@code person} exists in
+     * the address book.
      */
     boolean hasPerson(Person person);
 
@@ -72,7 +78,8 @@ public interface Model {
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another existing person in the address book.
+     * The person identity of {@code editedPerson} must not be the same as another
+     * existing person in the address book.
      */
     void setPerson(Person target, Person editedPerson);
 
@@ -80,8 +87,38 @@ public interface Model {
     ObservableList<Person> getFilteredPersonList();
 
     /**
-     * Updates the filter of the filtered person list to filter by the given {@code predicate}.
+     * Updates the filter of the filtered person list to filter by the given
+     * {@code predicate}.
+     * 
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<Person> predicate);
+
+    boolean hasAssessment(Assessment assessment);
+
+    void addAssessment(Assessment assessment);
+
+    void removeAssessment(Assessment assessment);
+
+    ObservableList<Assessment> getAssessmentList();
+
+    boolean hasGrade(Grade grade);
+
+    void addGrade(Grade grade);
+
+    void removeGrade(Grade grade);
+
+    ObservableList<Grade> getGradeList();
+
+    // =========== Course / Student operations ==================================================
+
+    boolean hasCourse(String courseCode);
+
+    Optional<Course> getCourse(String courseCode);
+
+    void addCourse(Course course);
+
+    void addStudentToCourse(String courseCode, Student student);
+
+    void removeStudentFromCourse(String courseCode, String studentId);
 }

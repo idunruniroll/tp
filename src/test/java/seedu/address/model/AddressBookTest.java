@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.testutil.PersonBuilder;
@@ -85,7 +87,11 @@ public class AddressBookTest {
 
     @Test
     public void toStringMethod() {
-        String expected = AddressBook.class.getCanonicalName() + "{persons=" + addressBook.getPersonList() + "}";
+        String expected = AddressBook.class.getCanonicalName() + "{persons=" + addressBook.getPersonList()
+                + ", assessments=" + addressBook.getAssessmentList()
+                + ", grades=" + addressBook.getGradeList()
+                + ", courses=" + addressBook.getCourseList()
+                + "}";
         assertEquals(expected, addressBook.toString());
     }
 
@@ -94,6 +100,8 @@ public class AddressBookTest {
      */
     private static class AddressBookStub implements ReadOnlyAddressBook {
         private final ObservableList<Person> persons = FXCollections.observableArrayList();
+        private final ObservableList<Assessment> assessments = FXCollections.observableArrayList();
+        private final ObservableList<Grade> grades = FXCollections.observableArrayList();
 
         AddressBookStub(Collection<Person> persons) {
             this.persons.setAll(persons);
@@ -103,6 +111,31 @@ public class AddressBookTest {
         public ObservableList<Person> getPersonList() {
             return persons;
         }
+
+        @Override
+        public ObservableList<seedu.address.model.assessment.Assessment> getAssessmentList() {
+            return FXCollections.emptyObservableList();
+        }
+
+        @Override
+        public ObservableList<seedu.address.model.grade.Grade> getGradeList() {
+            return FXCollections.emptyObservableList();
+        }
+
+        @Override
+        public java.util.List<seedu.address.model.course.Course> getCourseList() {
+            return java.util.Collections.emptyList();
+        }
     }
 
+        @Override
+        public ObservableList<Assessment> getAssessmentList() {
+            return assessments;
+        }
+
+        @Override
+        public ObservableList<Grade> getGradeList() {
+            return grades;
+        }
+    }
 }

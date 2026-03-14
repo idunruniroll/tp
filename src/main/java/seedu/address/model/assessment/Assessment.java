@@ -1,19 +1,18 @@
 package seedu.address.model.assessment;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
 public class Assessment {
     private final AssessmentName assessmentName;
     private final MaxScore maxScore;
-    private final Weight weight;
 
-    public Assessment(AssessmentName assessmentName, MaxScore maxScore, Weight weight) {
-        requireAllNonNull(assessmentName, maxScore, weight);
+    public Assessment(AssessmentName assessmentName, MaxScore maxScore) {
+        requireNonNull(assessmentName);
+        requireNonNull(maxScore);
         this.assessmentName = assessmentName;
         this.maxScore = maxScore;
-        this.weight = weight;
     }
 
     public AssessmentName getAssessmentName() {
@@ -24,16 +23,17 @@ public class Assessment {
         return maxScore;
     }
 
-    public Weight getWeight() {
-        return weight;
-    }
-
     public boolean isSameAssessment(Assessment otherAssessment) {
         if (otherAssessment == this) {
             return true;
         }
         return otherAssessment != null
                 && otherAssessment.getAssessmentName().equals(getAssessmentName());
+    }
+
+    @Override
+    public String toString() {
+        return assessmentName + " / " + maxScore;
     }
 
     @Override
@@ -46,17 +46,11 @@ public class Assessment {
         }
         Assessment otherAssessment = (Assessment) other;
         return assessmentName.equals(otherAssessment.assessmentName)
-                && maxScore.equals(otherAssessment.maxScore)
-                && weight.equals(otherAssessment.weight);
+                && maxScore.equals(otherAssessment.maxScore);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assessmentName, maxScore, weight);
-    }
-
-    @Override
-    public String toString() {
-        return assessmentName + " / " + maxScore + " / " + weight;
+        return Objects.hash(assessmentName, maxScore);
     }
 }

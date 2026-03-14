@@ -1,3 +1,8 @@
+
+
+/**
+ * Represents a Course in the system.
+ * Each course maintains its own roster of enrolled students.
 /**
  * Represents a course.
  * @author zow1e
@@ -5,23 +10,22 @@
 package seedu.address.model.course;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+
+import seedu.address.model.student.Student;
 import java.util.Objects;
 import java.util.ArrayList;
 
+/**
+ * Represents a course identified by its course code.
+ */
 public class Course {
-    private final String courseCode;
 
-    // Placeholder fields - implement when needed
-    private final java.util.List<String> students;
-    private final java.util.List<String> assessments;
-    private final java.util.List<String> grades;
+    private final String courseCode;
+    private final ArrayList<Student> students;
 
     public Course(String courseCode) {
-        requireAllNonNull(courseCode);
-        this.courseCode = courseCode;
-        this.students = Student.getStudentsList(); // function to be created; students that exist in this course
-        this.assessments = Student.getAssessmentsList(); // function to be created; assessments that exist in this course
-        this.grades = Student.getGradesList(); // function to be created ; grades of students that exist in this course
+        this.courseCode = courseCode.trim().toUpperCase();
+        this.students = new ArrayList<>();
     }
 
     public String getCourseCode() {
@@ -32,32 +36,36 @@ public class Course {
         return students;
     }
 
-    public ArrayList<Assessment> getAssessments() {
-        return assessments;
+    /** Returns true if a student with the given studentId is enrolled in this course. */
+    public boolean hasStudent(String studentId) {
+        return students.stream().anyMatch(s -> s.getStudentId().equalsIgnoreCase(studentId));
     }
 
-    public ArrayList<Grade> getGrades() {
-        return grades;
+    /** Adds a student to this course's roster. */
+    public void addStudent(Student student) {
+        students.add(student);
+    }
+
+    /**
+     * Removes the student with the given studentId from the roster.
+     *
+     * @return true if the student was found and removed, false otherwise.
+     */
+    public boolean removeStudent(String studentId) {
+        return students.removeIf(s -> s.getStudentId().equalsIgnoreCase(studentId));
     }
 
     public boolean isSameCourse(Course otherCourse) {
         if (otherCourse == this) {
             return true;
         }
-        return otherCourse != null
-            && otherCourse.getCourseCode().equals(getCourseCode());
+        return otherCourse != null && otherCourse.getCourseCode().equals(getCourseCode());
     }
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof Course)) {
-            return false;
-        }
-        Course otherCourse = (Course) other;
-        return courseCode.equals(otherCourse.courseCode);
+        return other == this
+                || (other instanceof Course && courseCode.equals(((Course) other).courseCode));
     }
 
     @Override
@@ -67,6 +75,6 @@ public class Course {
 
     @Override
     public String toString() {
-        return "[" + getCourseCode() + "]";
+        return "[" + courseCode + "]";
     }
 }

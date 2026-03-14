@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -11,7 +12,11 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.course.Course;
+import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
+import seedu.address.model.student.Student;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -40,7 +45,8 @@ public class ModelManager implements Model {
         this(new AddressBook(), new UserPrefs());
     }
 
-    //=========== UserPrefs ==================================================================================
+    // =========== UserPrefs
+    // ==================================================================================
 
     @Override
     public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
@@ -75,7 +81,8 @@ public class ModelManager implements Model {
         userPrefs.setAddressBookFilePath(addressBookFilePath);
     }
 
-    //=========== AddressBook ================================================================================
+    // =========== AddressBook
+    // ================================================================================
 
     @Override
     public void setAddressBook(ReadOnlyAddressBook addressBook) {
@@ -111,10 +118,87 @@ public class ModelManager implements Model {
         addressBook.setPerson(target, editedPerson);
     }
 
-    //=========== Filtered Person List Accessors =============================================================
+    @Override
+    public boolean hasAssessment(Assessment assessment) {
+        requireNonNull(assessment);
+        return addressBook.hasAssessment(assessment);
+    }
+
+    @Override
+    public void addAssessment(Assessment assessment) {
+        addressBook.addAssessment(assessment);
+    }
+
+    @Override
+    public void removeAssessment(Assessment assessment) {
+        addressBook.removeAssessment(assessment);
+    }
+
+    @Override
+    public ObservableList<Assessment> getAssessmentList() {
+        return addressBook.getAssessmentList();
+    }
+
+    @Override
+    public boolean hasGrade(Grade grade) {
+        requireNonNull(grade);
+        return addressBook.hasGrade(grade);
+    }
+
+    @Override
+    public void addGrade(Grade grade) {
+        addressBook.addGrade(grade);
+    }
+
+    @Override
+    public void removeGrade(Grade grade) {
+        addressBook.removeGrade(grade);
+    }
+
+    @Override
+    public ObservableList<Grade> getGradeList() {
+        return addressBook.getGradeList();
+    }
+
+    // =========== Course / Student operations
+    // =============================================================
+
+    @Override
+    public boolean hasCourse(String courseCode) {
+        requireNonNull(courseCode);
+        return addressBook.hasCourse(courseCode);
+    }
+
+    @Override
+    public Optional<Course> getCourse(String courseCode) {
+        requireNonNull(courseCode);
+        return addressBook.getCourse(courseCode);
+    }
+
+    @Override
+    public void addCourse(Course course) {
+        requireNonNull(course);
+        addressBook.addCourse(course);
+    }
+
+    @Override
+    public void addStudentToCourse(String courseCode, Student student) {
+        requireAllNonNull(courseCode, student);
+        addressBook.addStudentToCourse(courseCode, student);
+    }
+
+    @Override
+    public void removeStudentFromCourse(String courseCode, String studentId) {
+        requireAllNonNull(courseCode, studentId);
+        addressBook.removeStudentFromCourse(courseCode, studentId);
+    }
+
+    // =========== Filtered Person List Accessors
+    // =============================================================
 
     /**
-     * Returns an unmodifiable view of the list of {@code Person} backed by the internal list of
+     * Returns an unmodifiable view of the list of {@code Person} backed by the
+     * internal list of
      * {@code versionedAddressBook}
      */
     @Override
