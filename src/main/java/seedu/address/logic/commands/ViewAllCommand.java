@@ -5,9 +5,12 @@ import static java.util.Objects.requireNonNull;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
+import seedu.address.model.course.Course;
 
 /**
  * Shows an overview summary of the current data (assessments and grades).
@@ -26,6 +29,7 @@ public class ViewAllCommand extends Command {
 
         int assessmentCount = model.getAddressBook().getAssessmentList().size();
         int gradeCount = model.getAddressBook().getGradeList().size();
+        int courseCount = model.getAddressBook().getCourseList().size();
 
         // Count how many grades exist per assessment (basic summary)
         Map<String, Integer> gradesPerAssessment = new LinkedHashMap<>();
@@ -37,6 +41,9 @@ public class ViewAllCommand extends Command {
             gradesPerAssessment.put(key, gradesPerAssessment.getOrDefault(key, 0) + 1);
         }
 
+        // Get list of courses
+        ObservableList<Course> courses = model.getCourseList();
+
         StringBuilder sb = new StringBuilder();
         sb.append("Overview\n");
         sb.append("Assessments: ").append(assessmentCount).append("\n");
@@ -44,6 +51,11 @@ public class ViewAllCommand extends Command {
         sb.append("Grades per assessment:\n");
         for (Map.Entry<String, Integer> e : gradesPerAssessment.entrySet()) {
             sb.append("- ").append(e.getKey()).append(": ").append(e.getValue()).append("\n");
+        }
+        sb.append("Courses: ").append(courseCount).append("\n");
+        sb.append("All courses:\n");
+        for (Course e : courses) {
+            sb.append("- ").append(e.getCourseCode()).append("\n");
         }
 
         return new CommandResult(sb.toString().trim());

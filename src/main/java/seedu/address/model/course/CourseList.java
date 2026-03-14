@@ -10,8 +10,12 @@
 
 package seedu.address.model.course;
 
+import static java.util.Objects.nonNull;
+
+import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Manages a collection of Course objects.
@@ -36,17 +40,30 @@ public class CourseList {
      *
      * @param courses existing ArrayList of courses to manage
      */
-    public CourseList(ArrayList<Course> courses) {
-        this.courseList = courses;
+    public void setCourseList(List<Course> courses) {
+        this.courseList = new ArrayList<>(courses);
     }
 
     /**
-     * Adds a course to the end of the course list.
+     * Adds a course to the end of the course list if it doesn't already exist.
      *
      * @param course course to add
      */
     public void addCourse(Course course) {
-        courseList.add(course);
+        if (!this.courseExists(course)) {
+            courseList.add(course);
+        }
+    }
+
+    /**
+     * Remove a course from the course list if it exists.
+     *
+     * @param course course to remove
+     */
+    public void removeCourse(Course course) {
+        if (this.courseExists(course)) {
+            courseList.remove(course);
+        }
     }
 
     /**
@@ -83,14 +100,45 @@ public class CourseList {
     /**
      * Finds all courses whose description contains the given keyword.
      *
-     * Case-insensitive search. Returns empty list if no matches.
+     * Case-insensitive search. Returns the matching course if found, null otherwise.
+     * Assumes there is at most one matching course.
      *
      * @param keyword search keyword (trimmed, case-insensitive)
-     * @return ArrayList of matching courses.
+     * @return the matching Course or null if not found.
      */
-    public ArrayList<Course> find(String keyword) {
-        return (ArrayList<Course>) courseList.stream()
+    public Course findCourseCode(String keyword) {
+        return courseList.stream()
             .filter(t -> t.getCourseCode().toLowerCase().contains(keyword))
-            .collect(Collectors.toList());
+            .findFirst()
+            .orElse(null);
+    }
+
+    /**
+     * Finds if a course exists using the given keyword.
+     *
+     * Case-insensitive search. Returns true if found, false otherwise.
+     * Assumes there is at most one matching course.
+     *
+     * @param keyword search keyword (trimmed, case-insensitive)
+     * @return the true or null if not found.
+     */
+    public boolean courseExists(Course course) {
+        return !courseList.contains(course);
+    }
+
+    /**
+     * Returns a string representation of the course list, displaying course codes with 1-based indexing.
+     *
+     * @return formatted string of course codes
+     */
+    @Override
+    public String toString() {
+        if (courseList.isEmpty()) {
+            return "No courses in the list.";
+        }
+        return "Course List:\n" + IntStream.range(0, courseList.size())
+            .mapToObj(i -> (i + 1) + ". " + courseList.get(i).getCourseCode())
+            .collect(Collectors.joining("\n"));
     }
 }
+
