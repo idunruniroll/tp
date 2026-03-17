@@ -123,7 +123,7 @@ public class AddressBookTest {
         }
 
         @Override
-        public java.util.List<seedu.address.model.course.Course> getCourseList() {
+        public ObservableList<Course> getCourseList() {
             return java.util.Collections.emptyList();
         }
     }
