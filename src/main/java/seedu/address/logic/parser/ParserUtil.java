@@ -172,4 +172,18 @@ public class ParserUtil {
         return trimmed;
     }
 
+    /**
+     * Parses a student ID string.
+     * Leading/trailing whitespace is trimmed and the value is uppercased.
+     *
+     * @throws ParseException if blank.
+     */
+    public static String parseStudentId(String value) throws ParseException {
+        requireNonNull(value);
+        String trimmed = value.trim();
+        if (trimmed.isEmpty()) {
+            throw new ParseException("Student ID cannot be blank.");
+        }
+        return trimmed.toUpperCase();
+    }
 }

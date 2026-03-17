@@ -4,16 +4,21 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.model.person.Person;
 import seedu.address.model.assessment.Assessment;
+import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
 import seedu.address.model.grade.Grade;
+import seedu.address.model.person.Person;
+import seedu.address.model.student.Student;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -24,6 +29,8 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    
+    private ObservableList<Course> courses;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -36,6 +43,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        this.courses = this.addressBook.getCourseList();
     }
 
     public ModelManager() {
@@ -155,6 +163,50 @@ public class ModelManager implements Model {
     @Override
     public ObservableList<Grade> getGradeList() {
         return addressBook.getGradeList();
+    }
+
+    // =========== Course / Student operations
+    // =============================================================
+
+    @Override
+    public ObservableList<Course> getCourseList() {
+        return addressBook.getCourseList();
+    }
+
+    @Override
+    public boolean hasCourse(String courseCode) {
+        requireNonNull(courseCode);
+        return addressBook.hasCourse(new Course(courseCode));
+    }
+
+    @Override
+    public Optional<Course> getCourse(String courseCode) {
+        requireNonNull(courseCode);
+        return addressBook.getCourse(courseCode);
+    }
+
+    @Override
+    public void addCourse(Course course) {
+        requireNonNull(course);
+        addressBook.addCourse(course);
+    }
+
+    @Override
+    public void removeCourse(Course course) {
+        requireNonNull(course);
+        addressBook.removeCourse(course);
+    }
+
+    @Override
+    public void addStudentToCourse(String courseCode, Student student) {
+        requireAllNonNull(courseCode, student);
+        addressBook.addStudentToCourse(courseCode, student);
+    }
+
+    @Override
+    public void removeStudentFromCourse(String courseCode, String studentId) {
+        requireAllNonNull(courseCode, studentId);
+        addressBook.removeStudentFromCourse(courseCode, studentId);
     }
 
     // =========== Filtered Person List Accessors

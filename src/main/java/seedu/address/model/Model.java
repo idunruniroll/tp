@@ -1,13 +1,17 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.person.Person;
 import seedu.address.model.assessment.Assessment;
+import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
 import seedu.address.model.grade.Grade;
+import seedu.address.model.person.Person;
+import seedu.address.model.student.Student;
 
 /**
  * The API of the Model component.
@@ -106,4 +110,21 @@ public interface Model {
     void removeGrade(Grade grade);
 
     ObservableList<Grade> getGradeList();
+
+    // =========== Course / Student operations ==================================================
+
+    /** Returns an unmodifiable view of the unique Course list */
+    ObservableList<Course> getCourseList();
+
+    boolean hasCourse(String courseCode);
+
+    Optional<Course> getCourse(String courseCode);
+
+    void addCourse(Course course);
+
+    void removeCourse(Course course);
+
+    void addStudentToCourse(String courseCode, Student student);
+
+    void removeStudentFromCourse(String courseCode, String studentId);
 }

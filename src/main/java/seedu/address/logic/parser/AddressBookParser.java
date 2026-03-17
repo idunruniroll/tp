@@ -17,9 +17,12 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListAssessmentsCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListStudentsCommand;
 import seedu.address.logic.commands.RemoveAssessmentCommand;
 import seedu.address.logic.commands.RemoveGradeCommand;
+import seedu.address.logic.commands.RemoveStudentCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.logic.commands.ViewAllCommand;
 
 /**
  * Parses user input.
@@ -84,6 +87,14 @@ public class AddressBookParser {
 
             case RemoveGradeCommand.COMMAND_WORD:
                 return new RemoveGradeCommandParser().parse(arguments);
+
+            case RemoveStudentCommand.COMMAND_WORD:
+                return new RemoveStudentCommandParser().parse(arguments);
+
+            case ListStudentsCommand.COMMAND_WORD:
+                return new ListStudentsCommandParser().parse(arguments);
+            case ViewAllCommand.COMMAND_WORD:
+                return new ViewAllCommand();
 
             default:
                 throw new ParseException("Unknown command");

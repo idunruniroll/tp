@@ -1,0 +1,50 @@
+package seedu.address.logic.commands;
+
+import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE;
+
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
+
+public class AddCourseCommand extends Command {
+
+    public static final String COMMAND_WORD = "addcourse";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a new course.\n"
+            + "Parameters: "
+            + PREFIX_COURSE + "COURSE CODE "
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_COURSE + "CS2103T";
+
+    public static final String MESSAGE_SUCCESS = "New Course added: ";
+    public static final String MESSAGE_DUPLICATE_ASSESSMENT = "This Course already exists.";
+
+    private final String toAdd;
+
+    public AddCourseCommand(String courseCode) {
+        requireNonNull(courseCode);
+        toAdd = courseCode;
+    }
+
+    @Override
+    public CommandResult execute(Model model) throws CommandException {
+        requireNonNull(model);
+
+        if (model.hasCourse(toAdd)) {
+            throw new CommandException(MESSAGE_DUPLICATE_ASSESSMENT);
+        }
+
+        Course courseToAdd = new Course(toAdd);
+        model.addCourse(courseToAdd);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this
+                || (other instanceof AddCourseCommand
+                        && toAdd.equals(((AddCourseCommand) other).toAdd));
+    }
+}
