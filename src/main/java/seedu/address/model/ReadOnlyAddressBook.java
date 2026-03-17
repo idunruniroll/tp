@@ -5,6 +5,7 @@ import java.util.List;
 import javafx.collections.ObservableList;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 
@@ -23,6 +24,6 @@ public interface ReadOnlyAddressBook {
 
     ObservableList<Grade> getGradeList();
 
-    List<Course> getCourseList();
+    ObservableList<Course> getCourseList();
 
 }

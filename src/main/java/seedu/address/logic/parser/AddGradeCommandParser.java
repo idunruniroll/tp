@@ -5,6 +5,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GRADE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddGradeCommand;
@@ -27,9 +28,10 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
         requireNonNull(args);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STUDENT, PREFIX_ASSESSMENT,
-                PREFIX_GRADE);
+                PREFIX_GRADE, PREFIX_COURSE_CODE); // Add PREFIX_COURSE
 
-        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_GRADE)
+        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_GRADE,
+                PREFIX_COURSE_CODE)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AddGradeCommand.MESSAGE_USAGE));
@@ -38,7 +40,8 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
         Index studentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_STUDENT).get());
         Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
         Score score = ParserUtil.parseScore(argMultimap.getValue(PREFIX_GRADE).get());
+        String courseCode = argMultimap.getValue(PREFIX_COURSE_CODE).get(); // Parse the courseCode
 
-        return new AddGradeCommand(studentIndex, assessmentIndex, score);
+        return new AddGradeCommand(courseCode, studentIndex, assessmentIndex, score); // Pass courseCode here
     }
 }

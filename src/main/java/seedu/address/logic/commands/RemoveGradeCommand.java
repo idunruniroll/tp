@@ -8,7 +8,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
-import seedu.address.model.grade.Score;
 import seedu.address.model.person.Person;
 import seedu.address.model.student.StudentId;
 
@@ -17,21 +16,24 @@ public class RemoveGradeCommand extends Command {
     public static final String COMMAND_WORD = "removegrade";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes a student's grade for an assessment.\n"
-            + "Parameters: s/STUDENT_INDEX as/ASSESSMENT_INDEX\n"
-            + "Example: " + COMMAND_WORD + " s/1 as/1";
+            + "Parameters: c/COURSE_CODE s/STUDENT_INDEX as/ASSESSMENT_INDEX\n"
+            + "Example: " + COMMAND_WORD + " c/CS2103T s/1 as/1";
 
-    public static final String MESSAGE_SUCCESS = "Removed grade: %1$s";
+    public static final String MESSAGE_SUCCESS = "Removed grade: %1$s / %2$s / %3$s";
     public static final String MESSAGE_GRADE_NOT_FOUND = "No grade exists for this student and assessment.";
     public static final String MESSAGE_INVALID_STUDENT_INDEX = "The student index provided is invalid.";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
 
+    private final String courseCode;
     private final Index studentIndex;
     private final Index assessmentIndex;
 
-    public RemoveGradeCommand(Index studentIndex, Index assessmentIndex) {
+    public RemoveGradeCommand(String courseCode, Index studentIndex, Index assessmentIndex) {
+        requireNonNull(courseCode);
         requireNonNull(studentIndex);
         requireNonNull(assessmentIndex);
 
+        this.courseCode = courseCode;
         this.studentIndex = studentIndex;
         this.assessmentIndex = assessmentIndex;
     }
@@ -56,26 +58,23 @@ public class RemoveGradeCommand extends Command {
 
         StudentId studentId = new StudentId(student.getEmail().value);
 
-        /*
-         * Score is not part of grade identity.
-         * We only need the student + assessment pair to identify the grade.
-         * If your Grade class does not allow this, add an overloaded constructor
-         * or a helper method in the model to find/remove by identity.
-         */
-        Grade gradeToRemove = new Grade(studentId, assessment.getAssessmentName(), new Score("0"));
+        // Create a Grade object only with studentId, assessmentName, and courseCode to
+        // identify the grade
+        Grade gradeToRemove = new Grade(studentId, assessment.getAssessmentName(), courseCode);
 
         if (!model.hasGrade(gradeToRemove)) {
             throw new CommandException(MESSAGE_GRADE_NOT_FOUND);
         }
 
         model.removeGrade(gradeToRemove);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, gradeToRemove));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, studentId, assessment.getAssessmentName(), courseCode));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof RemoveGradeCommand
+                        && courseCode.equals(((RemoveGradeCommand) other).courseCode)
                         && studentIndex.equals(((RemoveGradeCommand) other).studentIndex)
                         && assessmentIndex.equals(((RemoveGradeCommand) other).assessmentIndex));
     }

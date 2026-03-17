@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.assessment.Assessment;
@@ -68,8 +69,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     public void setCourses(List<Course> courseList) {
         requireNonNull(courseList);
-        courses.getCourses().clear();
-        courses.getCourses().addAll(courseList);
+        this.courses.setCourseList(courseList);
     }
 
     /**
@@ -148,6 +148,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     public void removeGrade(Grade grade) {
+        requireNonNull(grade);
         grades.remove(grade);
     }
 
@@ -161,12 +162,11 @@ public class AddressBook implements ReadOnlyAddressBook {
         return grades.asUnmodifiableObservableList();
     }
 
-    //// course-level operations
+    //////////////////////////////// course-level operations
 
-    public boolean hasCourse(String courseCode) {
+    public boolean hasCourse(Course courseCode) {
         requireNonNull(courseCode);
-        return courses.getCourses().stream()
-                .anyMatch(c -> c.getCourseCode().equalsIgnoreCase(courseCode.trim()));
+        return courses.courseExists(courseCode);
     }
 
     public void addCourse(Course course) {
@@ -174,11 +174,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         courses.addCourse(course);
     }
 
+    public void removeCourse(Course course) {
+        requireNonNull(course);
+        courses.removeCourse(course);
+    }
+
     public Optional<Course> getCourse(String courseCode) {
         requireNonNull(courseCode);
-        return courses.getCourses().stream()
-                .filter(c -> c.getCourseCode().equalsIgnoreCase(courseCode.trim()))
-                .findFirst();
+        return Optional.ofNullable(courses.findCourseCode(courseCode));
     }
 
     /** Adds a student to the specified course. Course must exist. */
@@ -200,8 +203,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     @Override
-    public List<Course> getCourseList() {
-        return new ArrayList<>(courses.getCourses());
+    public ObservableList<Course> getCourseList() {
+        return FXCollections.observableList(courses.getCourses());
     }
 
     //// util methods

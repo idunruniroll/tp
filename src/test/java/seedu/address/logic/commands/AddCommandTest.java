@@ -161,6 +161,23 @@ public class AddCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        // Implement the missing methods for testing purposes
+        @Override
+        public ObservableList<Grade> getGradeList() {
+            // Return an empty list or a list of mock grades
+            return FXCollections.observableArrayList(); // Or add mock grades here
+        }
+
+        @Override
+        public boolean hasGrade(Grade grade) {
+            return false;
+        }
+
+        @Override
+        public void addGrade(Grade grade) {
+            // Simulate adding a grade (no-op in the stub)
+        }
+
         @Override
         public boolean hasAssessment(seedu.address.model.assessment.Assessment assessment) {
             throw new AssertionError("This method should not be called.");
@@ -176,10 +193,12 @@ public class AddCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
-        @Override
-        public javafx.collections.ObservableList<seedu.address.model.assessment.Assessment> getAssessmentList() {
-            throw new AssertionError("This method should not be called.");
-        }
+        // @Override
+        // public
+        // javafx.collections.ObservableList<seedu.address.model.assessment.Assessment>
+        // getAssessmentList() {
+        // throw new AssertionError("This method should not be called.");
+        // }
 
         @Override
         public boolean hasGrade(seedu.address.model.grade.Grade grade) {
@@ -196,15 +215,29 @@ public class AddCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
-        @Override
-        public javafx.collections.ObservableList<seedu.address.model.grade.Grade> getGradeList() {
-            throw new AssertionError("This method should not be called.");
-        }
+        // @Override
+        // public javafx.collections.ObservableList<seedu.address.model.grade.Grade>
+        // getGradeList() {
+        // throw new AssertionError("This method should not be called.");
+        // }
 
         @Override
         public boolean hasCourse(String courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
         public ObservableList<Assessment> getAssessmentList() {
             return FXCollections.observableArrayList();
+        }
+
+        @Override
+        public void addAssessment(Assessment assessment) {
+            // Simulate adding an assessment (no-op in the stub)
+        }
+
+        @Override
+        public void removeAssessment(Assessment assessment) {
+            // Simulate removing an assessment (no-op or conditional logic)
         }
 
         @Override
@@ -225,10 +258,6 @@ public class AddCommandTest {
         @Override
         public void removeStudentFromCourse(String courseCode, String studentId) {
             throw new AssertionError("This method should not be called.");
-        }
-
-        public ObservableList<Grade> getGradeList() {
-            return FXCollections.observableArrayList();
         }
     }
 

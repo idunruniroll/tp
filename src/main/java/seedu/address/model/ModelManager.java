@@ -8,12 +8,14 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 import seedu.address.model.student.Student;
@@ -27,6 +29,8 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
+    
+    private ObservableList<Course> courses;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -39,6 +43,7 @@ public class ModelManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         this.userPrefs = new UserPrefs(userPrefs);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        this.courses = this.addressBook.getCourseList();
     }
 
     public ModelManager() {
@@ -164,9 +169,14 @@ public class ModelManager implements Model {
     // =============================================================
 
     @Override
+    public ObservableList<Course> getCourseList() {
+        return addressBook.getCourseList();
+    }
+
+    @Override
     public boolean hasCourse(String courseCode) {
         requireNonNull(courseCode);
-        return addressBook.hasCourse(courseCode);
+        return addressBook.hasCourse(new Course(courseCode));
     }
 
     @Override
@@ -179,6 +189,12 @@ public class ModelManager implements Model {
     public void addCourse(Course course) {
         requireNonNull(course);
         addressBook.addCourse(course);
+    }
+
+    @Override
+    public void removeCourse(Course course) {
+        requireNonNull(course);
+        addressBook.removeCourse(course);
     }
 
     @Override

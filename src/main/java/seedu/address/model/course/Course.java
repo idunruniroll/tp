@@ -20,6 +20,8 @@ import java.util.ArrayList;
  */
 public class Course {
 
+    public static String MESSAGE_CONSTRAINTS = "Course code does not follow the correct format!"; // format to be defined
+
     private final String courseCode;
     private final ArrayList<Student> students;
 

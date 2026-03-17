@@ -8,17 +8,30 @@ import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.student.StudentId;
 
 public class Grade {
+    private final String courseCode;
     private final StudentId studentId;
     private final AssessmentName assessmentName;
     private final Score score;
 
-    public Grade(StudentId studentId, AssessmentName assessmentName, Score score) {
+    public Grade(String courseCode, StudentId studentId, AssessmentName assessmentName, Score score) {
+        requireNonNull(courseCode);
         requireNonNull(studentId);
         requireNonNull(assessmentName);
         requireNonNull(score);
+        this.courseCode = courseCode;
         this.studentId = studentId;
         this.assessmentName = assessmentName;
         this.score = score;
+    }
+
+    public Grade(StudentId studentId, AssessmentName assessmentName, String courseCode) {
+        requireNonNull(studentId);
+        requireNonNull(assessmentName);
+        requireNonNull(courseCode);
+        this.studentId = studentId;
+        this.assessmentName = assessmentName;
+        this.courseCode = courseCode;
+        this.score = null;
     }
 
     public StudentId getStudentId() {
@@ -31,6 +44,10 @@ public class Grade {
 
     public Score getScore() {
         return score;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
     }
 
     public boolean isSameGrade(Grade otherGrade) {
@@ -56,13 +73,13 @@ public class Grade {
             return false;
         }
         Grade otherGrade = (Grade) other;
-        return studentId.equals(otherGrade.studentId)
-                && assessmentName.equals(otherGrade.assessmentName)
-                && score.equals(otherGrade.score);
+        return courseCode.equals(otherGrade.courseCode)
+                && studentId.equals(otherGrade.studentId)
+                && assessmentName.equals(otherGrade.assessmentName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, assessmentName, score);
+        return Objects.hash(courseCode, studentId, assessmentName, score); // Include courseCode
     }
 }

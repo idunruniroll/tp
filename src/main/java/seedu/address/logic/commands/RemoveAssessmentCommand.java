@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.assessment.AssessmentName;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -20,6 +21,8 @@ public class RemoveAssessmentCommand extends Command {
     public static final String MESSAGE_DELETE_ASSESSMENT_SUCCESS = "Removed assessment: %1$s";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
 
+    private String courseCode;
+    private AssessmentName assessmentName;
     private final Index targetIndex;
 
     public RemoveAssessmentCommand(Index targetIndex) {

@@ -161,19 +161,15 @@ public class ParserUtil {
         }
     }
 
-    /**
-     * Parses a course code string.
-     * Leading/trailing whitespace is trimmed and the value is uppercased.
-     *
-     * @throws ParseException if blank.
-     */
-    public static String parseCourseCode(String value) throws ParseException {
-        requireNonNull(value);
-        String trimmed = value.trim();
-        if (trimmed.isEmpty()) {
-            throw new ParseException("Course code cannot be blank.");
+    public static String parseCourseCode(String courseCode) throws ParseException {
+        requireNonNull(courseCode);
+        String trimmed = courseCode.trim().toUpperCase();
+
+        if (!trimmed.matches("[A-Za-z0-9]{2,10}")) {
+            throw new ParseException("Invalid course code. Example: c/CS2103T");
         }
-        return trimmed.toUpperCase();
+
+        return trimmed;
     }
 
     /**

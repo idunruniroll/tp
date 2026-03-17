@@ -5,14 +5,21 @@ import static java.util.Objects.requireNonNull;
 import java.util.Objects;
 
 public class Assessment {
+    private final String courseCode;
     private final AssessmentName assessmentName;
     private final MaxScore maxScore;
 
-    public Assessment(AssessmentName assessmentName, MaxScore maxScore) {
+    public Assessment(String courseCode, AssessmentName assessmentName, MaxScore maxScore) {
+        requireNonNull(courseCode);
         requireNonNull(assessmentName);
         requireNonNull(maxScore);
+        this.courseCode = courseCode.trim().toUpperCase();
         this.assessmentName = assessmentName;
         this.maxScore = maxScore;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
     }
 
     public AssessmentName getAssessmentName() {
@@ -28,12 +35,13 @@ public class Assessment {
             return true;
         }
         return otherAssessment != null
-                && otherAssessment.getAssessmentName().equals(getAssessmentName());
+                && courseCode.equalsIgnoreCase(otherAssessment.courseCode)
+                && assessmentName.equals(otherAssessment.assessmentName);
     }
 
     @Override
     public String toString() {
-        return assessmentName + " / " + maxScore;
+        return courseCode + " / " + assessmentName + " / " + maxScore;
     }
 
     @Override
@@ -45,12 +53,13 @@ public class Assessment {
             return false;
         }
         Assessment otherAssessment = (Assessment) other;
-        return assessmentName.equals(otherAssessment.assessmentName)
+        return courseCode.equals(otherAssessment.courseCode)
+                && assessmentName.equals(otherAssessment.assessmentName)
                 && maxScore.equals(otherAssessment.maxScore);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assessmentName, maxScore);
+        return Objects.hash(courseCode, assessmentName, maxScore);
     }
 }

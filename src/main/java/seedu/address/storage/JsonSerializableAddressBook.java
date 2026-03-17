@@ -10,12 +10,15 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 
 import seedu.address.storage.JsonAdaptedAssessment;
 import seedu.address.storage.JsonAdaptedGrade;
+import seedu.address.storage.JsonAdaptedCourse;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.person.Person;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
+import seedu.address.model.course.Course;
+import seedu.address.model.course.CourseList;
 
 /**
  * An Immutable AddressBook that is serializable to JSON format.
@@ -30,6 +33,7 @@ class JsonSerializableAddressBook {
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
     private final List<JsonAdaptedAssessment> assessments = new ArrayList<>();
     private final List<JsonAdaptedGrade> grades = new ArrayList<>();
+    private final List<JsonAdaptedCourse> courses = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonSerializableAddressBook} with the given persons.
@@ -38,7 +42,8 @@ class JsonSerializableAddressBook {
     public JsonSerializableAddressBook(
             @JsonProperty("persons") List<JsonAdaptedPerson> persons,
             @JsonProperty("assessments") List<JsonAdaptedAssessment> assessments,
-            @JsonProperty("grades") List<JsonAdaptedGrade> grades) {
+            @JsonProperty("grades") List<JsonAdaptedGrade> grades,
+            @JsonProperty("courses") List<JsonAdaptedCourse> courses) {
         if (persons != null) {
             this.persons.addAll(persons);
         }
@@ -47,6 +52,9 @@ class JsonSerializableAddressBook {
         }
         if (grades != null) {
             this.grades.addAll(grades);
+        }
+        if (courses != null) {
+            this.courses.addAll(courses);
         }
     }
 
@@ -65,6 +73,9 @@ class JsonSerializableAddressBook {
                 .collect(Collectors.toList()));
         grades.addAll(source.getGradeList().stream()
                 .map(JsonAdaptedGrade::new)
+                .collect(Collectors.toList()));
+        courses.addAll(source.getCourseList().stream()
+                .map(JsonAdaptedCourse::new)
                 .collect(Collectors.toList()));
     }
 
@@ -98,6 +109,14 @@ class JsonSerializableAddressBook {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_GRADE);
             }
             addressBook.addGrade(grade);
+        }
+
+        for (JsonAdaptedCourse JsonAdaptedCourse : courses) {
+            Course course = JsonAdaptedCourse.toModelType();
+            if (addressBook.hasCourse(course)) {
+                throw new IllegalValueException(MESSAGE_DUPLICATE_GRADE);
+            }
+            addressBook.addCourse(course);
         }
 
         return addressBook;

@@ -17,8 +17,8 @@ public class AddGradeCommand extends Command {
     public static final String COMMAND_WORD = "addgrade";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a grade for a student for an assessment.\n"
-            + "Parameters: s/STUDENT_INDEX as/ASSESSMENT_INDEX g/SCORE\n"
-            + "Example: " + COMMAND_WORD + " s/1 as/1 g/85";
+            + "Parameters: c/COURSE_CODE s/STUDENT_INDEX as/ASSESSMENT_INDEX g/SCORE\n"
+            + "Example: " + COMMAND_WORD + " c/CS2103T s/1 as/1 g/85";
 
     public static final String MESSAGE_SUCCESS = "New grade added: %1$s";
     public static final String MESSAGE_DUPLICATE_GRADE = "This grade already exists for the student and assessment.";
@@ -26,15 +26,18 @@ public class AddGradeCommand extends Command {
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
     public static final String MESSAGE_SCORE_EXCEEDS_MAX = "Score cannot be more than the assessment max score.";
 
+    private final String courseCode;
     private final Index studentIndex;
     private final Index assessmentIndex;
     private final Score score;
 
-    public AddGradeCommand(Index studentIndex, Index assessmentIndex, Score score) {
+    public AddGradeCommand(String courseCode, Index studentIndex, Index assessmentIndex, Score score) {
+        requireNonNull(courseCode);
         requireNonNull(studentIndex);
         requireNonNull(assessmentIndex);
         requireNonNull(score);
 
+        this.courseCode = courseCode;
         this.studentIndex = studentIndex;
         this.assessmentIndex = assessmentIndex;
         this.score = score;
@@ -63,7 +66,7 @@ public class AddGradeCommand extends Command {
         }
 
         StudentId studentId = new StudentId(student.getEmail().value);
-        Grade toAdd = new Grade(studentId, assessment.getAssessmentName(), score);
+        Grade toAdd = new Grade(courseCode, studentId, assessment.getAssessmentName(), score);
 
         if (model.hasGrade(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_GRADE);
@@ -77,6 +80,7 @@ public class AddGradeCommand extends Command {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof AddGradeCommand
+                        && courseCode.equals(((AddGradeCommand) other).courseCode)
                         && studentIndex.equals(((AddGradeCommand) other).studentIndex)
                         && assessmentIndex.equals(((AddGradeCommand) other).assessmentIndex)
                         && score.equals(((AddGradeCommand) other).score));

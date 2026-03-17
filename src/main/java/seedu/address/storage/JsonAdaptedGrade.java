@@ -8,31 +8,44 @@ import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.grade.Score;
 import seedu.address.model.student.StudentId;
+import seedu.address.model.assessment.Assessment; // Add import for Assessment
 
 public class JsonAdaptedGrade {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Grade's %s field is missing!";
 
+    private final String courseCode; // Add courseCode
     private final String studentId;
     private final String assessmentName;
     private final String score;
 
     @JsonCreator
-    public JsonAdaptedGrade(@JsonProperty("studentId") String studentId,
+    public JsonAdaptedGrade(@JsonProperty("courseCode") String courseCode,
+            @JsonProperty("studentId") String studentId,
             @JsonProperty("assessmentName") String assessmentName,
             @JsonProperty("score") String score) {
+        this.courseCode = courseCode;
         this.studentId = studentId;
         this.assessmentName = assessmentName;
         this.score = score;
     }
 
     public JsonAdaptedGrade(Grade source) {
+        courseCode = source.getCourseCode(); // Ensure courseCode is passed
         studentId = source.getStudentId().toString();
         assessmentName = source.getAssessmentName().toString();
         score = source.getScore().toString();
     }
 
     public Grade toModelType() throws IllegalValueException {
+        if (courseCode == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    "courseCode"));
+        }
+        if (courseCode.trim().isEmpty()) {
+            throw new IllegalValueException("CourseCode cannot be empty.");
+        }
+
         if (studentId == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
                     "studentId"));
@@ -76,6 +89,6 @@ public class JsonAdaptedGrade {
             throw new IllegalValueException(Score.MESSAGE_CONSTRAINTS);
         }
 
-        return new Grade(modelStudentId, modelAssessmentName, modelScore);
+        return new Grade(courseCode, modelStudentId, modelAssessmentName, modelScore); // constructor
     }
 }
