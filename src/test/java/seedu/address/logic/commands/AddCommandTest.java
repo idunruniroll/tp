@@ -14,6 +14,7 @@ import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Messages;
@@ -22,6 +23,8 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.PersonBuilder;
 
@@ -156,6 +159,48 @@ public class AddCommandTest {
         @Override
         public void updateFilteredPersonList(Predicate<Person> predicate) {
             throw new AssertionError("This method should not be called.");
+        }
+
+        // Implement the missing methods for testing purposes
+        @Override
+        public ObservableList<Grade> getGradeList() {
+            // Return an empty list or a list of mock grades
+            return FXCollections.observableArrayList(); // Or add mock grades here
+        }
+
+        @Override
+        public boolean hasGrade(Grade grade) {
+            return false;
+        }
+
+        @Override
+        public void addGrade(Grade grade) {
+            // Simulate adding a grade (no-op in the stub)
+        }
+
+        @Override
+        public boolean hasAssessment(Assessment assessment) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void removeGrade(Grade grade) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Assessment> getAssessmentList() {
+            return FXCollections.observableArrayList();
+        }
+
+        @Override
+        public void addAssessment(Assessment assessment) {
+            // Simulate adding an assessment (no-op in the stub)
+        }
+
+        @Override
+        public void removeAssessment(Assessment assessment) {
+            // Simulate removing an assessment (no-op or conditional logic)
         }
     }
 

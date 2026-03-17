@@ -1,19 +1,25 @@
 package seedu.address.model.assessment;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
 public class Assessment {
+    private final String courseCode;
     private final AssessmentName assessmentName;
     private final MaxScore maxScore;
-    private final Weight weight;
 
-    public Assessment(AssessmentName assessmentName, MaxScore maxScore, Weight weight) {
-        requireAllNonNull(assessmentName, maxScore, weight);
+    public Assessment(String courseCode, AssessmentName assessmentName, MaxScore maxScore) {
+        requireNonNull(courseCode);
+        requireNonNull(assessmentName);
+        requireNonNull(maxScore);
+        this.courseCode = courseCode.trim().toUpperCase();
         this.assessmentName = assessmentName;
         this.maxScore = maxScore;
-        this.weight = weight;
+    }
+
+    public String getCourseCode() {
+        return courseCode;
     }
 
     public AssessmentName getAssessmentName() {
@@ -24,16 +30,18 @@ public class Assessment {
         return maxScore;
     }
 
-    public Weight getWeight() {
-        return weight;
-    }
-
     public boolean isSameAssessment(Assessment otherAssessment) {
         if (otherAssessment == this) {
             return true;
         }
         return otherAssessment != null
-                && otherAssessment.getAssessmentName().equals(getAssessmentName());
+                && courseCode.equalsIgnoreCase(otherAssessment.courseCode)
+                && assessmentName.equals(otherAssessment.assessmentName);
+    }
+
+    @Override
+    public String toString() {
+        return courseCode + " / " + assessmentName + " / " + maxScore;
     }
 
     @Override
@@ -45,18 +53,13 @@ public class Assessment {
             return false;
         }
         Assessment otherAssessment = (Assessment) other;
-        return assessmentName.equals(otherAssessment.assessmentName)
-                && maxScore.equals(otherAssessment.maxScore)
-                && weight.equals(otherAssessment.weight);
+        return courseCode.equals(otherAssessment.courseCode)
+                && assessmentName.equals(otherAssessment.assessmentName)
+                && maxScore.equals(otherAssessment.maxScore);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assessmentName, maxScore, weight);
-    }
-
-    @Override
-    public String toString() {
-        return assessmentName + " / " + maxScore + " / " + weight;
+        return Objects.hash(courseCode, assessmentName, maxScore);
     }
 }

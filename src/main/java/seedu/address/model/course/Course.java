@@ -1,27 +1,23 @@
 package seedu.address.model.course;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
-
-import java.util.Objects;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.student.Student;
 
 public class Course {
-    private final static ArrayList<Course> courseCodeList;
-    private final static ArrayList<Student> students;
-    private final static ArrayList<Assessment> assessments;
-    private final static ArrayList<Grade> grades;
     private final String courseCode;
+    private final ArrayList<Student> students;
+    private final ArrayList<Assessment> assessments;
+    private final ArrayList<Grade> grades;
 
     public Course(String courseCode) {
-        requireAllNonNull(courseCode);
         this.courseCode = courseCode;
-        this.students = Student.getStudentsList(); // function to be created; students that exist in this course
-        this.assessments = Student.getAssessmentsList(); // function to be created; assessments that exist in this course
-        this.grades = Student.getGradesList(); // function to be created ; grades of students that exist in this course
+        this.students = new ArrayList<>();
+        this.assessments = new ArrayList<>();
+        this.grades = new ArrayList<>();
     }
 
     public String getCourseCode() {

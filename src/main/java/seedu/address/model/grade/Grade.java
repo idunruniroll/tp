@@ -1,6 +1,6 @@
 package seedu.address.model.grade;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
@@ -8,15 +8,30 @@ import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.student.StudentId;
 
 public class Grade {
+    private final String courseCode;
     private final StudentId studentId;
     private final AssessmentName assessmentName;
     private final Score score;
 
-    public Grade(StudentId studentId, AssessmentName assessmentName, Score score) {
-        requireAllNonNull(studentId, assessmentName, score);
+    public Grade(String courseCode, StudentId studentId, AssessmentName assessmentName, Score score) {
+        requireNonNull(courseCode);
+        requireNonNull(studentId);
+        requireNonNull(assessmentName);
+        requireNonNull(score);
+        this.courseCode = courseCode;
         this.studentId = studentId;
         this.assessmentName = assessmentName;
         this.score = score;
+    }
+
+    public Grade(StudentId studentId, AssessmentName assessmentName, String courseCode) {
+        requireNonNull(studentId);
+        requireNonNull(assessmentName);
+        requireNonNull(courseCode);
+        this.studentId = studentId;
+        this.assessmentName = assessmentName;
+        this.courseCode = courseCode;
+        this.score = null;
     }
 
     public StudentId getStudentId() {
@@ -31,13 +46,22 @@ public class Grade {
         return score;
     }
 
+    public String getCourseCode() {
+        return courseCode;
+    }
+
     public boolean isSameGrade(Grade otherGrade) {
         if (otherGrade == this) {
             return true;
         }
         return otherGrade != null
-                && otherGrade.getStudentId().equals(getStudentId())
-                && otherGrade.getAssessmentName().equals(getAssessmentName());
+                && studentId.equals(otherGrade.studentId)
+                && assessmentName.equals(otherGrade.assessmentName);
+    }
+
+    @Override
+    public String toString() {
+        return studentId + " / " + assessmentName + " / " + score;
     }
 
     @Override
@@ -49,18 +73,13 @@ public class Grade {
             return false;
         }
         Grade otherGrade = (Grade) other;
-        return studentId.equals(otherGrade.studentId)
-                && assessmentName.equals(otherGrade.assessmentName)
-                && score.equals(otherGrade.score);
+        return courseCode.equals(otherGrade.courseCode)
+                && studentId.equals(otherGrade.studentId)
+                && assessmentName.equals(otherGrade.assessmentName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(studentId, assessmentName, score);
-    }
-
-    @Override
-    public String toString() {
-        return studentId + " / " + assessmentName + " / " + score;
+        return Objects.hash(courseCode, studentId, assessmentName, score); // Include courseCode
     }
 }

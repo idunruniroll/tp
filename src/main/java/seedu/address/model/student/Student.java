@@ -6,20 +6,20 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.Objects;
 
 public class Student {
-    private final StudentId studentId;
-    private final StudentName studentName;
+    private final String studentId;
+    private final String studentName;
 
-    public Student(StudentId studentId, StudentName studentName) {
+    public Student(String studentId, String studentName) {
         requireAllNonNull(studentId, studentName);
         this.studentId = studentId;
         this.studentName = studentName;
     }
 
-    public StudentId getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public StudentName getStudentName() {
+    public String getStudentName() {
         return studentName;
     }
 

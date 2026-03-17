@@ -5,7 +5,11 @@ import static java.util.Objects.requireNonNull;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 
+import seedu.address.model.assessment.AssessmentName;
+import seedu.address.model.assessment.MaxScore;
+import seedu.address.model.grade.Score;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -16,16 +20,20 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.tag.Tag;
 
 /**
- * Contains utility methods used for parsing strings in the various *Parser classes.
+ * Contains utility methods used for parsing strings in the various *Parser
+ * classes.
  */
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading
+     * and trailing whitespaces will be
      * trimmed.
-     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
+     * 
+     * @throws ParseException if the specified index is invalid (not non-zero
+     *                        unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndex = oneBasedIndex.trim();
@@ -48,6 +56,10 @@ public class ParserUtil {
             throw new ParseException(Name.MESSAGE_CONSTRAINTS);
         }
         return new Name(trimmedName);
+    }
+
+    public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
     /**
@@ -121,4 +133,43 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    public static AssessmentName parseAssessmentName(String name) throws ParseException {
+        requireNonNull(name);
+        String trimmedName = name.trim();
+        if (trimmedName.isEmpty()) {
+            throw new ParseException(AssessmentName.MESSAGE_CONSTRAINTS);
+        }
+        return new AssessmentName(trimmedName);
+    }
+
+    public static MaxScore parseMaxScore(String value) throws ParseException {
+        requireNonNull(value);
+        try {
+            return new MaxScore(value.trim());
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(MaxScore.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    public static Score parseScore(String value) throws ParseException {
+        requireNonNull(value);
+        try {
+            return new Score(value.trim());
+        } catch (IllegalArgumentException e) {
+            throw new ParseException(Score.MESSAGE_CONSTRAINTS);
+        }
+    }
+
+    public static String parseCourseCode(String courseCode) throws ParseException {
+        requireNonNull(courseCode);
+        String trimmed = courseCode.trim().toUpperCase();
+
+        if (!trimmed.matches("[A-Za-z0-9]{2,10}")) {
+            throw new ParseException("Invalid course code. Example: c/CS2103T");
+        }
+
+        return trimmed;
+    }
+
 }
