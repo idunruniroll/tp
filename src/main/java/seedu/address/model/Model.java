@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -111,7 +112,8 @@ public interface Model {
 
     ObservableList<Grade> getGradeList();
 
-    // =========== Course / Student operations ==================================================
+    // =========== Course / Student operations
+    // ==================================================
 
     /** Returns an unmodifiable view of the unique Course list */
     ObservableList<Course> getCourseList();
@@ -127,4 +129,10 @@ public interface Model {
     void addStudentToCourse(String courseCode, Student student);
 
     void removeStudentFromCourse(String courseCode, String studentId);
+
+    ObservableList<Grade> getGradesByStudentId(String studentId);
+
+    ObservableList<Grade> getGradesByCourse(String courseCode);
+
+    ObservableList<Grade> getGradesByCourseAndAssessment(String courseCode, String assessmentName);
 }

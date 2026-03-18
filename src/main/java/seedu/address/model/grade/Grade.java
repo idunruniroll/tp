@@ -55,13 +55,14 @@ public class Grade {
             return true;
         }
         return otherGrade != null
+                && courseCode.equalsIgnoreCase(otherGrade.courseCode)
                 && studentId.equals(otherGrade.studentId)
                 && assessmentName.equals(otherGrade.assessmentName);
     }
 
     @Override
     public String toString() {
-        return studentId + " / " + assessmentName + " / " + score;
+        return studentId + ", Assessment Name: " + assessmentName + " , Grade: " + score;
     }
 
     @Override
@@ -80,6 +81,6 @@ public class Grade {
 
     @Override
     public int hashCode() {
-        return Objects.hash(courseCode, studentId, assessmentName, score); // Include courseCode
+        return Objects.hash(courseCode, studentId, assessmentName);
     }
 }

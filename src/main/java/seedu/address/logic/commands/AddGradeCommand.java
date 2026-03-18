@@ -2,6 +2,9 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -25,6 +28,7 @@ public class AddGradeCommand extends Command {
     public static final String MESSAGE_INVALID_STUDENT_INDEX = "The student index provided is invalid.";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
     public static final String MESSAGE_SCORE_EXCEEDS_MAX = "Score cannot be more than the assessment max score.";
+    public static final String MESSAGE_INVALID_COURSE_CODE = "Invalid course code.";
 
     private final String courseCode;
     private final Index studentIndex;
@@ -37,7 +41,7 @@ public class AddGradeCommand extends Command {
         requireNonNull(assessmentIndex);
         requireNonNull(score);
 
-        this.courseCode = courseCode;
+        this.courseCode = courseCode.trim().toUpperCase();
         this.studentIndex = studentIndex;
         this.assessmentIndex = assessmentIndex;
         this.score = score;
@@ -48,18 +52,26 @@ public class AddGradeCommand extends Command {
         requireNonNull(model);
 
         ObservableList<Person> studentList = model.getFilteredPersonList();
-        ObservableList<Assessment> assessmentList = model.getAssessmentList();
 
         if (studentIndex.getZeroBased() >= studentList.size()) {
             throw new CommandException(MESSAGE_INVALID_STUDENT_INDEX);
         }
 
-        if (assessmentIndex.getZeroBased() >= assessmentList.size()) {
+        Person student = studentList.get(studentIndex.getZeroBased());
+
+        List<Assessment> courseAssessments = model.getAssessmentList().stream()
+                .filter(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode))
+                .collect(Collectors.toList());
+
+        if (courseAssessments.isEmpty()) {
+            throw new CommandException(MESSAGE_INVALID_COURSE_CODE);
+        }
+
+        if (assessmentIndex.getZeroBased() >= courseAssessments.size()) {
             throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
         }
 
-        Person student = studentList.get(studentIndex.getZeroBased());
-        Assessment assessment = assessmentList.get(assessmentIndex.getZeroBased());
+        Assessment assessment = courseAssessments.get(assessmentIndex.getZeroBased());
 
         if (score.value > assessment.getMaxScore().value) {
             throw new CommandException(MESSAGE_SCORE_EXCEEDS_MAX);
@@ -80,7 +92,7 @@ public class AddGradeCommand extends Command {
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof AddGradeCommand
-                        && courseCode.equals(((AddGradeCommand) other).courseCode)
+                        && courseCode.equalsIgnoreCase(((AddGradeCommand) other).courseCode)
                         && studentIndex.equals(((AddGradeCommand) other).studentIndex)
                         && assessmentIndex.equals(((AddGradeCommand) other).assessmentIndex)
                         && score.equals(((AddGradeCommand) other).score));

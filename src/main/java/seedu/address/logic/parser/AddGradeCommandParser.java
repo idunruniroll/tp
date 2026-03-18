@@ -28,7 +28,7 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
         requireNonNull(args);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STUDENT, PREFIX_ASSESSMENT,
-                PREFIX_GRADE, PREFIX_COURSE_CODE); // Add PREFIX_COURSE
+                PREFIX_GRADE, PREFIX_COURSE_CODE);
 
         if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_GRADE,
                 PREFIX_COURSE_CODE)
@@ -40,8 +40,8 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
         Index studentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_STUDENT).get());
         Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
         Score score = ParserUtil.parseScore(argMultimap.getValue(PREFIX_GRADE).get());
-        String courseCode = argMultimap.getValue(PREFIX_COURSE_CODE).get(); // Parse the courseCode
+        String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
 
-        return new AddGradeCommand(courseCode, studentIndex, assessmentIndex, score); // Pass courseCode here
+        return new AddGradeCommand(courseCode, studentIndex, assessmentIndex, score);
     }
 }
