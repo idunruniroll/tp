@@ -250,6 +250,21 @@ public class AddCommandTest {
         public void removeStudentFromCourse(String courseCode, String studentId) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public ObservableList<seedu.address.model.student.Student> getFilteredStudentList() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void setCurrentCourseForDisplay(java.util.Optional<String> courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<String> getCurrentCourseForDisplay() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

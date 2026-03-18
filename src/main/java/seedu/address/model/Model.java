@@ -127,4 +127,15 @@ public interface Model {
     void addStudentToCourse(String courseCode, Student student);
 
     void removeStudentFromCourse(String courseCode, String studentId);
+
+    // =========== Student GUI display state ====================================================
+
+    /** Returns the live observable list of students for the currently displayed course. */
+    ObservableList<Student> getFilteredStudentList();
+
+    /** Sets the course code whose student list should be displayed in the GUI. */
+    void setCurrentCourseForDisplay(Optional<String> courseCode);
+
+    /** Returns the course code currently being displayed, or empty if showing persons. */
+    Optional<String> getCurrentCourseForDisplay();
 }
