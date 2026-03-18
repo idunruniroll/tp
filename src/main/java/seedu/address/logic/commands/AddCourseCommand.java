@@ -6,7 +6,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.course.Course;
-import seedu.address.model.course.CourseList;
 
 public class AddCourseCommand extends Command {
 
@@ -17,6 +16,9 @@ public class AddCourseCommand extends Command {
             + PREFIX_COURSE_CODE + "COURSE CODE "
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_COURSE_CODE + "CS2103T";
+    
+            public static final String MESSAGE_FORMAT = "\u274C Format: " + COMMAND_WORD + " "
+            + PREFIX_COURSE_CODE + "COURSE_CODE ";
 
     public static final String MESSAGE_SUCCESS = "New Course added: ";
     public static final String MESSAGE_DUPLICATE_ASSESSMENT = "This Course already exists.";

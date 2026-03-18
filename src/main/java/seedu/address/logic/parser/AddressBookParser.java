@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddAssessmentCommand;
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddCourseCommand;
 import seedu.address.logic.commands.AddGradeCommand;
 import seedu.address.logic.commands.AddStudentCommand;
 import seedu.address.logic.commands.ClearCommand;
@@ -18,8 +19,10 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListAssessmentsCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.ListCoursesCommand;
 import seedu.address.logic.commands.ListStudentsCommand;
 import seedu.address.logic.commands.RemoveAssessmentCommand;
+import seedu.address.logic.commands.RemoveCourseCommand;
 import seedu.address.logic.commands.RemoveGradeCommand;
 import seedu.address.logic.commands.RemoveStudentCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -97,6 +100,16 @@ public class AddressBookParser {
 
             case ListStudentsCommand.COMMAND_WORD:
                 return new ListStudentsCommandParser().parse(arguments);
+
+            case AddCourseCommand.COMMAND_WORD:
+                return new AddCourseCommandParser().parse(arguments);
+
+            case RemoveCourseCommand.COMMAND_WORD:
+                return new RemoveCourseCommandParser().parse(arguments);
+
+            case ListCoursesCommand.COMMAND_WORD:
+                return new ListCoursesCommandParser().parse(arguments);
+
             case ViewAllCommand.COMMAND_WORD:
                 return new ViewAllCommand();
 
