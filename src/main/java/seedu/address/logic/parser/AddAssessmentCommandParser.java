@@ -20,7 +20,7 @@ public class AddAssessmentCommandParser implements Parser<AddAssessmentCommand> 
          * Parses the given {@code String} of arguments in the context of the
          * AddAssessmentCommand and returns an AddAssessmentCommand object for
          * execution.
-         * 
+         *
          * @throws ParseException if the user input does not conform the expected format
          */
         @Override
