@@ -166,7 +166,7 @@ public class ParserUtil {
         String trimmed = courseCode.trim().toUpperCase();
 
         if (!trimmed.matches("[A-Za-z0-9]{2,10}")) {
-            throw new ParseException("Invalid course code. Example: c/CS2103T");
+            throw new ParseException("\u274C Invalid course code. Example: c/CS2103T");
         }
 
         return trimmed;
@@ -180,10 +180,27 @@ public class ParserUtil {
      */
     public static String parseStudentId(String value) throws ParseException {
         requireNonNull(value);
-        String trimmed = value.trim();
-        if (trimmed.isEmpty()) {
-            throw new ParseException("Student ID cannot be blank.");
+        String trimmed = value.trim().toUpperCase();
+        if (!trimmed.matches("[A-Za-z0-9]{6,12}")) {
+            throw new ParseException("\u274C Invalid student ID. Example: id/A0123456X");
         }
-        return trimmed.toUpperCase();
+        return trimmed;
+    }
+
+    /**
+     * Parses a student name string.
+     * Leading/trailing spaces are trimmed; multiple internal whitespace is collapsed to single spaces.
+     *
+     * Acceptable values: 1-60 chars, letters/spaces and common punctuation.
+     */
+    public static String parseStudentName(String value) throws ParseException {
+        requireNonNull(value);
+        String collapsed = value.trim().replaceAll("\\s+", " ");
+        if (collapsed.isEmpty()
+                || collapsed.length() > 60
+                || !collapsed.matches("[\\p{L} .,'-]+")) {
+            throw new ParseException("\u274C Invalid name. Example: n/John Tan");
+        }
+        return collapsed;
     }
 }

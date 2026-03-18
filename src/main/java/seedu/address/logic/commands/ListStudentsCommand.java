@@ -3,11 +3,10 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 
-import java.util.ArrayList;
+import java.util.Optional;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
-import seedu.address.model.student.Student;
 
 /**
  * Displays all students enrolled in a specified course.
@@ -21,10 +20,10 @@ public class ListStudentsCommand extends Command {
             + "Parameters: " + PREFIX_COURSE_CODE + "COURSE_CODE\n"
             + "Example: " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T";
 
+    public static final String MESSAGE_SUCCESS = "\u2705 Displaying students in %s.";
     public static final String MESSAGE_COURSE_NOT_FOUND = "\u274C Course %s not found.";
     public static final String MESSAGE_FORMAT_ERROR = "\u274C Format: " + COMMAND_WORD
             + " " + PREFIX_COURSE_CODE + "COURSE_CODE";
-    public static final String MESSAGE_EMPTY = "\u2705 No students enrolled in %s.";
 
     private final String courseCode;
 
@@ -41,20 +40,8 @@ public class ListStudentsCommand extends Command {
             throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
-        ArrayList<Student> students = model.getCourse(courseCode).get().getStudents();
-
-        if (students.isEmpty()) {
-            return new CommandResult(String.format(MESSAGE_EMPTY, courseCode));
-        }
-
-        StringBuilder sb = new StringBuilder("\u2705 Displaying students in " + courseCode + ":\n");
-        for (Student s : students) {
-            sb.append("  ").append(s.getStudentId())
-              .append(" | ").append(s.getStudentName());
-            s.getEmail().ifPresent(e -> sb.append(" | ").append(e));
-            sb.append("\n");
-        }
-        return new CommandResult(sb.toString().trim());
+        model.setCurrentCourseForDisplay(Optional.of(courseCode));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, courseCode));
     }
 
     @Override

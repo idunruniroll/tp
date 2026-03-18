@@ -135,4 +135,14 @@ public interface Model {
     ObservableList<Grade> getGradesByCourse(String courseCode);
 
     ObservableList<Grade> getGradesByCourseAndAssessment(String courseCode, String assessmentName);
+    // =========== Student GUI display state ====================================================
+
+    /** Returns the live observable list of students for the currently displayed course. */
+    ObservableList<Student> getFilteredStudentList();
+
+    /** Sets the course code whose student list should be displayed in the GUI. */
+    void setCurrentCourseForDisplay(Optional<String> courseCode);
+
+    /** Returns the course code currently being displayed, or empty if showing persons. */
+    Optional<String> getCurrentCourseForDisplay();
 }

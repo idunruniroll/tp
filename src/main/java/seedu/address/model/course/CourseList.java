@@ -10,8 +10,6 @@
 
 package seedu.address.model.course;
 
-import static java.util.Objects.nonNull;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -108,9 +106,12 @@ public class CourseList {
      * @return the matching Course or null if not found.
      */
     public Course findCourseCode(String keyword) {
-        String normalizedKeyword = keyword.trim().toUpperCase();
+        if (keyword == null) {
+            return null;
+        }
+        final String normalized = keyword.trim().toUpperCase();
         return courseList.stream()
-                .filter(course -> course.getCourseCode().equalsIgnoreCase(normalizedKeyword))
+                .filter(c -> c.getCourseCode().equalsIgnoreCase(normalized))
                 .findFirst()
                 .orElse(null);
     }

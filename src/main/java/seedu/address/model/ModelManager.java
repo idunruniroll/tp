@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -34,6 +35,10 @@ public class ModelManager implements Model {
 
     private ObservableList<Course> courses;
     private ObservableList<Grade> grades;
+
+    // Student GUI display state
+    private Optional<String> currentCourseForDisplay = Optional.empty();
+    private final ObservableList<Student> filteredStudents = FXCollections.observableArrayList();
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -246,12 +251,55 @@ public class ModelManager implements Model {
     public void addStudentToCourse(String courseCode, Student student) {
         requireAllNonNull(courseCode, student);
         addressBook.addStudentToCourse(courseCode, student);
+        if (currentCourseForDisplay.isPresent()
+                && currentCourseForDisplay.get().equalsIgnoreCase(courseCode)) {
+            refreshFilteredStudents();
+        }
     }
 
     @Override
     public void removeStudentFromCourse(String courseCode, String studentId) {
         requireAllNonNull(courseCode, studentId);
         addressBook.removeStudentFromCourse(courseCode, studentId);
+        if (currentCourseForDisplay.isPresent()
+                && currentCourseForDisplay.get().equalsIgnoreCase(courseCode)) {
+            refreshFilteredStudents();
+        }
+    }
+
+    // =========== Student GUI display state
+    // =============================================================
+
+    @Override
+    public ObservableList<Student> getFilteredStudentList() {
+        return FXCollections.unmodifiableObservableList(filteredStudents);
+    }
+
+    @Override
+    public void setCurrentCourseForDisplay(Optional<String> courseCode) {
+        requireNonNull(courseCode);
+        currentCourseForDisplay = courseCode.map(String::trim);
+        refreshFilteredStudents();
+    }
+
+    @Override
+    public Optional<String> getCurrentCourseForDisplay() {
+        return currentCourseForDisplay;
+    }
+
+    private void refreshFilteredStudents() {
+        if (currentCourseForDisplay.isEmpty()) {
+            filteredStudents.clear();
+            return;
+        }
+
+        Optional<Course> course = addressBook.getCourse(currentCourseForDisplay.get());
+        if (course.isEmpty()) {
+            filteredStudents.clear();
+            return;
+        }
+
+        filteredStudents.setAll(new ArrayList<>(course.get().getStudents()));
     }
 
     // =========== Filtered Person List Accessors

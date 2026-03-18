@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.Optional;
 import java.util.logging.Logger;
 
 import javafx.event.ActionEvent;
@@ -32,6 +33,7 @@ public class MainWindow extends UiPart<Stage> {
 
     // Independent Ui parts residing in this Ui container
     private PersonListPanel personListPanel;
+    private StudentListPanel studentListPanel;
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
 
@@ -111,7 +113,14 @@ public class MainWindow extends UiPart<Stage> {
      */
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
+        studentListPanel = new StudentListPanel(logic.getFilteredStudentList());
+
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
+        personListPanelPlaceholder.getChildren().add(studentListPanel.getRoot());
+
+        // default to person list
+        studentListPanel.getRoot().setVisible(false);
+        studentListPanel.getRoot().setManaged(false);
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -121,6 +130,18 @@ public class MainWindow extends UiPart<Stage> {
 
         CommandBox commandBox = new CommandBox(this::executeCommand);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
+    }
+
+    private void updateListVisibility() {
+        Optional<String> currentCourse = logic.getCurrentCourseForDisplay();
+        boolean showStudents = currentCourse.isPresent();
+
+        personListPanel.getRoot().setVisible(!showStudents);
+        personListPanel.getRoot().setManaged(!showStudents);
+
+        studentListPanel.setCourseHeader(currentCourse.orElse(""));
+        studentListPanel.getRoot().setVisible(showStudents);
+        studentListPanel.getRoot().setManaged(showStudents);
     }
 
     /**
@@ -177,6 +198,8 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+
+            updateListVisibility();
 
             if (commandResult.isShowHelp()) {
                 handleHelp();
