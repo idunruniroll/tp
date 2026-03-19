@@ -2,53 +2,69 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import javafx.collections.ObservableList;
-import seedu.address.model.assessment.AssessmentName;
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.commons.core.index.Index;
+
+import javafx.collections.ObservableList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RemoveAssessmentCommand extends Command {
 
     public static final String COMMAND_WORD = "removeassessment";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes the assessment identified by the "
-            + "index number used in the displayed assessment list.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + "course and index number used in the displayed assessment list.\n"
+            + "Parameters: c/COURSE_CODE as/ASSESSMENT_INDEX\n"
+            + "Example: " + COMMAND_WORD + " c/CS2103T as/1";
 
     public static final String MESSAGE_DELETE_ASSESSMENT_SUCCESS = "Removed assessment: %1$s";
+    public static final String MESSAGE_INVALID_COURSE = "The course code provided is invalid.";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
 
-    private String courseCode;
-    private AssessmentName assessmentName;
-    private final Index targetIndex;
+    private final String courseCode;
+    private final Index assessmentIndex;
 
-    public RemoveAssessmentCommand(Index targetIndex) {
-        this.targetIndex = targetIndex;
+    public RemoveAssessmentCommand(String courseCode, Index assessmentIndex) {
+        requireNonNull(courseCode);
+        requireNonNull(assessmentIndex);
+
+        this.courseCode = courseCode;
+        this.assessmentIndex = assessmentIndex;
     }
 
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        ObservableList<Assessment> lastShownList = model.getAssessmentList();
+        // Get the list of assessments for the given course code
+        ObservableList<Assessment> assessments = model.getAssessmentList();
+        List<Assessment> filteredAssessments = assessments.stream()
+                .filter(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode))
+                .collect(Collectors.toList());
 
-        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+        if (filteredAssessments.isEmpty()) {
+            throw new CommandException(MESSAGE_INVALID_COURSE);
+        }
+
+        if (assessmentIndex.getZeroBased() >= filteredAssessments.size()) {
             throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
         }
 
-        Assessment assessmentToDelete = lastShownList.get(targetIndex.getZeroBased());
-        model.removeAssessment(assessmentToDelete);
+        Assessment assessmentToRemove = filteredAssessments.get(assessmentIndex.getZeroBased());
+        model.removeAssessment(assessmentToRemove);
 
-        return new CommandResult(String.format(MESSAGE_DELETE_ASSESSMENT_SUCCESS, assessmentToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_ASSESSMENT_SUCCESS, assessmentToRemove));
     }
 
     @Override
     public boolean equals(Object other) {
         return other == this
                 || (other instanceof RemoveAssessmentCommand
-                        && targetIndex.equals(((RemoveAssessmentCommand) other).targetIndex));
+                        && courseCode.equals(((RemoveAssessmentCommand) other).courseCode)
+                        && assessmentIndex.equals(((RemoveAssessmentCommand) other).assessmentIndex));
     }
 }

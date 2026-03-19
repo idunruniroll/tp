@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -169,6 +170,8 @@ public class AddCommandTest {
             return FXCollections.observableArrayList(); // Or add mock grades here
         }
 
+        private ObservableList<Grade> gradeList = FXCollections.observableArrayList();
+
         @Override
         public boolean hasGrade(Grade grade) {
             return false;
@@ -177,6 +180,34 @@ public class AddCommandTest {
         @Override
         public void addGrade(Grade grade) {
             // Simulate adding a grade (no-op in the stub)
+        }
+
+        @Override
+        public ObservableList<Grade> getGradesByStudentId(String studentId) {
+            // Return a filtered list of grades by student ID
+            return FXCollections.observableArrayList(
+                    gradeList.stream()
+                            .filter(grade -> grade.getStudentId().equals(studentId))
+                            .collect(Collectors.toList()));
+        }
+
+        @Override
+        public ObservableList<Grade> getGradesByCourse(String courseCode) {
+            // Return a filtered list of grades by course
+            return FXCollections.observableArrayList(
+                    gradeList.stream()
+                            .filter(grade -> grade.getCourseCode().equals(courseCode))
+                            .collect(Collectors.toList()));
+        }
+
+        @Override
+        public ObservableList<Grade> getGradesByCourseAndAssessment(String courseCode, String assessmentName) {
+            // Return a filtered list of grades by both course and assessment
+            return FXCollections.observableArrayList(
+                    gradeList.stream()
+                            .filter(grade -> grade.getCourseCode().equals(courseCode)
+                                    && grade.getAssessmentName().equals(assessmentName))
+                            .collect(Collectors.toList()));
         }
 
         @Override

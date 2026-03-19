@@ -1,5 +1,4 @@
 
-
 /**
  * Represents a Course in the system.
  * Each course maintains its own roster of enrolled students.
@@ -20,7 +19,8 @@ import java.util.ArrayList;
  */
 public class Course {
 
-    public static String MESSAGE_CONSTRAINTS = "Course code does not follow the correct format!"; // format to be defined
+    public static String MESSAGE_CONSTRAINTS = "Course code does not follow the correct format!"; // format to be
+                                                                                                  // defined
 
     private final String courseCode;
     private final ArrayList<Student> students;
@@ -38,7 +38,10 @@ public class Course {
         return students;
     }
 
-    /** Returns true if a student with the given studentId is enrolled in this course. */
+    /**
+     * Returns true if a student with the given studentId is enrolled in this
+     * course.
+     */
     public boolean hasStudent(String studentId) {
         return students.stream().anyMatch(s -> s.getStudentId().equalsIgnoreCase(studentId));
     }
