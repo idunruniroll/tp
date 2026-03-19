@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+  <Label fx:id="courseHeader"
+         style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 6 8 4 8;" />
+  <TableView fx:id="studentTableView" VBox.vgrow="ALWAYS">
+    <columns>
+      <TableColumn fx:id="studentIdColumn" text="Student ID" prefWidth="140" />
+      <TableColumn fx:id="studentNameColumn" text="Name" prefWidth="220" />
+    </columns>
+    <placeholder>
+      <Label text="No students enrolled in this course." />
+    </placeholder>
+  </TableView>
+</VBox>
+
