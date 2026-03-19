@@ -4,10 +4,12 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,8 +32,9 @@ public class ModelManager implements Model {
     private final AddressBook addressBook;
     private final UserPrefs userPrefs;
     private final FilteredList<Person> filteredPersons;
-    
+
     private ObservableList<Course> courses;
+    private ObservableList<Grade> grades;
 
     // Student GUI display state
     private Optional<String> currentCourseForDisplay = Optional.empty();
@@ -165,7 +168,49 @@ public class ModelManager implements Model {
         addressBook.removeGrade(grade);
     }
 
-    @Override
+    // =========== Grade filtering methods
+    // =============================================================
+
+    /**
+     * Get a list of grades filtered by student ID.
+     */
+    public ObservableList<Grade> getGradesByStudentId(String studentId) {
+        requireNonNull(studentId);
+        ObservableList<Grade> filteredGrades = FXCollections.observableArrayList(
+                addressBook.getGradeList().stream()
+                        .filter(grade -> grade.getStudentId().equals(studentId))
+                        .collect(Collectors.toList()));
+        return filteredGrades;
+    }
+
+    /**
+     * Get a list of grades filtered by course code.
+     */
+    public ObservableList<Grade> getGradesByCourse(String courseCode) {
+        requireNonNull(courseCode);
+        ObservableList<Grade> filteredGrades = FXCollections.observableArrayList(
+                addressBook.getGradeList().stream()
+                        .filter(grade -> grade.getCourseCode().equalsIgnoreCase(courseCode))
+                        .collect(Collectors.toList()));
+        return filteredGrades;
+    }
+
+    /**
+     * Get a list of grades filtered by both course code and assessment name.
+     */
+    public ObservableList<Grade> getGradesByCourseAndAssessment(String courseCode, String assessmentName) {
+        requireNonNull(courseCode);
+        requireNonNull(assessmentName);
+        ObservableList<Grade> filteredGrades = FXCollections.observableArrayList(
+                addressBook.getGradeList().stream()
+                        .filter(grade -> grade.getCourseCode().equals(courseCode)
+                                && grade.getAssessmentName().equals(assessmentName))
+                        .collect(Collectors.toList()));
+        return filteredGrades;
+    }
+
+    // =========== Other methods (e.g., getGradeList, etc.) remain the same...
+
     public ObservableList<Grade> getGradeList() {
         return addressBook.getGradeList();
     }

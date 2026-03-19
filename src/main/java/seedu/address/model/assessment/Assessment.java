@@ -41,7 +41,7 @@ public class Assessment {
 
     @Override
     public String toString() {
-        return courseCode + " / " + assessmentName + " / " + maxScore;
+        return courseCode + " : " + assessmentName + " (Max Score: " + maxScore + ")";
     }
 
     @Override

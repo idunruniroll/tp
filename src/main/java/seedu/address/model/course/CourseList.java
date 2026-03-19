@@ -98,7 +98,8 @@ public class CourseList {
     /**
      * Finds all courses whose description contains the given keyword.
      *
-     * Case-insensitive search. Returns the matching course if found, null otherwise.
+     * Case-insensitive search. Returns the matching course if found, null
+     * otherwise.
      * Assumes there is at most one matching course.
      *
      * @param keyword search keyword (trimmed, case-insensitive)
@@ -129,7 +130,8 @@ public class CourseList {
     }
 
     /**
-     * Returns a string representation of the course list, displaying course codes with 1-based indexing.
+     * Returns a string representation of the course list, displaying course codes
+     * with 1-based indexing.
      *
      * @return formatted string of course codes
      */
@@ -139,8 +141,7 @@ public class CourseList {
             return "No courses in the list.";
         }
         return "Course List:\n" + IntStream.range(0, courseList.size())
-            .mapToObj(i -> (i + 1) + ". " + courseList.get(i).getCourseCode())
-            .collect(Collectors.joining("\n"));
+                .mapToObj(i -> (i + 1) + ". " + courseList.get(i).getCourseCode())
+                .collect(Collectors.joining("\n"));
     }
 }
-
