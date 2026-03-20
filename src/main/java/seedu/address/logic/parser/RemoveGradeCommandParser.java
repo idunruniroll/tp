@@ -19,7 +19,7 @@ public class RemoveGradeCommandParser implements Parser<RemoveGradeCommand> {
          * Parses the given {@code String} of arguments in the context of the
          * RemoveGradeCommand
          * and returns a RemoveGradeCommand object for execution.
-         * 
+         *
          * @throws ParseException if the user input does not conform the expected format
          */
         public RemoveGradeCommand parse(String args) throws ParseException {

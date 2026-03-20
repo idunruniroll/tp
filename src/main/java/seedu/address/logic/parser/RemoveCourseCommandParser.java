@@ -15,7 +15,7 @@ public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
      * Parses the given {@code String} of arguments in the context of the
      * RemoveCourseCommand
      * and returns a RemoveCourseCommand object for execution.
-     * 
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public RemoveCourseCommand parse(String args) throws ParseException {

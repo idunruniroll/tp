@@ -16,7 +16,7 @@ public class RemoveAssessmentCommandParser implements Parser<RemoveAssessmentCom
      * Parses the given {@code String} of arguments in the context of the
      * RemoveAssessmentCommand
      * and returns a RemoveAssessmentCommand object for execution.
-     * 
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public RemoveAssessmentCommand parse(String args) throws ParseException {

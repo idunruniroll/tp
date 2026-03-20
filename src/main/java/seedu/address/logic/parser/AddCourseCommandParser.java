@@ -18,7 +18,7 @@ public class AddCourseCommandParser implements Parser<AddCourseCommand> {
      * Parses the given {@code String} of arguments in the context of the
      * AddCourseCommand
      * and returns an AddCourseCommand object for execution.
-     * 
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddCourseCommand parse(String args) throws ParseException {

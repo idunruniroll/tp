@@ -328,7 +328,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. User requests to add a student to the list, including the course code (required), student ID (required), name 
+1. User requests to add a student to the list, including the course code (required), student ID (required), name
 (required) and email (optional) in the command.
 2. GradeBookPlus adds the student.
 
@@ -379,7 +379,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. User requests to add an assessment to an existing course, including the course code and the assessment name in the 
+1. User requests to add an assessment to an existing course, including the course code and the assessment name in the
 command command.
 2. GradeBookPlus adds an assessment to the selected course.
 
@@ -394,7 +394,7 @@ command command.
 
 **MSS**
 
-1. User requests to add score to a student in a course, including the student ID, course code, assessment name, and 
+1. User requests to add score to a student in a course, including the student ID, course code, assessment name, and
 score in the command.
 2. GradeBookPlus adds the score to the specified student.
 

@@ -21,7 +21,7 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
      * Parses the given {@code String} of arguments in the context of the
      * AddGradeCommand
      * and returns an AddGradeCommand object for execution.
-     * 
+     *
      * @throws ParseException if the user input does not conform the expected format
      */
     public AddGradeCommand parse(String args) throws ParseException {

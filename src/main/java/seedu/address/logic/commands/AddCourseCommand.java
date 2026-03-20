@@ -16,7 +16,7 @@ public class AddCourseCommand extends Command {
             + PREFIX_COURSE_CODE + "COURSE CODE "
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_COURSE_CODE + "CS2103T";
-    
+
             public static final String MESSAGE_FORMAT = "\u274C Format: " + COMMAND_WORD + " "
             + PREFIX_COURSE_CODE + "COURSE_CODE ";
 
