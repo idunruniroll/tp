@@ -4,11 +4,21 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
+/**
+ * Represents an assessment for a course.
+ */
 public class Assessment {
     private final String courseCode;
     private final AssessmentName assessmentName;
     private final MaxScore maxScore;
 
+    /**
+     * Constructs an Assessment with the given course code, assessment name, and max score.
+     *
+     * @param courseCode the course code
+     * @param assessmentName the assessment name
+     * @param maxScore the maximum score
+     */
     public Assessment(String courseCode, AssessmentName assessmentName, MaxScore maxScore) {
         requireNonNull(courseCode);
         requireNonNull(assessmentName);
@@ -26,10 +36,21 @@ public class Assessment {
         return assessmentName;
     }
 
+    /**
+     * Returns the maximum score for this assessment.
+     *
+     * @return the maximum score
+     */
     public MaxScore getMaxScore() {
         return maxScore;
     }
 
+    /**
+     * Returns true if the given assessment has the same identity as this assessment.
+     *
+     * @param otherAssessment the other assessment to compare
+     * @return true if same assessment, false otherwise
+     */
     public boolean isSameAssessment(Assessment otherAssessment) {
         if (otherAssessment == this) {
             return true;

@@ -1,13 +1,22 @@
 package seedu.address.model.grade;
 
 import static java.util.Objects.requireNonNull;
+
 import seedu.address.commons.util.AppUtil;
 
+/**
+ * Represents a score for an assessment.
+ */
 public class Score {
     public static final String MESSAGE_CONSTRAINTS = "Score must be a non-negative integer.";
 
     public final int value;
 
+    /**
+     * Constructs a Score.
+     *
+     * @param value the score value as a string
+     */
     public Score(String value) {
         requireNonNull(value);
         AppUtil.checkArgument(value.matches("\\d+") && Integer.parseInt(value) >= 0,

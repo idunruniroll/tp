@@ -15,6 +15,9 @@ import seedu.address.model.grade.Score;
 import seedu.address.model.person.Person;
 import seedu.address.model.student.StudentId;
 
+/**
+ * Adds a grade for a student on an assessment.
+ */
 public class AddGradeCommand extends Command {
 
     public static final String COMMAND_WORD = "addgrade";
@@ -35,6 +38,14 @@ public class AddGradeCommand extends Command {
     private final Index assessmentIndex;
     private final Score score;
 
+    /**
+     * Constructs an AddGradeCommand with the specified parameters.
+     *
+     * @param courseCode the course code
+     * @param studentIndex the student index
+     * @param assessmentIndex the assessment index
+     * @param score the score
+     */
     public AddGradeCommand(String courseCode, Index studentIndex, Index assessmentIndex, Score score) {
         requireNonNull(courseCode);
         requireNonNull(studentIndex);

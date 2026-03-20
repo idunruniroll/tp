@@ -7,12 +7,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import seedu.address.model.assessment.AssessmentName;
-import seedu.address.model.assessment.MaxScore;
-import seedu.address.model.grade.Score;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.assessment.AssessmentName;
+import seedu.address.model.assessment.MaxScore;
+import seedu.address.model.grade.Score;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -134,6 +134,14 @@ public class ParserUtil {
         return tagSet;
     }
 
+    /**
+     * Parses a {@code String name} into an {@code AssessmentName}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param name the name string to parse
+     * @return an AssessmentName object
+     * @throws ParseException if the given {@code name} is invalid
+     */
     public static AssessmentName parseAssessmentName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
@@ -143,6 +151,14 @@ public class ParserUtil {
         return new AssessmentName(trimmedName);
     }
 
+    /**
+     * Parses a {@code String value} into a {@code MaxScore}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param value the max score string to parse
+     * @return a MaxScore object
+     * @throws ParseException if the given {@code value} is invalid
+     */
     public static MaxScore parseMaxScore(String value) throws ParseException {
         requireNonNull(value);
         try {
@@ -152,6 +168,14 @@ public class ParserUtil {
         }
     }
 
+    /**
+     * Parses a {@code String value} into a {@code Score}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param value the score string to parse
+     * @return a Score object
+     * @throws ParseException if the given {@code value} is invalid
+     */
     public static Score parseScore(String value) throws ParseException {
         requireNonNull(value);
         try {
@@ -161,6 +185,14 @@ public class ParserUtil {
         }
     }
 
+    /**
+     * Parses a {@code String courseCode} into a valid course code.
+     * The course code will be converted to uppercase.
+     *
+     * @param courseCode the course code string to parse
+     * @return a valid course code string
+     * @throws ParseException if the given {@code courseCode} is invalid
+     */
     public static String parseCourseCode(String courseCode) throws ParseException {
         requireNonNull(courseCode);
         String trimmed = courseCode.trim().toUpperCase();

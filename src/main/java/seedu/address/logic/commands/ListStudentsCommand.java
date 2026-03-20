@@ -27,11 +27,22 @@ public class ListStudentsCommand extends Command {
 
     private final String courseCode;
 
+    /**
+     * List all students.
+     * @param courseCode
+     */
     public ListStudentsCommand(String courseCode) {
         requireNonNull(courseCode);
         this.courseCode = courseCode;
     }
 
+    /**
+     * Executes the list students command.
+     *
+     * @param model the model
+     * @return the command result
+     * @throws CommandException if the course is not found
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);

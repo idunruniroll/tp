@@ -10,8 +10,8 @@
 
 package seedu.address.model.course;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -117,13 +117,10 @@ public class CourseList {
     }
 
     /**
-     * Finds if a course exists using the given keyword.
+     * Finds if a course exists in the list.
      *
-     * Case-insensitive search. Returns true if found, false otherwise.
-     * Assumes there is at most one matching course.
-     *
-     * @param keyword search keyword (trimmed, case-insensitive)
-     * @return the true or null if not found.
+     * @param course the course to check
+     * @return true if found, false otherwise
      */
     public boolean courseExists(Course course) {
         return courseList.contains(course);

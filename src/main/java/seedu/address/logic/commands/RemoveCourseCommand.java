@@ -7,9 +7,10 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.course.Course;
-import seedu.address.model.course.CourseList;
 
-
+/**
+ * Removes an existing course from the address book.
+ */
 public class RemoveCourseCommand extends Command {
 
     public static final String COMMAND_WORD = "removecourse";
@@ -25,6 +26,11 @@ public class RemoveCourseCommand extends Command {
 
     private final Index courseIndex;
 
+    /**
+     * Constructs a RemoveCourseCommand with the specified course index.
+     *
+     * @param course the course index
+     */
     public RemoveCourseCommand(Index course) {
         requireNonNull(course);
 

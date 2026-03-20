@@ -8,6 +8,9 @@ import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.assessment.MaxScore;
 
+/**
+ * Jackson-friendly version of {@link Assessment}.
+ */
 public class JsonAdaptedAssessment {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Assessment's %s field is missing!";
@@ -16,6 +19,9 @@ public class JsonAdaptedAssessment {
     private final String assessmentName;
     private final String maxScore;
 
+    /**
+     * Constructs a {@code JsonAdaptedAssessment} with the given assessment details.
+     */
     @JsonCreator
     public JsonAdaptedAssessment(@JsonProperty("courseCode") String courseCode,
             @JsonProperty("assessmentName") String assessmentName,
@@ -25,12 +31,21 @@ public class JsonAdaptedAssessment {
         this.maxScore = maxScore;
     }
 
+    /**
+     * Constructs a {@code JsonAdaptedAssessment} using the given {@link Assessment}.
+     */
     public JsonAdaptedAssessment(Assessment source) {
         courseCode = source.getCourseCode();
         assessmentName = source.getAssessmentName().toString();
         maxScore = source.getMaxScore().toString();
     }
 
+    /**
+     * Converts this Jackson-friendly adapted assessment object into a {@link Assessment} object.
+     *
+     * @return a new Assessment object
+     * @throws IllegalValueException if there were any data constraints violated
+     */
     public Assessment toModelType() throws IllegalValueException {
         if (courseCode == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, "courseCode"));

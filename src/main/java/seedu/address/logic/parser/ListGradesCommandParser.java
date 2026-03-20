@@ -1,14 +1,27 @@
 package seedu.address.logic.parser;
 
-import seedu.address.logic.commands.ListGradesCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 
-public class ListGradesCommandParser {
+import seedu.address.logic.commands.ListGradesCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
 
-    // Parse method to handle the command
+/**
+ * Parses input arguments and creates a new ListGradesCommand object.
+ */
+public class ListGradesCommandParser implements Parser<ListGradesCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the
+     * ListGradesCommand and returns a ListGradesCommand object for
+     * execution.
+     *
+     * @param args the user input
+     * @return a new ListGradesCommand
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    @Override
     public ListGradesCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_COURSE_CODE,

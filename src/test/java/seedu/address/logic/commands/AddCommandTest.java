@@ -25,9 +25,9 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.assessment.Assessment;
+import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
-import seedu.address.model.course.Course;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -93,6 +93,8 @@ public class AddCommandTest {
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        private ObservableList<Grade> gradeList = FXCollections.observableArrayList();
+
         @Override
         public void setUserPrefs(ReadOnlyUserPrefs userPrefs) {
             throw new AssertionError("This method should not be called.");
@@ -170,7 +172,6 @@ public class AddCommandTest {
             return FXCollections.observableArrayList(); // Or add mock grades here
         }
 
-        private ObservableList<Grade> gradeList = FXCollections.observableArrayList();
 
         @Override
         public boolean hasGrade(Grade grade) {

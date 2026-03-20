@@ -1,30 +1,30 @@
 
 /**
- * Represents a Course in the system.
+ * Represents a course identified by its course code.
  * Each course maintains its own roster of enrolled students.
-/**
- * Represents a course.
- * @author zow1e
  */
 package seedu.address.model.course;
 
-import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import seedu.address.model.student.Student;
-import java.util.Objects;
-import java.util.ArrayList;
 
 /**
- * Represents a course identified by its course code.
+ * Represents a course in the address book.
  */
 public class Course {
 
-    public static String MESSAGE_CONSTRAINTS = "Course code does not follow the correct format!"; // format to be
-                                                                                                  // defined
+    public static final String MESSAGE_CONSTRAINTS = "Course code does not follow the correct format!";
 
     private final String courseCode;
     private final ArrayList<Student> students;
 
+    /**
+     * Constructs a Course with the specified course code.
+     *
+     * @param courseCode the course code
+     */
     public Course(String courseCode) {
         this.courseCode = courseCode.trim().toUpperCase();
         this.students = new ArrayList<>();
@@ -34,6 +34,11 @@ public class Course {
         return courseCode;
     }
 
+    /**
+     * Returns all students enrolled in this course.
+     *
+     * @return ArrayList of students
+     */
     public ArrayList<Student> getStudents() {
         return students;
     }
@@ -60,6 +65,12 @@ public class Course {
         return students.removeIf(s -> s.getStudentId().equalsIgnoreCase(studentId));
     }
 
+    /**
+     * Returns true if the given course has the same identity as this course.
+     *
+     * @param otherCourse the other course to compare
+     * @return true if same course, false otherwise
+     */
     public boolean isSameCourse(Course otherCourse) {
         if (otherCourse == this) {
             return true;

@@ -12,17 +12,28 @@ import javafx.collections.ObservableList;
 import seedu.address.model.grade.exceptions.DuplicateGradeException;
 import seedu.address.model.grade.exceptions.GradeNotFoundException;
 
+/**
+ * A list of grades that enforces no duplicates between its elements.
+ */
 public class UniqueGradeList implements Iterable<Grade> {
 
     private final ObservableList<Grade> internalList = FXCollections.observableArrayList();
     private final ObservableList<Grade> internalUnmodifiableList = FXCollections
             .unmodifiableObservableList(internalList);
 
+    /**
+     * Returns true if the list contains an equivalent grade.
+     */
     public boolean contains(Grade toCheck) {
         requireNonNull(toCheck);
         return internalList.stream().anyMatch(toCheck::isSameGrade);
     }
 
+    /**
+     * Adds a grade to the list.
+     *
+     * @throws DuplicateGradeException if the grade already exists
+     */
     public void add(Grade toAdd) {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
@@ -40,6 +51,10 @@ public class UniqueGradeList implements Iterable<Grade> {
         internalList.setAll(grades);
     }
 
+    /**
+     * Removes grades matching the given grade.
+     *
+     */
     public void remove(Grade toRemove) {
         requireNonNull(toRemove);
         if (!internalList.remove(toRemove)) {
@@ -47,6 +62,12 @@ public class UniqueGradeList implements Iterable<Grade> {
         }
     }
 
+
+
+    /**
+     * remove grade if fulfills the given predicate.
+     * @param predicate
+     */
     public void removeIf(Predicate<Grade> predicate) {
         requireNonNull(predicate);
         internalList.removeIf(predicate);

@@ -32,6 +32,13 @@ public class AddAssessmentCommand extends Command {
     private final AssessmentName assessmentName;
     private final MaxScore maxScore;
 
+    /**
+     * Constructs an AddAssessmentCommand with the specified course code, assessment name, and max score.
+     *
+     * @param courseCode the course code
+     * @param assessmentName the assessment name
+     * @param maxScore the maximum score
+     */
     public AddAssessmentCommand(String courseCode, String assessmentName, String maxScore) {
         requireNonNull(courseCode);
         requireNonNull(assessmentName);

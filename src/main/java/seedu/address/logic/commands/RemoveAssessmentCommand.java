@@ -2,16 +2,18 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import seedu.address.model.Model;
-import seedu.address.model.assessment.Assessment;
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.commons.core.index.Index;
-
-import javafx.collections.ObservableList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
+import javafx.collections.ObservableList;
+import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.assessment.Assessment;
+
+/**
+ * Removes an assessment from a course.
+ */
 public class RemoveAssessmentCommand extends Command {
 
     public static final String COMMAND_WORD = "removeassessment";
@@ -28,6 +30,12 @@ public class RemoveAssessmentCommand extends Command {
     private final String courseCode;
     private final Index assessmentIndex;
 
+    /**
+     * Constructs a RemoveAssessmentCommand with the specified course code and assessment index.
+     *
+     * @param courseCode the course code
+     * @param assessmentIndex the assessment index
+     */
     public RemoveAssessmentCommand(String courseCode, Index assessmentIndex) {
         requireNonNull(courseCode);
         requireNonNull(assessmentIndex);

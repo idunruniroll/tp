@@ -43,6 +43,12 @@ public class AddStudentCommand extends Command {
     private final String courseCode;
     private final Student studentToAdd;
 
+    /**
+     * Constructs an AddStudentCommand with the specified course code and student.
+     *
+     * @param courseCode the course code
+     * @param studentToAdd the student to add
+     */
     public AddStudentCommand(String courseCode, Student studentToAdd) {
         requireNonNull(courseCode);
         requireNonNull(studentToAdd);
