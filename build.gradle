@@ -60,7 +60,7 @@ dependencies {
 }
 
 shadowJar {
-    archiveFileName = 'addressbook.jar'
+    archiveFileName = 'GradeBookPlus.jar'
 }
 
 defaultTasks 'clean', 'test'
