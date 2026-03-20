@@ -8,17 +8,12 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
-import seedu.address.storage.JsonAdaptedAssessment;
-import seedu.address.storage.JsonAdaptedGrade;
-import seedu.address.storage.JsonAdaptedCourse;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
-import seedu.address.model.person.Person;
 import seedu.address.model.assessment.Assessment;
-import seedu.address.model.grade.Grade;
 import seedu.address.model.course.Course;
-import seedu.address.model.course.CourseList;
+import seedu.address.model.grade.Grade;
 
 /**
  * An Immutable AddressBook that is serializable to JSON format.
@@ -111,8 +106,8 @@ class JsonSerializableAddressBook {
             addressBook.addGrade(grade);
         }
 
-        for (JsonAdaptedCourse JsonAdaptedCourse : courses) {
-            Course course = JsonAdaptedCourse.toModelType();
+        for (JsonAdaptedCourse jsonAdaptedCourse : courses) {
+            Course course = jsonAdaptedCourse.toModelType();
             if (addressBook.hasCourse(course)) {
                 throw new IllegalValueException(MESSAGE_DUPLICATE_GRADE);
             }

@@ -8,20 +8,31 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.model.assessment.exceptions.DuplicateAssessmentException;
 import seedu.address.model.assessment.exceptions.AssessmentNotFoundException;
+import seedu.address.model.assessment.exceptions.DuplicateAssessmentException;
 
+/**
+ * A list of assessments that enforces no duplicates between its elements.
+ */
 public class UniqueAssessmentList implements Iterable<Assessment> {
 
     private final ObservableList<Assessment> internalList = FXCollections.observableArrayList();
     private final ObservableList<Assessment> internalUnmodifiableList = FXCollections
             .unmodifiableObservableList(internalList);
 
+    /**
+     * Returns true if the list contains an equivalent assessment.
+     */
     public boolean contains(Assessment toCheck) {
         requireNonNull(toCheck);
         return internalList.stream().anyMatch(toCheck::isSameAssessment);
     }
 
+    /**
+     * Adds an assessment to the list.
+     *
+     * @throws DuplicateAssessmentException if the assessment already exists
+     */
     public void add(Assessment toAdd) {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
@@ -39,6 +50,11 @@ public class UniqueAssessmentList implements Iterable<Assessment> {
         internalList.setAll(assessments);
     }
 
+    /**
+     * Removes an assessment from the list.
+     *
+     * @throws AssessmentNotFoundException if the assessment is not found
+     */
     public void remove(Assessment toRemove) {
         requireNonNull(toRemove);
         if (!internalList.remove(toRemove)) {

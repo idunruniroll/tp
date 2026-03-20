@@ -30,6 +30,12 @@ public class RemoveStudentCommand extends Command {
     private final String courseCode;
     private final String studentId;
 
+    /**
+     * Constructs a RemoveStudentCommand with the specified course code and student ID.
+     *
+     * @param courseCode the course code
+     * @param studentId the student ID
+     */
     public RemoveStudentCommand(String courseCode, String studentId) {
         requireNonNull(courseCode);
         requireNonNull(studentId);
@@ -37,6 +43,13 @@ public class RemoveStudentCommand extends Command {
         this.studentId = studentId;
     }
 
+    /**
+     * Executes the remove student command.
+     *
+     * @param model the model
+     * @return command result with success message
+     * @throws CommandException if the course or student is not found
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);

@@ -3,18 +3,20 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import java.util.HashSet;
-
-import javafx.collections.ObservableList;
-import seedu.address.model.Model;
-import seedu.address.model.grade.Grade;
-import seedu.address.model.assessment.Assessment;
-import seedu.address.model.assessment.MaxScore;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javafx.collections.ObservableList;
+import seedu.address.model.Model;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.assessment.MaxScore;
+import seedu.address.model.grade.Grade;
+
+/**
+ * Lists grades filtered by type and values (student, course, or assessment).
+ */
 public class ListGradesCommand extends Command {
 
     public static final String COMMAND_WORD = "listgrades";
@@ -23,6 +25,10 @@ public class ListGradesCommand extends Command {
     private final String filterValue1;
     private final String filterValue2;
 
+    /**
+     * Retrieves the filtered grades based on the filter type.
+     *
+     */
     public ListGradesCommand(String filterType, String filterValue1, String filterValue2) {
         this.filterType = filterType;
         this.filterValue1 = filterValue1;
@@ -61,26 +67,23 @@ public class ListGradesCommand extends Command {
         return new CommandResult(sb.toString().trim());
     }
 
-    /**
-     * Filters the grades based on the filter type (student, course,
-     * courseassessment)
-     */
+
     private ObservableList<Grade> getFilteredGrades(Model model) {
         ObservableList<Grade> grades = null;
 
         switch (filterType.toLowerCase()) {
-            case "student":
-                grades = model.getGradesByStudentId(filterValue1);
-                break;
-            case "course":
-                grades = model.getGradesByCourse(filterValue1);
-                break;
-            case "courseassessment":
-                grades = model.getGradesByCourseAndAssessment(filterValue1, filterValue2);
-                break;
-            default:
-                throw new IllegalArgumentException(
-                        "Invalid filter type. Use 'student', 'course', or 'courseassessment'.");
+        case "student":
+            grades = model.getGradesByStudentId(filterValue1);
+            break;
+        case "course":
+            grades = model.getGradesByCourse(filterValue1);
+            break;
+        case "courseassessment":
+            grades = model.getGradesByCourseAndAssessment(filterValue1, filterValue2);
+            break;
+        default:
+            throw new IllegalArgumentException(
+                    "Invalid filter type. Use 'student', 'course', or 'courseassessment'.");
         }
 
         return grades;

@@ -26,8 +26,8 @@ import seedu.address.logic.commands.RemoveAssessmentCommand;
 import seedu.address.logic.commands.RemoveCourseCommand;
 import seedu.address.logic.commands.RemoveGradeCommand;
 import seedu.address.logic.commands.RemoveStudentCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.logic.commands.ViewAllCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
 
 /**
  * Parses user input.
@@ -54,71 +54,71 @@ public class AddressBookParser {
 
         switch (commandWord) {
 
-            case AddCommand.COMMAND_WORD:
-                return new AddCommandParser().parse(arguments);
+        case AddCommand.COMMAND_WORD:
+            return new AddCommandParser().parse(arguments);
 
-            case EditCommand.COMMAND_WORD:
-                return new EditCommandParser().parse(arguments);
+        case EditCommand.COMMAND_WORD:
+            return new EditCommandParser().parse(arguments);
 
-            case DeleteCommand.COMMAND_WORD:
-                return new DeleteCommandParser().parse(arguments);
+        case DeleteCommand.COMMAND_WORD:
+            return new DeleteCommandParser().parse(arguments);
 
-            case ClearCommand.COMMAND_WORD:
-                return new ClearCommand();
+        case ClearCommand.COMMAND_WORD:
+            return new ClearCommand();
 
-            case FindCommand.COMMAND_WORD:
-                return new FindCommandParser().parse(arguments);
+        case FindCommand.COMMAND_WORD:
+            return new FindCommandParser().parse(arguments);
 
-            case ListCommand.COMMAND_WORD:
-                return new ListCommand();
+        case ListCommand.COMMAND_WORD:
+            return new ListCommand();
 
-            case ExitCommand.COMMAND_WORD:
-                return new ExitCommand();
+        case ExitCommand.COMMAND_WORD:
+            return new ExitCommand();
 
-            case HelpCommand.COMMAND_WORD:
-                return new HelpCommand();
+        case HelpCommand.COMMAND_WORD:
+            return new HelpCommand();
 
-            case AddAssessmentCommand.COMMAND_WORD:
-                return new AddAssessmentCommandParser().parse(arguments);
+        case AddAssessmentCommand.COMMAND_WORD:
+            return new AddAssessmentCommandParser().parse(arguments);
 
-            case RemoveAssessmentCommand.COMMAND_WORD:
-                return new RemoveAssessmentCommandParser().parse(arguments);
+        case RemoveAssessmentCommand.COMMAND_WORD:
+            return new RemoveAssessmentCommandParser().parse(arguments);
 
-            case ListAssessmentsCommand.COMMAND_WORD:
-                return new ListAssessmentsCommand();
+        case ListAssessmentsCommand.COMMAND_WORD:
+            return new ListAssessmentsCommand();
 
-            case AddGradeCommand.COMMAND_WORD:
-                return new AddGradeCommandParser().parse(arguments);
+        case AddGradeCommand.COMMAND_WORD:
+            return new AddGradeCommandParser().parse(arguments);
 
-            case AddStudentCommand.COMMAND_WORD:
-                return new AddStudentCommandParser().parse(arguments);
+        case AddStudentCommand.COMMAND_WORD:
+            return new AddStudentCommandParser().parse(arguments);
 
-            case RemoveGradeCommand.COMMAND_WORD:
-                return new RemoveGradeCommandParser().parse(arguments);
+        case RemoveGradeCommand.COMMAND_WORD:
+            return new RemoveGradeCommandParser().parse(arguments);
 
-            case RemoveStudentCommand.COMMAND_WORD:
-                return new RemoveStudentCommandParser().parse(arguments);
+        case RemoveStudentCommand.COMMAND_WORD:
+            return new RemoveStudentCommandParser().parse(arguments);
 
-            case ListStudentsCommand.COMMAND_WORD:
-                return new ListStudentsCommandParser().parse(arguments);
+        case ListStudentsCommand.COMMAND_WORD:
+            return new ListStudentsCommandParser().parse(arguments);
 
-            case AddCourseCommand.COMMAND_WORD:
-                return new AddCourseCommandParser().parse(arguments);
+        case AddCourseCommand.COMMAND_WORD:
+            return new AddCourseCommandParser().parse(arguments);
 
-            case RemoveCourseCommand.COMMAND_WORD:
-                return new RemoveCourseCommandParser().parse(arguments);
+        case RemoveCourseCommand.COMMAND_WORD:
+            return new RemoveCourseCommandParser().parse(arguments);
 
-            case ListCoursesCommand.COMMAND_WORD:
-                return new ListCoursesCommandParser().parse(arguments);
+        case ListCoursesCommand.COMMAND_WORD:
+            return new ListCoursesCommandParser().parse(arguments);
 
-            case ViewAllCommand.COMMAND_WORD:
-                return new ViewAllCommand();
+        case ViewAllCommand.COMMAND_WORD:
+            return new ViewAllCommand();
 
-            case ListGradesCommand.COMMAND_WORD:
-                return new ListGradesCommandParser().parse(arguments);
+        case ListGradesCommand.COMMAND_WORD:
+            return new ListGradesCommandParser().parse(arguments);
 
-            default:
-                throw new ParseException("Unknown command");
+        default:
+            throw new ParseException("Unknown command");
         }
     }
 }

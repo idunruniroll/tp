@@ -15,6 +15,9 @@ public class Student {
     private final String studentName;
     private final Optional<String> email;
 
+    /**
+     * Constructs a Student with student ID and name, without email.
+     */
     public Student(String studentId, String studentName) {
         requireAllNonNull(studentId, studentName);
         this.studentId = studentId.trim().toUpperCase();
@@ -22,6 +25,9 @@ public class Student {
         this.email = Optional.empty();
     }
 
+    /**
+     * Constructs a Student with student ID, name, and email.
+     */
     public Student(String studentId, String studentName, String email) {
         requireAllNonNull(studentId, studentName, email);
         this.studentId = studentId.trim().toUpperCase();
@@ -37,10 +43,19 @@ public class Student {
         return studentName;
     }
 
+    /**
+     * Returns the email of the student.
+     */
     public Optional<String> getEmail() {
         return email;
     }
 
+    /**
+     * Returns true if the given student has the same identity as this student.
+     *
+     * @param otherStudent the other student to compare
+     * @return true if same student, false otherwise
+     */
     public boolean isSameStudent(Student otherStudent) {
         if (otherStudent == this) {
             return true;

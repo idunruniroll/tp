@@ -7,12 +7,23 @@ import java.util.Objects;
 import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.student.StudentId;
 
+/**
+ * Represents a grade for a student on an assessment.
+ */
 public class Grade {
     private final String courseCode;
     private final StudentId studentId;
     private final AssessmentName assessmentName;
     private final Score score;
 
+    /**
+     * Constructs a Grade with all required fields.
+     *
+     * @param courseCode the course code
+     * @param studentId the student ID
+     * @param assessmentName the assessment name
+     * @param score the score
+     */
     public Grade(String courseCode, StudentId studentId, AssessmentName assessmentName, Score score) {
         requireNonNull(courseCode);
         requireNonNull(studentId);
@@ -24,6 +35,13 @@ public class Grade {
         this.score = score;
     }
 
+    /**
+     * Constructs a Grade with minimal fields.
+     *
+     * @param studentId the student ID
+     * @param assessmentName the assessment name
+     * @param courseCode the course code
+     */
     public Grade(StudentId studentId, AssessmentName assessmentName, String courseCode) {
         requireNonNull(studentId);
         requireNonNull(assessmentName);
@@ -42,6 +60,11 @@ public class Grade {
         return assessmentName;
     }
 
+    /**
+     * Gets the score for this grade.
+     *
+     * @return the score
+     */
     public Score getScore() {
         return score;
     }
@@ -50,6 +73,12 @@ public class Grade {
         return courseCode;
     }
 
+    /**
+     * Returns true if the given grade has the same identity as this grade.
+     *
+     * @param otherGrade the other grade to compare
+     * @return true if same grade, false otherwise
+     */
     public boolean isSameGrade(Grade otherGrade) {
         if (otherGrade == this) {
             return true;

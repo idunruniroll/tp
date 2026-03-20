@@ -2,15 +2,17 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import javafx.collections.ObservableList;
-import seedu.address.model.Model;
-import seedu.address.model.assessment.Assessment;
-import seedu.address.model.course.Course;
-
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javafx.collections.ObservableList;
+import seedu.address.model.Model;
+import seedu.address.model.assessment.Assessment;
+
+/**
+ * Lists all assessments in the system.
+ */
 public class ListAssessmentsCommand extends Command {
 
     public static final String COMMAND_WORD = "listassessments";

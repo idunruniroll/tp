@@ -2,14 +2,12 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.UniqueAssessmentList;
 import seedu.address.model.course.Course;
@@ -124,20 +122,32 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.remove(key);
     }
 
+    /**
+     * Returns true if an equivalent assessment exists in the address book.
+     */
     public boolean hasAssessment(Assessment assessment) {
         requireNonNull(assessment);
         return assessments.contains(assessment);
     }
 
+    /**
+     * Adds an assessment to the address book.
+     */
     public void addAssessment(Assessment assessment) {
         assessments.add(assessment);
     }
 
+    /**
+     * Removes an assessment from the address book and all associated grades.
+     */
     public void removeAssessment(Assessment assessment) {
         assessments.remove(assessment);
         grades.removeIf(grade -> grade.getAssessmentName().equals(assessment.getAssessmentName()));
     }
 
+    /**
+     * Returns true if an equivalent grade exists in the address book.
+     */
     public boolean hasGrade(Grade grade) {
         requireNonNull(grade);
         return grades.contains(grade);
@@ -147,6 +157,9 @@ public class AddressBook implements ReadOnlyAddressBook {
         grades.add(grade);
     }
 
+    /**
+     * Removes a grade from the address book.
+     */
     public void removeGrade(Grade grade) {
         requireNonNull(grade);
         grades.remove(grade);
@@ -164,16 +177,27 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     //////////////////////////////// course-level operations
 
+    /**
+     * Checks if course exists
+     * @param courseCode
+     * @return boolean flag
+     */
     public boolean hasCourse(Course courseCode) {
         requireNonNull(courseCode);
         return courses.courseExists(courseCode);
     }
 
+    /**
+     * Adds a course to the address book.
+     */
     public void addCourse(Course course) {
         requireNonNull(course);
         courses.addCourse(course);
     }
 
+    /**
+     * Removes a course from the address book.
+     */
     public void removeCourse(Course course) {
         requireNonNull(course);
         courses.removeCourse(course);

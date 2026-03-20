@@ -28,6 +28,11 @@ public class StudentListPanel extends UiPart<Region> {
     @FXML
     private TableColumn<Student, String> studentNameColumn;
 
+    /**
+     * Creates a StudentListPanel.
+     *
+     * @param studentList the list of students to display
+     */
     public StudentListPanel(ObservableList<Student> studentList) {
         super(FXML);
 

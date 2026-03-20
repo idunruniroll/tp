@@ -1,23 +1,25 @@
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
+
+import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.RemoveAssessmentCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 
-import java.util.stream.Stream;
-
+/**
+ * Parses input arguments and creates a new RemoveAssessmentCommand object.
+ */
 public class RemoveAssessmentCommandParser implements Parser<RemoveAssessmentCommand> {
 
     /**
      * Parses the given {@code String} of arguments in the context of the
-     * RemoveAssessmentCommand
-     * and returns a RemoveAssessmentCommand object for execution.
+     * RemoveAssessmentCommand and returns a RemoveAssessmentCommand object for
+     * execution.
      *
-     * @throws ParseException if the user input does not conform the expected format
      */
     public RemoveAssessmentCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,

@@ -2,9 +2,17 @@ package seedu.address.model.student;
 
 import static java.util.Objects.requireNonNull;
 
+/**
+ * Represents a student's ID.
+ */
 public class StudentId {
     public final String value;
 
+    /**
+     * Constructs a StudentId.
+     *
+     * @param value the student ID value
+     */
     public StudentId(String value) {
         requireNonNull(value);
         this.value = value.trim();

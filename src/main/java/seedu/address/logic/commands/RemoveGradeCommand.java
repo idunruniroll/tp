@@ -14,6 +14,9 @@ import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 import seedu.address.model.student.StudentId;
 
+/**
+ * Removes a grade for a student from an assessment.
+ */
 public class RemoveGradeCommand extends Command {
 
     public static final String COMMAND_WORD = "removegrade";
@@ -33,6 +36,13 @@ public class RemoveGradeCommand extends Command {
     private final Index studentIndex;
     private final Index assessmentIndex;
 
+    /**
+     * Constructs a RemoveGradeCommand with the specified parameters.
+     *
+     * @param courseCode the course code
+     * @param studentIndex the student index
+     * @param assessmentIndex the assessment index
+     */
     public RemoveGradeCommand(String courseCode, Index studentIndex, Index assessmentIndex) {
         requireNonNull(courseCode);
         requireNonNull(studentIndex);
@@ -43,6 +53,13 @@ public class RemoveGradeCommand extends Command {
         this.assessmentIndex = assessmentIndex;
     }
 
+    /**
+     * Executes the remove grade command.
+     *
+     * @param model the model
+     * @return command result with success message
+     * @throws CommandException if the student, assessment, or grade is not found
+     */
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
