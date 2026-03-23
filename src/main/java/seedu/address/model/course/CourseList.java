@@ -58,7 +58,7 @@ public class CourseList {
      *
      * @param course course to remove
      */
-    public void removeCourse(Course course) {
+    public void removeCourseByName(Course course) {
         if (this.courseExists(course)) {
             courseList.remove(course);
         }
@@ -73,7 +73,7 @@ public class CourseList {
      * @return the deleted Course object
      * @throws IndexOutOfBoundsException if index is invalid
      */
-    public Course delete(int index) {
+    public Course deleteCourseByIndex(int index) {
         return courseList.remove(index - 1);
     }
 

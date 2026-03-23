@@ -20,8 +20,8 @@ public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
      */
     public RemoveCourseCommand parse(String args) throws ParseException {
         try {
-            Index index = ParserUtil.parseIndex(args.trim());
-            return new RemoveCourseCommand(index);
+            String arg = ParserUtil.parseCourseCode(args.trim());
+            return new RemoveCourseCommand(arg);
         } catch (ParseException pe) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT,
