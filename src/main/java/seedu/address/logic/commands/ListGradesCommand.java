@@ -1,6 +1,8 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 
 import java.util.HashSet;
 import java.util.List;
@@ -8,7 +10,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.MaxScore;
@@ -21,23 +26,52 @@ public class ListGradesCommand extends Command {
 
     public static final String COMMAND_WORD = "listgrades";
 
+   public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Lists grades for a course, a course assessment, or a student.\n"
+            + "Parameters:\n"
+            + "  " + PREFIX_COURSE_CODE + "COURSE_CODE\n"
+            + "  " + PREFIX_COURSE_CODE + "COURSE_CODE " + PREFIX_ASSESSMENT + "ASSESSMENT_INDEX\n"
+            + "  sid/STUDENT_ID\n"
+            + "Examples:\n"
+            + "  " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T\n"
+            + "  " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T " + PREFIX_ASSESSMENT + "1\n"
+            + "  " + COMMAND_WORD + " sid/A0123456X";
+
+    public static final String MESSAGE_COURSE_REQUIRED =
+            "Please specify a course code. Example: listgrades c/CS2103T";
+    public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
+    public static final String MESSAGE_INVALID_ASSESSMENT_INDEX =
+            "The assessment index provided is invalid.";
+
     private final String filterType;
     private final String filterValue1;
-    private final String filterValue2;
+    private final Index assessmentIndex; // Only used for course assessment filter
 
     /**
      * Retrieves the filtered grades based on the filter type.
      *
      */
-    public ListGradesCommand(String filterType, String filterValue1, String filterValue2) {
+    public ListGradesCommand(String filterType, String filterValue1, Index assessmentIndex) {
         this.filterType = filterType;
-        this.filterValue1 = filterValue1;
-        this.filterValue2 = filterValue2;
+
+        if (filterType.equalsIgnoreCase("course") || filterType.equalsIgnoreCase("courseassessment")) {
+            this.filterValue1 = filterValue1.trim().toUpperCase();
+        } else {
+            this.filterValue1 = filterValue1;
+        }
+
+        this.assessmentIndex = assessmentIndex;
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if ((filterType.equalsIgnoreCase("course")
+                || filterType.equalsIgnoreCase("courseassessment"))
+                && !model.hasCourse(filterValue1)) {
+            throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, filterValue1));
+        }
 
         ObservableList<Grade> grades = getFilteredGrades(model);
 
@@ -45,19 +79,14 @@ public class ListGradesCommand extends Command {
             return new CommandResult("No grades found.");
         }
 
-        // Group grades by course, and then by assessment, while keeping the order of
-        // assessments
         Map<String, Map<String, List<Grade>>> groupedGrades = groupGradesByCourseAndAssessment(grades);
 
         StringBuilder sb = new StringBuilder("Grades:\n");
+        Set<String> printedCourses = new HashSet<>();
 
-        Set<String> printedCourses = new HashSet<>(); // Track printed courses
-
-        // Generate output for each course
         for (Assessment assessment : model.getAssessmentList()) {
-            String courseCode = assessment.getCourseCode();
+            String courseCode = assessment.getCourseCode().toUpperCase();
 
-            // Only generate output for courses that have grades
             if (groupedGrades.containsKey(courseCode)) {
                 sb.append(buildGradesByCourseOutput(courseCode, groupedGrades.get(courseCode),
                         model.getAssessmentList(), printedCourses));
@@ -68,36 +97,46 @@ public class ListGradesCommand extends Command {
     }
 
 
-    private ObservableList<Grade> getFilteredGrades(Model model) {
-        ObservableList<Grade> grades = null;
-
+    private ObservableList<Grade> getFilteredGrades(Model model) throws CommandException {
         switch (filterType.toLowerCase()) {
-        case "student":
-            grades = model.getGradesByStudentId(filterValue1);
-            break;
-        case "course":
-            grades = model.getGradesByCourse(filterValue1);
-            break;
-        case "courseassessment":
-            grades = model.getGradesByCourseAndAssessment(filterValue1, filterValue2);
-            break;
-        default:
-            throw new IllegalArgumentException(
-                    "Invalid filter type. Use 'student', 'course', or 'courseassessment'.");
-        }
+            case "student":
+                return model.getGradesByStudentId(filterValue1);
 
-        return grades;
+            case "course":
+                return FXCollections.observableArrayList(model.getGradesByCourse(filterValue1));
+
+            case "courseassessment":
+                List<Assessment> courseAssessments = model.getAssessmentList().stream()
+                        .filter(assessment -> assessment.getCourseCode().equalsIgnoreCase(filterValue1))
+                        .collect(Collectors.toList());
+
+                if (courseAssessments.isEmpty()
+                        || assessmentIndex == null
+                        || assessmentIndex.getZeroBased() >= courseAssessments.size()) {
+                    throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
+                }
+
+                Assessment selectedAssessment = courseAssessments.get(assessmentIndex.getZeroBased());
+                String storedCourseCode = selectedAssessment.getCourseCode();
+                String assessmentName = selectedAssessment.getAssessmentName().toString();
+
+                return FXCollections.observableArrayList(
+                        model.getGradesByCourseAndAssessment(storedCourseCode, assessmentName));
+
+            default:
+                throw new IllegalArgumentException(
+                        "Invalid filter type. Use 'student', 'course', or 'courseassessment'.");
+        }
     }
 
     /**
-     * Groups the grades by course and then by assessment
+     * Groups the grades by course and then by assessment.
      */
     private Map<String, Map<String, List<Grade>>> groupGradesByCourseAndAssessment(ObservableList<Grade> grades) {
         return grades.stream()
-                .collect(Collectors.groupingBy(Grade::getCourseCode,
+                .collect(Collectors.groupingBy(grade -> grade.getCourseCode().toUpperCase(),
                         Collectors.groupingBy(grade -> grade.getAssessmentName().toString())));
     }
-
     /**
      * Builds the output for each course, iterating over the assessments
      */
@@ -106,11 +145,11 @@ public class ListGradesCommand extends Command {
         StringBuilder sb = new StringBuilder();
 
         // Skip if this course has already been printed
-        if (printedCourses.contains(courseCode)) {
+        if (printedCourses.contains(courseCode.toUpperCase())) {
             return "";
         }
 
-        printedCourses.add(courseCode); // Mark this course as processed
+        printedCourses.add(courseCode.toUpperCase()); // Mark this course as processed
 
         sb.append("\nCourse: ").append(courseCode).append("\n");
 
@@ -119,19 +158,16 @@ public class ListGradesCommand extends Command {
         // Iterate over each assessment in the course, in the same order as
         // listassessments
         for (Assessment currentAssessment : assessments) {
-            if (!currentAssessment.getCourseCode().equals(courseCode)) {
-                continue; // Skip assessments that don't belong to the current course
+            if (!currentAssessment.getCourseCode().equalsIgnoreCase(courseCode)) {
+                continue;
             }
 
             String assessmentName = currentAssessment.getAssessmentName().toString();
             List<Grade> courseGrades = assessmentsForCourse.get(assessmentName);
 
-            // Ensure courseGrades is never null, initialize as empty if necessary
-            if (courseGrades == null || courseGrades.isEmpty()) {
-                continue; // Skip if there are no grades for this assessment
+            if (courseGrades != null && !courseGrades.isEmpty()) {
+                sb.append(generateAssessmentOutput(assessmentName, assessmentIndex, courseGrades, currentAssessment));
             }
-
-            sb.append(generateAssessmentOutput(assessmentName, assessmentIndex, courseGrades, currentAssessment));
 
             assessmentIndex++;
         }
@@ -140,31 +176,26 @@ public class ListGradesCommand extends Command {
     }
 
     /**
-     * Generates the output for a specific assessment
+     * Generates the output for a specific assessment.
      */
     private String generateAssessmentOutput(String assessmentName, int assessmentIndex,
             List<Grade> courseGrades, Assessment assessment) {
         StringBuilder sb = new StringBuilder();
 
-        // Get the max score from the assessment (assuming it's part of the Assessment
-        // class)
-        MaxScore maxScore = assessment.getMaxScore(); // You need to ensure this method exists in Assessment class.
+        MaxScore maxScore = assessment.getMaxScore();
 
         sb.append("  Assessment: ").append(assessmentName)
                 .append(" (Max Score: ").append(maxScore).append(")")
                 .append(" (Index: ").append(assessmentIndex).append(")\n");
 
-        // List students and their grades, with student index
         int studentIndex = 1;
         for (Grade grade : courseGrades) {
-            sb.append(studentIndex + ".    Student ID: ").append(grade.getStudentId())
+            sb.append(studentIndex).append(".    Student ID: ").append(grade.getStudentId())
                     .append(", Grade: ").append(grade.getScore()).append("\n");
             studentIndex++;
         }
 
-        // Add a blank line after each assessment
         sb.append("\n");
-
         return sb.toString();
     }
 }

@@ -1,9 +1,11 @@
 package seedu.address.logic.parser;
 
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT_NAME;
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ListGradesCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
@@ -25,29 +27,30 @@ public class ListGradesCommandParser implements Parser<ListGradesCommand> {
     public ListGradesCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args,
                 PREFIX_COURSE_CODE,
-                PREFIX_ASSESSMENT_NAME,
+                PREFIX_ASSESSMENT,
                 PREFIX_STUDENT_ID);
 
         if (!argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException("Invalid command format");
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    ListGradesCommand.MESSAGE_USAGE));
         }
 
         if (argMultimap.getValue(PREFIX_STUDENT_ID).isPresent()) {
-            String studentId = argMultimap.getValue(PREFIX_STUDENT_ID).get();
-            return new ListGradesCommand("student", studentId, "");
+            String studentId = ParserUtil.parseStudentId(argMultimap.getValue(PREFIX_STUDENT_ID).get());
+            return new ListGradesCommand("student", studentId, null);
         }
 
         if (argMultimap.getValue(PREFIX_COURSE_CODE).isPresent()) {
-            String courseCode = argMultimap.getValue(PREFIX_COURSE_CODE).get();
+            String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
 
-            if (argMultimap.getValue(PREFIX_ASSESSMENT_NAME).isPresent()) {
-                String assessmentName = argMultimap.getValue(PREFIX_ASSESSMENT_NAME).get();
-                return new ListGradesCommand("courseassessment", courseCode, assessmentName);
+            if (argMultimap.getValue(PREFIX_ASSESSMENT).isPresent()) {
+                Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
+                return new ListGradesCommand("courseassessment", courseCode, assessmentIndex);
             }
 
-            return new ListGradesCommand("course", courseCode, "");
+            return new ListGradesCommand("course", courseCode, null);
         }
 
-        throw new ParseException("Invalid command format");
+        throw new ParseException(ListGradesCommand.MESSAGE_USAGE);
     }
 }

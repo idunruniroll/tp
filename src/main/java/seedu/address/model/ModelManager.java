@@ -199,12 +199,14 @@ public class ModelManager implements Model {
     public ObservableList<Grade> getGradesByCourseAndAssessment(String courseCode, String assessmentName) {
         requireNonNull(courseCode);
         requireNonNull(assessmentName);
-        ObservableList<Grade> filteredGrades = FXCollections.observableArrayList(
+
+        String trimmedAssessmentName = assessmentName.trim();
+
+        return FXCollections.observableArrayList(
                 addressBook.getGradeList().stream()
-                        .filter(grade -> grade.getCourseCode().equals(courseCode)
-                                && grade.getAssessmentName().equals(assessmentName))
+                        .filter(grade -> grade.getCourseCode().equalsIgnoreCase(courseCode)
+                                && grade.getAssessmentName().toString().equals(trimmedAssessmentName))
                         .collect(Collectors.toList()));
-        return filteredGrades;
     }
 
     // =========== Other methods (e.g., getGradeList, etc.) remain the same...
