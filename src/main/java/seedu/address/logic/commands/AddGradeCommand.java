@@ -40,7 +40,6 @@ public class AddGradeCommand extends Command {
 
     /**
      * Constructs an AddGradeCommand with the specified parameters.
-     *
      * @param courseCode the course code
      * @param studentIndex the student index
      * @param assessmentIndex the assessment index
@@ -68,20 +67,19 @@ public class AddGradeCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_STUDENT_INDEX);
         }
 
-        Person student = studentList.get(studentIndex.getZeroBased());
+        if (model.getCourse(courseCode).isEmpty()) {
+            throw new CommandException(MESSAGE_INVALID_COURSE_CODE);
+        }
 
         List<Assessment> courseAssessments = model.getAssessmentList().stream()
                 .filter(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode))
                 .collect(Collectors.toList());
 
-        if (courseAssessments.isEmpty()) {
-            throw new CommandException(MESSAGE_INVALID_COURSE_CODE);
-        }
-
-        if (assessmentIndex.getZeroBased() >= courseAssessments.size()) {
+        if (courseAssessments.isEmpty() || assessmentIndex.getZeroBased() >= courseAssessments.size()) {
             throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
         }
 
+        Person student = studentList.get(studentIndex.getZeroBased());
         Assessment assessment = courseAssessments.get(assessmentIndex.getZeroBased());
 
         if (score.value > assessment.getMaxScore().value) {
