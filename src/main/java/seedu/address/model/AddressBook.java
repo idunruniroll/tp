@@ -200,7 +200,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void removeCourse(Course course) {
         requireNonNull(course);
-        courses.removeCourse(course);
+        courses.removeCourseByName(course);
     }
 
     public Optional<Course> getCourse(String courseCode) {
