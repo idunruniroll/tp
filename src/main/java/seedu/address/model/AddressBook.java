@@ -203,6 +203,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         courses.removeCourse(course);
     }
 
+    /** Gets a list of courses with partial matches to the given course code */
     public Optional<Course> getCourse(String courseCode) {
         requireNonNull(courseCode);
         return Optional.ofNullable(courses.findCourseCode(courseCode));
