@@ -27,6 +27,7 @@ public class AddAssessmentCommand extends Command {
 
     public static final String MESSAGE_SUCCESS = "New assessment added: %1$s";
     public static final String MESSAGE_DUPLICATE_ASSESSMENT = "This assessment already exists.";
+    public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
 
     private final String courseCode;
     private final AssessmentName assessmentName;
@@ -52,6 +53,10 @@ public class AddAssessmentCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+
+        if (model.getCourse(courseCode).isEmpty()) {
+            throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
+        }
 
         // Create the assessment object using the provided courseCode, assessmentName,
         // and maxScore
