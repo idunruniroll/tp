@@ -26,8 +26,7 @@ public class RemoveGradeCommand extends Command {
             + "Parameters: c/COURSE_CODE s/STUDENT_INDEX as/ASSESSMENT_INDEX\n"
             + "Example: " + COMMAND_WORD + " c/CS2103T s/1 as/2";
 
-    public static final String MESSAGE_SUCCESS = "Removed grade: Assessment Name: %1$s, Grade: %2$s/%3$s in "
-            + "Course: %4$s";
+    public static final String MESSAGE_SUCCESS = "Removed grade: Student id: %1$s, Assessment name: %2$s in Course: %3$s";
     public static final String MESSAGE_INVALID_STUDENT_INDEX = "The student index provided is invalid.";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
     public static final String MESSAGE_INVALID_COURSE_CODE = "Invalid course code.";
@@ -95,7 +94,10 @@ public class RemoveGradeCommand extends Command {
         }
 
         model.removeGrade(toRemove);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toRemove));
+        return new CommandResult(String.format(MESSAGE_SUCCESS,
+                studentId,
+                assessment.getAssessmentName(),
+                courseCode));
     }
 
     @Override
