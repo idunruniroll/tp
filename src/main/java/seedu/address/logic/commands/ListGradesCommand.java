@@ -191,4 +191,18 @@ public class ListGradesCommand extends Command {
         sb.append("\n");
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof ListGradesCommand)) {
+            return false;
+        }
+        ListGradesCommand otherCommand = (ListGradesCommand) other;
+        return filterType.equalsIgnoreCase(otherCommand.filterType)
+                && filterValue1.equals(otherCommand.filterValue1)
+                && java.util.Objects.equals(assessmentIndex, otherCommand.assessmentIndex);
+    }
 }
