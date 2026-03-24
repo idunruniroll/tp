@@ -8,6 +8,9 @@ package seedu.address.model.course;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javafx.collections.ObservableList;
+import seedu.address.model.assessment.Assessment;
+import seedu.address.model.assessment.UniqueAssessmentList;
 import seedu.address.model.student.Student;
 
 /**
@@ -19,6 +22,7 @@ public class Course {
 
     private final String courseCode;
     private final ArrayList<Student> students;
+    private final UniqueAssessmentList assessments;
 
     /**
      * Constructs a Course with the specified course code.
@@ -28,6 +32,7 @@ public class Course {
     public Course(String courseCode) {
         this.courseCode = courseCode.trim().toUpperCase();
         this.students = new ArrayList<>();
+        this.assessments = new UniqueAssessmentList();
     }
 
     public String getCourseCode() {
@@ -63,6 +68,36 @@ public class Course {
      */
     public boolean removeStudent(String studentId) {
         return students.removeIf(s -> s.getStudentId().equalsIgnoreCase(studentId));
+    }
+
+    /**
+     * Returns all assessments in this course.
+     *
+     * @return ObservableList of Assessment
+     */
+    public ObservableList<Assessment> getAssessments() {
+        return assessments.asUnmodifiableObservableList();
+    }
+
+    /**
+     * Returns true if an assessment with the given Assessment object is
+     * in this course.
+     */
+    public boolean hasAssessment(Assessment assessmentToCheck) {
+        return assessments.contains(assessmentToCheck);
+    }
+
+    /** Adds an assessment to this course. */
+    public void addAssessment(Assessment assessmentToAdd) {
+        assessments.add(assessmentToAdd);
+    }
+
+    /**
+     * Removes the assessment with the given Assessment object
+     * if the assessment exists.
+     */
+    public void removeAssessment(Assessment assessmentToRemove) {
+        assessments.remove(assessmentToRemove);
     }
 
     /**
