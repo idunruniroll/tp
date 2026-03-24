@@ -33,7 +33,7 @@ import seedu.address.model.student.StudentId;
 public class ListGradesCommandTest {
 
     @Test
-    public void execute_studentFilter_gradesFound_success() throws Exception {
+    public void executeStudentFilter_success() throws Exception {
         ModelStub modelStub = new ModelStub();
         modelStub.assessments = FXCollections.observableArrayList(
                 new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
@@ -60,7 +60,7 @@ public class ListGradesCommandTest {
     }
 
     @Test
-    public void execute_courseFilter_courseNotFound_throwsCommandException() {
+    public void executeCourseFilter_courseNotFound() {
         ModelStub modelStub = new ModelStub();
         modelStub.hasCourse = false;
 
@@ -72,7 +72,7 @@ public class ListGradesCommandTest {
     }
 
     @Test
-    public void execute_courseFilter_noGrades_returnsNoGradesFound() throws Exception {
+    public void executeCourseFilter_noGrades() throws Exception {
         ModelStub modelStub = new ModelStub();
         modelStub.hasCourse = true;
         modelStub.gradesByCourse = FXCollections.observableArrayList();
@@ -84,7 +84,7 @@ public class ListGradesCommandTest {
     }
 
     @Test
-    public void execute_courseAssessment_invalidIndex_throwsCommandException() {
+    public void executeCourseAssessment_invalidIndex() {
         ModelStub modelStub = new ModelStub();
         modelStub.hasCourse = true;
         modelStub.assessments = FXCollections.observableArrayList(
@@ -99,7 +99,7 @@ public class ListGradesCommandTest {
     }
 
     @Test
-    public void execute_courseAssessment_validIndex_success() throws Exception {
+    public void executeCourseAssessment_success() throws Exception {
         ModelStub modelStub = new ModelStub();
         modelStub.hasCourse = true;
         modelStub.assessments = FXCollections.observableArrayList(
