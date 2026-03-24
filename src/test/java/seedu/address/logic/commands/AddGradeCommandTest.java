@@ -35,26 +35,26 @@ public class AddGradeCommandTest {
 
     @Test
     public void constructor_nullCourseCode_throwsNullPointerException() {
-        assertThrows(NullPointerException.class,
-                () -> new AddGradeCommand(null, Index.fromOneBased(1), Index.fromOneBased(1), new Score("10")));
+        assertThrows(NullPointerException.class, (
+            ) -> new AddGradeCommand(null, Index.fromOneBased(1), Index.fromOneBased(1), new Score("10")));
     }
 
     @Test
     public void constructor_nullStudentIndex_throwsNullPointerException() {
-        assertThrows(NullPointerException.class,
-                () -> new AddGradeCommand("CS2103T", null, Index.fromOneBased(1), new Score("10")));
+        assertThrows(NullPointerException.class, (
+            ) -> new AddGradeCommand("CS2103T", null, Index.fromOneBased(1), new Score("10")));
     }
 
     @Test
     public void constructor_nullAssessmentIndex_throwsNullPointerException() {
-        assertThrows(NullPointerException.class,
-                () -> new AddGradeCommand("CS2103T", Index.fromOneBased(1), null, new Score("10")));
+        assertThrows(NullPointerException.class, (
+            ) -> new AddGradeCommand("CS2103T", Index.fromOneBased(1), null, new Score("10")));
     }
 
     @Test
     public void constructor_nullScore_throwsNullPointerException() {
-        assertThrows(NullPointerException.class,
-                () -> new AddGradeCommand("CS2103T", Index.fromOneBased(1), Index.fromOneBased(1), null));
+        assertThrows(NullPointerException.class, (
+            ) -> new AddGradeCommand("CS2103T", Index.fromOneBased(1), Index.fromOneBased(1), null));
     }
 
     @Test
@@ -90,8 +90,8 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS9999",
                 Index.fromOneBased(1), Index.fromOneBased(1), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_COURSE_CODE,
-                () -> command.execute(modelStub));
+        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_COURSE_CODE, (
+            ) -> command.execute(modelStub));
     }
 
     @Test
@@ -107,8 +107,8 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS2103T",
                 Index.fromOneBased(2), Index.fromOneBased(1), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_STUDENT_INDEX,
-                () -> command.execute(modelStub));
+        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_STUDENT_INDEX, (
+            ) -> command.execute(modelStub));
     }
 
     @Test
@@ -125,8 +125,8 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS2103T",
                 Index.fromOneBased(1), Index.fromOneBased(2), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_ASSESSMENT_INDEX,
-                () -> command.execute(modelStub));
+        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
+            ) -> command.execute(modelStub));
     }
 
     @Test
