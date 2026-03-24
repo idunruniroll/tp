@@ -80,7 +80,7 @@ public class Course {
     }
 
     /**
-     * Returns true if an assessment with the given Assessment object is 
+     * Returns true if an assessment with the given Assessment object is
      * in this course.
      */
     public boolean hasAssessment(Assessment assessmentToCheck) {
@@ -96,7 +96,7 @@ public class Course {
      * Removes the assessment with the given Assessment object
      * if the assessment exists.
      */
-    public void removeStudent(Assessment assessmentToRemove) {
+    public void removeAssessment(Assessment assessmentToRemove) {
         assessments.remove(assessmentToRemove);
     }
 
