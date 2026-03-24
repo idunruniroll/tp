@@ -78,12 +78,12 @@ public class CourseList {
     }
 
     /**
-     * Returns the complete list of courses.
+     * Returns a copy of complete list of courses.
      *
      * @return ArrayList containing all courses.
      */
     public ArrayList<Course> getCourses() {
-        return courseList;
+        return new ArrayList<>(courseList);
     }
 
     /**
