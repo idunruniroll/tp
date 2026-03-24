@@ -28,6 +28,7 @@ import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.logic.commands.ListAssessmentsCommand;
 
 public class AddressBookParserTest {
 
@@ -97,5 +98,11 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_unknownCommand_throwsParseException() {
         assertThrows(ParseException.class, MESSAGE_UNKNOWN_COMMAND, () -> parser.parseCommand("unknownCommand"));
+    }
+
+    @Test
+    public void parseCommand_listAssessments() throws Exception {
+        assertTrue(parser.parseCommand(ListAssessmentsCommand.COMMAND_WORD) instanceof ListAssessmentsCommand);
+        assertTrue(parser.parseCommand(ListAssessmentsCommand.COMMAND_WORD + " 3") instanceof ListAssessmentsCommand);
     }
 }
