@@ -15,7 +15,7 @@ public class RemoveCourseCommandParserTest {
     public void parse_validCourseCode_success() {
         String validCourseCode = "CS2103T";
         RemoveCourseCommand expectedCommand = new RemoveCourseCommand(validCourseCode);
-        
+
         assertParseSuccess(parser, validCourseCode, expectedCommand);
     }
 
@@ -23,7 +23,7 @@ public class RemoveCourseCommandParserTest {
     public void parse_courseCodeWithLeadingWhitespace_success() {
         String validCourseCode = "CS2101";
         RemoveCourseCommand expectedCommand = new RemoveCourseCommand(validCourseCode);
-        
+
         // Leading whitespace should be trimmed
         assertParseSuccess(parser, "   " + validCourseCode, expectedCommand);
     }
@@ -32,29 +32,26 @@ public class RemoveCourseCommandParserTest {
     public void parse_courseCodeWithTrailingWhitespace_success() {
         String validCourseCode = "CS2100";
         RemoveCourseCommand expectedCommand = new RemoveCourseCommand(validCourseCode);
-        
+
         // Trailing whitespace should be trimmed
         assertParseSuccess(parser, validCourseCode + "   ", expectedCommand);
     }
 
     @Test
     public void parse_emptyCourseCode_failure() {
-        assertParseFailure(parser, "", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                RemoveCourseCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "", MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE);
     }
 
     @Test
     public void parse_whitespaceOnlyInput_failure() {
-        assertParseFailure(parser, "   ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                RemoveCourseCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "   ", MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE);
     }
 
     @Test
-    public void parse_courseCodeWithSpaces_success() {
-        // Test that course codes with spaces are handled
+    public void parse_courseCodeWithSpaces_failure() {
+        // Course codes with spaces are not allowed (regex [A-Za-z0-9]{2,10})
         String courseCodeWithSpaces = "CS 2103T";
-        RemoveCourseCommand expectedCommand = new RemoveCourseCommand(courseCodeWithSpaces);
-        
-        assertParseSuccess(parser, courseCodeWithSpaces, expectedCommand);
+        assertParseFailure(parser, courseCodeWithSpaces,
+                MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE);
     }
 }

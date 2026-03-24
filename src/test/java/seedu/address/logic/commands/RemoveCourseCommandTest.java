@@ -52,8 +52,8 @@ public class RemoveCourseCommandTest {
         RemoveCourseCommand removeCourseCommand = new RemoveCourseCommand(nonexistentCourseCode);
         ModelStub modelStub = new ModelStubWithoutCourse();
 
-        assertThrows(CommandException.class, RemoveCourseCommand.MESSAGE_COURSE_NOT_FOUND, 
-                () -> removeCourseCommand.execute(modelStub));
+        assertThrows(CommandException.class,
+            RemoveCourseCommand.MESSAGE_COURSE_NOT_FOUND, () -> removeCourseCommand.execute(modelStub));
     }
 
     @Test
@@ -275,8 +275,8 @@ public class RemoveCourseCommandTest {
      * A Model stub that contains a single course.
      */
     private class ModelStubWithCourse extends ModelStub {
-        private final String courseCode;
         final ArrayList<String> coursesRemoved = new ArrayList<>();
+        private final String courseCode;
 
         ModelStubWithCourse(String courseCode) {
             requireNonNull(courseCode);

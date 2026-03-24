@@ -23,8 +23,7 @@ public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
             return new RemoveCourseCommand(arg);
         } catch (ParseException pe) {
             throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                            RemoveCourseCommand.MESSAGE_USAGE),
+                    MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE,
                     pe);
         }
     }

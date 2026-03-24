@@ -2,13 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -17,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -27,57 +23,40 @@ import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 
-public class AddCourseCommandTest {
+public class ListCoursesCommandTest {
 
     @Test
-    public void constructor_nullCourseCode_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new AddCourseCommand(null));
+    public void execute_emptyCourseList_success() {
+        ModelStubWithNoCourses modelStub = new ModelStubWithNoCourses();
+        CommandResult result = new ListCoursesCommand().execute(modelStub);
+
+        assertEquals("No Courses found.", result.getFeedbackToUser());
     }
 
     @Test
-    public void execute_courseCodeAcceptedByModel_addSuccessful() throws Exception {
-        ModelStubAcceptingCourseAdded modelStub = new ModelStubAcceptingCourseAdded();
-        String validCourseCode = "CS2103T";
+    public void execute_singleCourse_success() {
+        ModelStubWithCourses modelStub = new ModelStubWithCourses(new ArrayList<>(
+                java.util.Arrays.asList(new Course("CS2103T"))));
+        CommandResult result = new ListCoursesCommand().execute(modelStub);
 
-        CommandResult commandResult = new AddCourseCommand(validCourseCode).execute(modelStub);
-
-        assertEquals(String.format(AddCourseCommand.MESSAGE_SUCCESS, validCourseCode),
-                commandResult.getFeedbackToUser());
-        assertEquals(Arrays.asList(validCourseCode), modelStub.coursesAdded);
+        // Course.toString() returns "[courseCode]", so output includes brackets
+        String expectedOutput = "Courses:\n1. [CS2103T]";
+        assertEquals(expectedOutput, result.getFeedbackToUser());
     }
 
     @Test
-    public void execute_duplicateCourseCode_throwsCommandException() {
-        String validCourseCode = "CS2103T";
-        AddCourseCommand addCourseCommand = new AddCourseCommand(validCourseCode);
-        ModelStub modelStub = new ModelStubWithCourse(validCourseCode);
+    public void execute_multipleCourses_success() {
+        List<Course> courses = new ArrayList<>();
+        courses.add(new Course("CS2103T"));
+        courses.add(new Course("CS2101"));
+        courses.add(new Course("CS2106"));
 
-        assertThrows(CommandException.class,
-            AddCourseCommand.MESSAGE_DUPLICATE_ASSESSMENT, () -> addCourseCommand.execute(modelStub));
-    }
+        ModelStubWithCourses modelStub = new ModelStubWithCourses(courses);
+        CommandResult result = new ListCoursesCommand().execute(modelStub);
 
-    @Test
-    public void equals() {
-        String courseCodeA = "CS2103T";
-        String courseCodeB = "CS2101";
-        AddCourseCommand addCourseCommandA = new AddCourseCommand(courseCodeA);
-        AddCourseCommand addCourseCommandB = new AddCourseCommand(courseCodeB);
-
-        // same object -> returns true
-        assertTrue(addCourseCommandA.equals(addCourseCommandA));
-
-        // same values -> returns true
-        AddCourseCommand addCourseCommandACopy = new AddCourseCommand(courseCodeA);
-        assertTrue(addCourseCommandA.equals(addCourseCommandACopy));
-
-        // different types -> returns false
-        assertFalse(addCourseCommandA.equals(1));
-
-        // null -> returns false
-        assertFalse(addCourseCommandA.equals(null));
-
-        // different course code -> returns false
-        assertFalse(addCourseCommandA.equals(addCourseCommandB));
+        // Verify exact output format with 1-based indexing and Course.toString() brackets
+        String expectedOutput = "Courses:\n1. [CS2103T]\n2. [CS2101]\n3. [CS2106]";
+        assertEquals(expectedOutput, result.getFeedbackToUser());
     }
 
     /**
@@ -228,7 +207,7 @@ public class AddCourseCommandTest {
 
         @Override
         public ObservableList<Course> getCourseList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         public ObservableList<Assessment> getAssessmentList() {
@@ -272,39 +251,29 @@ public class AddCourseCommandTest {
     }
 
     /**
-     * A Model stub that contains a single course.
+     * A Model stub with no courses.
      */
-    private class ModelStubWithCourse extends ModelStub {
-        private final String courseCode;
-
-        ModelStubWithCourse(String courseCode) {
-            requireNonNull(courseCode);
-            this.courseCode = courseCode;
-        }
-
+    private class ModelStubWithNoCourses extends ModelStub {
         @Override
-        public boolean hasCourse(String courseCode) {
-            requireNonNull(courseCode);
-            return this.courseCode.equals(courseCode);
+        public ObservableList<Course> getCourseList() {
+            return FXCollections.observableArrayList();
         }
     }
 
     /**
-     * A Model stub that always accept the course being added.
+     * A Model stub that contains courses.
      */
-    private class ModelStubAcceptingCourseAdded extends ModelStub {
-        final ArrayList<String> coursesAdded = new ArrayList<>();
+    private class ModelStubWithCourses extends ModelStub {
+        private final ObservableList<Course> courses;
 
-        @Override
-        public boolean hasCourse(String courseCode) {
-            requireNonNull(courseCode);
-            return coursesAdded.contains(courseCode);
+        ModelStubWithCourses(List<Course> courseList) {
+            requireNonNull(courseList);
+            this.courses = FXCollections.observableArrayList(courseList);
         }
 
         @Override
-        public void addCourse(Course course) {
-            requireNonNull(course);
-            coursesAdded.add(course.getCourseCode());
+        public ObservableList<Course> getCourseList() {
+            return courses;
         }
 
         @Override
