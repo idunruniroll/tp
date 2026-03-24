@@ -1,13 +1,9 @@
 package seedu.address.logic.commands;
 
-import static java.util.Objects.requireNonNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
-import java.util.Optional;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.Test;
@@ -15,8 +11,6 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
@@ -28,100 +22,58 @@ import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 import seedu.address.model.student.Student;
 
-public class RemoveAssessmentCommandTest {
+public class ListAssessmentsCommandTest {
 
     @Test
-    public void constructor_nullCourseCode_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new RemoveAssessmentCommand(null, Index.fromOneBased(1)));
+    public void execute_noAssessments_returnsNoAssessmentsMessage() {
+        ModelStub modelStub = new ModelStub(FXCollections.observableArrayList());
+
+        CommandResult result = new ListAssessmentsCommand().execute(modelStub);
+
+        assertEquals("No assessments found.", result.getFeedbackToUser());
     }
 
     @Test
-    public void constructor_nullAssessmentIndex_throwsNullPointerException() {
-        assertThrows(NullPointerException.class, () -> new RemoveAssessmentCommand("CS2103T", null));
-    }
-
-    @Test
-    public void execute_validCourseAndIndex_removesAssessmentSuccessfully() throws Exception {
-        Assessment quiz = new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10"));
-        Assessment finals = new Assessment("CS2103T", new AssessmentName("Finals"), new MaxScore("100"));
-        Assessment otherCourseAssessment = new Assessment("CS2101", new AssessmentName("Midterm"), new MaxScore("50"));
-
+    public void execute_singleCourseMultipleAssessments_listsAssessmentsWithIndexes() {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList(
-                quiz, finals, otherCourseAssessment);
-
+                new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
+                new Assessment("CS2103T", new AssessmentName("Finals"), new MaxScore("100")));
         ModelStub modelStub = new ModelStub(assessments);
-        RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS2103T", Index.fromOneBased(2));
 
-        CommandResult commandResult = command.execute(modelStub);
+        CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-        assertEquals(String.format(RemoveAssessmentCommand.MESSAGE_DELETE_ASSESSMENT_SUCCESS, finals),
-                commandResult.getFeedbackToUser());
-        assertEquals(finals, modelStub.removedAssessment);
-        assertEquals(2, modelStub.assessments.size());
-        assertFalse(modelStub.assessments.contains(finals));
+        String expected = "Assessments:\n"
+                + "\nCourse: CS2103T (Index: 1)\n"
+                + "    1. Assessment Name: Quiz 1 (Max Score: 10) in CS2103T\n"
+                + "    2. Assessment Name: Finals (Max Score: 100) in CS2103T";
+        assertEquals(expected, result.getFeedbackToUser());
     }
 
     @Test
-    public void execute_courseNotFound_throwsCommandException() {
-        Assessment quiz = new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10"));
-        ObservableList<Assessment> assessments = FXCollections.observableArrayList(quiz);
-
+    public void execute_multipleCourses_outputContainsAllCourseSections() {
+        ObservableList<Assessment> assessments = FXCollections.observableArrayList(
+                new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
+                new Assessment("CS2101", new AssessmentName("Participation"), new MaxScore("20")));
         ModelStub modelStub = new ModelStub(assessments);
-        RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS9999", Index.fromOneBased(1));
 
-        assertThrows(CommandException.class, RemoveAssessmentCommand.MESSAGE_INVALID_COURSE, (    
-                ) -> command.execute(modelStub));
-    }
+        CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-    @Test
-    public void execute_invalidAssessmentIndex_throwsCommandException() {
-        Assessment quiz = new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10"));
-        ObservableList<Assessment> assessments = FXCollections.observableArrayList(quiz);
-
-        ModelStub modelStub = new ModelStub(assessments);
-        RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS2103T", Index.fromOneBased(2));
-
-        assertThrows(CommandException.class, RemoveAssessmentCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
-                ) -> command.execute(modelStub));
-    }
-
-    @Test
-    public void equals() {
-        RemoveAssessmentCommand firstCommand = new RemoveAssessmentCommand("CS2103T", Index.fromOneBased(1));
-        RemoveAssessmentCommand secondCommand = new RemoveAssessmentCommand("CS2103T", Index.fromOneBased(2));
-        RemoveAssessmentCommand differentCourseCommand = new RemoveAssessmentCommand("CS2101", Index.fromOneBased(1));
-        RemoveAssessmentCommand firstCommandCopy = new RemoveAssessmentCommand("CS2103T", Index.fromOneBased(1));
-
-        assertTrue(firstCommand.equals(firstCommand));
-        assertTrue(firstCommand.equals(firstCommandCopy));
-        assertFalse(firstCommand.equals(1));
-        assertFalse(firstCommand.equals(null));
-        assertFalse(firstCommand.equals(secondCommand));
-        assertFalse(firstCommand.equals(differentCourseCommand));
+        String feedback = result.getFeedbackToUser();
+        assertTrue(feedback.startsWith("Assessments:"));
+        assertTrue(feedback.contains("Course: CS2103T (Index:"));
+        assertTrue(feedback.contains("1. Assessment Name: Quiz 1 (Max Score: 10) in CS2103T"));
+        assertTrue(feedback.contains("Course: CS2101 (Index:"));
+        assertTrue(feedback.contains("1. Assessment Name: Participation (Max Score: 20) in CS2101"));
     }
 
     /**
-     * A default model stub that only supports assessment operations needed by this
-     * test.
+     * A default model stub that only supports getAssessmentList().
      */
     private static class ModelStub implements Model {
         private final ObservableList<Assessment> assessments;
-        private Assessment removedAssessment;
 
         private ModelStub(ObservableList<Assessment> assessments) {
             this.assessments = assessments;
-        }
-
-        @Override
-        public ObservableList<Assessment> getAssessmentList() {
-            return assessments;
-        }
-
-        @Override
-        public void removeAssessment(Assessment assessment) {
-            requireNonNull(assessment);
-            removedAssessment = assessment;
-            assessments.remove(assessment);
         }
 
         @Override
@@ -205,6 +157,16 @@ public class RemoveAssessmentCommandTest {
         }
 
         @Override
+        public void removeAssessment(Assessment assessment) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<Assessment> getAssessmentList() {
+            return assessments;
+        }
+
+        @Override
         public boolean hasGrade(Grade grade) {
             throw new AssertionError("This method should not be called.");
         }
@@ -226,7 +188,7 @@ public class RemoveAssessmentCommandTest {
 
         @Override
         public ObservableList<Course> getCourseList() {
-            return FXCollections.observableArrayList();
+            throw new AssertionError("This method should not be called.");
         }
 
         @Override
@@ -235,7 +197,7 @@ public class RemoveAssessmentCommandTest {
         }
 
         @Override
-        public Optional<Course> getCourse(String courseCode) {
+        public java.util.Optional<Course> getCourse(String courseCode) {
             throw new AssertionError("This method should not be called.");
         }
 
@@ -280,12 +242,12 @@ public class RemoveAssessmentCommandTest {
         }
 
         @Override
-        public void setCurrentCourseForDisplay(Optional<String> courseCode) {
+        public void setCurrentCourseForDisplay(java.util.Optional<String> courseCode) {
             throw new AssertionError("This method should not be called.");
         }
 
         @Override
-        public Optional<String> getCurrentCourseForDisplay() {
+        public java.util.Optional<String> getCurrentCourseForDisplay() {
             throw new AssertionError("This method should not be called.");
         }
     }
