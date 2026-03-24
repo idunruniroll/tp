@@ -36,4 +36,9 @@ public class ListCoursesCommand extends Command {
 
         return new CommandResult(sb.toString().trim());
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this || (other instanceof ListCoursesCommand);
+    }
 }

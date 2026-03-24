@@ -28,9 +28,10 @@ public class AddCourseCommandParser implements Parser<AddCourseCommand> {
 
         if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_COURSE_CODE)
                 || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_FORMAT_ERROR,
-                    AddCourseCommand.MESSAGE_USAGE));
+            throw new ParseException(MESSAGE_FORMAT_ERROR);
         }
+
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COURSE_CODE);
 
         String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
 
