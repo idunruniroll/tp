@@ -68,9 +68,32 @@ public class ListAssessmentsCommandTest {
      */
     private static class ModelStub implements Model {
         private final ObservableList<Assessment> assessments;
+        private final ObservableList<Assessment> filteredAssessments = FXCollections.observableArrayList();
+        private DisplayMode displayMode;
 
         private ModelStub(ObservableList<Assessment> assessments) {
             this.assessments = assessments;
+            this.filteredAssessments.setAll(assessments);
+        }
+
+        @Override
+        public ObservableList<Assessment> getAssessmentList() {
+            return assessments;
+        }
+
+        @Override
+        public ObservableList<Assessment> getFilteredAssessmentList() {
+            return filteredAssessments;
+        }
+
+        @Override
+        public void setDisplayMode(DisplayMode displayMode) {
+            this.displayMode = displayMode;
+        }
+
+        @Override
+        public DisplayMode getDisplayMode() {
+            return displayMode;
         }
 
         @Override
@@ -159,11 +182,6 @@ public class ListAssessmentsCommandTest {
         }
 
         @Override
-        public ObservableList<Assessment> getAssessmentList() {
-            return assessments;
-        }
-
-        @Override
         public boolean hasGrade(Grade grade) {
             throw new AssertionError("This method should not be called.");
         }
@@ -249,23 +267,8 @@ public class ListAssessmentsCommandTest {
         }
 
         @Override
-        public ObservableList<Assessment> getFilteredAssessmentList() {
-            return FXCollections.observableArrayList();
-        }
-
-        @Override
         public ObservableList<Grade> getFilteredGradeList() {
             return FXCollections.observableArrayList();
-        }
-
-        @Override
-        public void setDisplayMode(DisplayMode displayMode) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public DisplayMode getDisplayMode() {
-            throw new AssertionError("This method should not be called.");
         }
 
         @Override
