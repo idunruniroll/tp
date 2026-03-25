@@ -45,7 +45,7 @@ public class ListAssessmentsCommandTest {
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
         assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
-        assertEquals(DisplayMode.ASSESSMENT, modelStub.getDisplayMode());
+        assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
         assertEquals(assessments, modelStub.getFilteredAssessmentList());
     }
 
