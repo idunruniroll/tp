@@ -101,6 +101,13 @@ public class Course {
     }
 
     /**
+     * Reset the assessment list.
+     */
+    public void resetAssessmentList() {
+        assessments.setAssessments(new ArrayList<>());;
+    }
+
+    /**
      * Returns true if the given course has the same identity as this course.
      *
      * @param otherCourse the other course to compare

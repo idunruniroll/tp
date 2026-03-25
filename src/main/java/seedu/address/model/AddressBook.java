@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -199,9 +200,35 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     /**
      * Removes a course from the address book.
+     * Also removes all associated assessments, grades, and unenrolls all students.
      */
     public void removeCourse(Course course) {
         requireNonNull(course);
+        String courseCode = course.getCourseCode();
+
+        // Find the course in the system
+        Optional<Course> courseToRemove = getCourse(courseCode);
+
+        if (courseToRemove.isPresent()) {
+            Course foundCourse = courseToRemove.get();
+
+            // Unenroll all students from this course (student records remain general)
+            ArrayList<Student> studentsToRemove = new ArrayList<>(foundCourse.getStudents());
+            for (Student student : studentsToRemove) {
+                foundCourse.removeStudent(student.getStudentId());
+            }
+
+            // Remove all grades for this course
+            grades.removeIf(grade -> grade.getCourseCode().equalsIgnoreCase(courseCode));
+
+            // Remove all assessments for this course
+            ArrayList<Assessment> assessmentsToRemove = new ArrayList<>(foundCourse.getAssessments());
+            for (Assessment assessment : assessmentsToRemove) {
+                assessments.remove(assessment);
+            }
+        }
+
+        // Remove the course object from course list
         courses.removeCourseByName(course);
     }
 

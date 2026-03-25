@@ -198,7 +198,7 @@ public class ParserUtil {
         String trimmed = courseCode.trim().toUpperCase();
 
         if (!trimmed.matches("[A-Za-z0-9]{2,10}")) {
-            throw new ParseException("\u274C Invalid course code. Example: c/CS2103T");
+            throw new ParseException("\u274C Invalid course code. Example: CS2103T");
         }
 
         return trimmed;

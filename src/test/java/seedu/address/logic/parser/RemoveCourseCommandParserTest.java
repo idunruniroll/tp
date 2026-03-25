@@ -39,12 +39,12 @@ public class RemoveCourseCommandParserTest {
 
     @Test
     public void parse_emptyCourseCode_failure() {
-        assertParseFailure(parser, "", MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, "", MESSAGE_INVALID_COMMAND_FORMAT + RemoveCourseCommand.MESSAGE_USAGE);
     }
 
     @Test
     public void parse_whitespaceOnlyInput_failure() {
-        assertParseFailure(parser, "   ", MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE);
+        assertParseFailure(parser, "   ", MESSAGE_INVALID_COMMAND_FORMAT + RemoveCourseCommand.MESSAGE_USAGE);
     }
 
     @Test
@@ -52,6 +52,6 @@ public class RemoveCourseCommandParserTest {
         // Course codes with spaces are not allowed (regex [A-Za-z0-9]{2,10})
         String courseCodeWithSpaces = "CS 2103T";
         assertParseFailure(parser, courseCodeWithSpaces,
-                MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE);
+                MESSAGE_INVALID_COMMAND_FORMAT + RemoveCourseCommand.MESSAGE_USAGE);
     }
 }

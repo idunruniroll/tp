@@ -63,7 +63,7 @@ public class ListGradesCommandParserTest {
         String userInput = " " + PREFIX_COURSE_CODE + "CS 2103T";
 
         assertParseFailure(parser, userInput,
-                "❌ Invalid course code. Example: c/CS2103T");
+                "❌ Invalid course code. Example: CS2103T");
     }
 
     @Test

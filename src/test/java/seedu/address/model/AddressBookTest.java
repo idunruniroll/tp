@@ -159,4 +159,27 @@ public class AddressBookTest {
         assertFalse(addressBook.getGradeList().contains(grade1));
         assertTrue(addressBook.getGradeList().contains(grade2));
     }
+
+    @Test
+    public void removeCourse_existingCourse_removesAssessmentsAndUnenrollsStudents() {
+        Course course = new Course("CS2103T");
+        Student student = new Student("A0123456X", "Alice Tan");
+        Assessment assessment = new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10"));
+        Grade grade = new Grade("CS2103T", new StudentId(student.getStudentId()),
+                new AssessmentName("Quiz 1"), new Score("8"));
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addCourse(course);
+        addressBook.addStudentToCourse("CS2103T", student);
+        course.addAssessment(assessment);
+        addressBook.addAssessment(assessment);
+        addressBook.addGrade(grade);
+
+        addressBook.removeCourse(course);
+
+        assertFalse(addressBook.hasCourse(new Course("CS2103T")));
+        assertFalse(addressBook.getAssessmentList().contains(assessment));
+        assertFalse(addressBook.getGradeList().contains(grade));
+        assertTrue(course.getStudents().isEmpty());
+    }
 }

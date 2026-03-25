@@ -16,7 +16,7 @@ public class RemoveCourseCommand extends Command {
     // Delete by course index on displaying
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes an existing course.\n"
             + "Parameters: COURSE_CODE \n"
-            + "Example: " + COMMAND_WORD + " 1 ";
+            + "Example: " + COMMAND_WORD + " CS2102 ";
 
     public static final String MESSAGE_SUCCESS = "Removed course: ";
     public static final String MESSAGE_COURSE_NOT_FOUND = "This course does not exist in the system.";

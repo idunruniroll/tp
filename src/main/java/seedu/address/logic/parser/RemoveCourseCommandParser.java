@@ -10,6 +10,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
 
+    public static final String MESSAGE_FORMAT_ERROR = "\u274C Format: removecourse COURSE_CODE";
+
     /**
      * Parses the given {@code String} of arguments in the context of the
      * RemoveCourseCommand
@@ -23,7 +25,7 @@ public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
             return new RemoveCourseCommand(arg);
         } catch (ParseException pe) {
             throw new ParseException(
-                    MESSAGE_INVALID_COMMAND_FORMAT + ": " + RemoveCourseCommand.MESSAGE_USAGE,
+                    MESSAGE_INVALID_COMMAND_FORMAT + RemoveCourseCommand.MESSAGE_USAGE,
                     pe);
         }
     }
