@@ -85,7 +85,7 @@ public class AddressBookParser {
             return new RemoveAssessmentCommandParser().parse(arguments);
 
         case ListAssessmentsCommand.COMMAND_WORD:
-            return new ListAssessmentsCommand();
+            return new ListAssessmentsCommandParser().parse(arguments);
 
         case AddGradeCommand.COMMAND_WORD:
             return new AddGradeCommandParser().parse(arguments);

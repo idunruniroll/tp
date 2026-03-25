@@ -37,6 +37,9 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
                     AddGradeCommand.MESSAGE_USAGE));
         }
 
+        argMultimap.verifyNoDuplicatePrefixesFor(
+                PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_GRADE, PREFIX_COURSE_CODE);
+
         Index studentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_STUDENT).get());
         Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
         Score score = ParserUtil.parseScore(argMultimap.getValue(PREFIX_GRADE).get());

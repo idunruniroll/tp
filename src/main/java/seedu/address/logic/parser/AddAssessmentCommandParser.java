@@ -8,6 +8,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_MAX_SCORE;
 
 import seedu.address.logic.commands.AddAssessmentCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.assessment.AssessmentName;
+import seedu.address.model.assessment.MaxScore;
 
 /**
  * Parses input arguments and creates a new AddAssessmentCommand object.
@@ -18,7 +20,6 @@ public class AddAssessmentCommandParser implements Parser<AddAssessmentCommand> 
      * Parses the given {@code String} of arguments in the context of the
      * AddAssessmentCommand and returns an AddAssessmentCommand object for
      * execution.
-     *
      * @param args the user input
      * @return a new AddAssessmentCommand
      * @throws ParseException if the user input does not conform the expected format
@@ -40,15 +41,14 @@ public class AddAssessmentCommandParser implements Parser<AddAssessmentCommand> 
                     AddAssessmentCommand.MESSAGE_USAGE));
         }
 
-        // Safely extract values from the ArgumentMultimap
-        String courseCode = argMultimap.getValue(PREFIX_COURSE_CODE)
-                .orElseThrow(() -> new ParseException("Course code is missing!")).trim().toUpperCase();
-        String assessmentName = argMultimap.getValue(PREFIX_ASSESSMENT_NAME)
-                .orElseThrow(() -> new ParseException("Assessment name is missing!"));
-        String maxScore = argMultimap.getValue(PREFIX_MAX_SCORE)
-                .orElseThrow(() -> new ParseException("Max score is missing!"));
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COURSE_CODE, PREFIX_ASSESSMENT_NAME, PREFIX_MAX_SCORE);
+
+        String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
+        AssessmentName assessmentName = ParserUtil.parseAssessmentName(
+                argMultimap.getValue(PREFIX_ASSESSMENT_NAME).get());
+        MaxScore maxScore = ParserUtil.parseMaxScore(argMultimap.getValue(PREFIX_MAX_SCORE).get());
 
         // Return a new AddAssessmentCommand with the parsed parameters
-        return new AddAssessmentCommand(courseCode, assessmentName, maxScore);
+        return new AddAssessmentCommand(courseCode, assessmentName.toString(), maxScore.toString());
     }
 }
