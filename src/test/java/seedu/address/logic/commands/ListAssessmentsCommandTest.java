@@ -70,8 +70,40 @@ public class ListAssessmentsCommandTest {
         private final ObservableList<Assessment> assessments;
         private DisplayMode displayMode;
 
+        private java.util.Optional<String> currentCourseForDisplay = java.util.Optional.empty();
+
         private ModelStub(ObservableList<Assessment> assessments) {
             this.assessments = assessments;
+        }
+
+        @Override
+        public ObservableList<Assessment> getAssessmentList() {
+            return assessments;
+        }
+
+        @Override
+        public ObservableList<Assessment> getFilteredAssessmentList() {
+            return assessments;
+        }
+
+        @Override
+        public void setDisplayMode(DisplayMode displayMode) {
+            this.displayMode = displayMode;
+        }
+
+        @Override
+        public DisplayMode getDisplayMode() {
+            return displayMode;
+        }
+
+        @Override
+        public void setCurrentCourseForDisplay(java.util.Optional<String> courseCode) {
+            this.currentCourseForDisplay = courseCode;
+        }
+
+        @Override
+        public java.util.Optional<String> getCurrentCourseForDisplay() {
+            return currentCourseForDisplay;
         }
 
         @Override
@@ -160,16 +192,6 @@ public class ListAssessmentsCommandTest {
         }
 
         @Override
-        public ObservableList<Assessment> getAssessmentList() {
-            return assessments;
-        }
-
-        @Override
-        public ObservableList<Assessment> getFilteredAssessmentList() {
-            return assessments;
-        }
-
-        @Override
         public boolean hasGrade(Grade grade) {
             throw new AssertionError("This method should not be called.");
         }
@@ -245,28 +267,8 @@ public class ListAssessmentsCommandTest {
         }
 
         @Override
-        public void setCurrentCourseForDisplay(java.util.Optional<String> courseCode) {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
-        public java.util.Optional<String> getCurrentCourseForDisplay() {
-            throw new AssertionError("This method should not be called.");
-        }
-
-        @Override
         public ObservableList<Grade> getFilteredGradeList() {
             return FXCollections.observableArrayList();
-        }
-
-        @Override
-        public void setDisplayMode(DisplayMode displayMode) {
-            this.displayMode = displayMode;
-        }
-
-        @Override
-        public DisplayMode getDisplayMode() {
-            return displayMode;
         }
 
         @Override
