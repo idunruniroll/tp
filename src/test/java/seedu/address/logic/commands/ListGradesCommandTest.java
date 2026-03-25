@@ -47,17 +47,15 @@ public class ListGradesCommandTest {
 
         ListGradesCommand command = new ListGradesCommand("student", "A1234567X", null);
         CommandResult result = command.execute(modelStub);
-
-        String expected = "Grades:\n"
-                + "\nCourse: CS2103T\n"
-                + "  Assessment: Quiz 1 (Max Score: 10) (Index: 1)\n"
-                + "1.    Student ID: A1234567X, Grade: 9\n"
-                + "\n"
-                + "\nCourse: CS2101\n"
-                + "  Assessment: Presentation (Max Score: 20) (Index: 1)\n"
-                + "1.    Student ID: A1234567X, Grade: 18";
-
-        assertEquals(expected, result.getFeedbackToUser());
+        String expectedGrades = "Grades:\n"
+                + "\nStudent ID: A1234567X\n"
+                + "  Assessment: Quiz 1 (Max Score: 10) in CS2103T\n"
+                + "    Grade: 9\n"
+                + "  Assessment: Presentation (Max Score: 20) in CS2101\n"
+                + "    Grade: 18";
+        assertEquals(ListGradesCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(DisplayMode.GRADES, modelStub.getDisplayMode());
+        assertEquals(expectedGrades, modelStub.getFilteredGradeList());
     }
 
     @Test
