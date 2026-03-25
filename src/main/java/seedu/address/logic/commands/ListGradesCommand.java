@@ -14,6 +14,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.MaxScore;
@@ -37,6 +38,7 @@ public class ListGradesCommand extends Command {
             + "  " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T " + PREFIX_ASSESSMENT + "1\n"
             + "  " + COMMAND_WORD + " sid/A0123456X";
 
+    public static final String MESSAGE_SUCCESS = "Displayed grades.";
     public static final String MESSAGE_COURSE_REQUIRED = "Please specify a course code. Example: listgrades c/CS2103T";
     public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
@@ -76,21 +78,12 @@ public class ListGradesCommand extends Command {
             return new CommandResult("No grades found.");
         }
 
-        Map<String, Map<String, List<Grade>>> groupedGrades = groupGradesByCourseAndAssessment(grades);
+        Set<Grade> selectedGrades = new HashSet<>(grades);
+        model.updateFilteredGradeList(selectedGrades::contains);
+        model.setCurrentCourseForDisplay(java.util.Optional.empty());
+        model.setDisplayMode(DisplayMode.GRADES);
 
-        StringBuilder sb = new StringBuilder("Grades:\n");
-        Set<String> printedCourses = new HashSet<>();
-
-        for (Assessment assessment : model.getAssessmentList()) {
-            String courseCode = assessment.getCourseCode().toUpperCase();
-
-            if (groupedGrades.containsKey(courseCode)) {
-                sb.append(buildGradesByCourseOutput(courseCode, groupedGrades.get(courseCode),
-                        model.getAssessmentList(), printedCourses));
-            }
-        }
-
-        return new CommandResult(sb.toString().trim());
+        return new CommandResult(MESSAGE_SUCCESS);
     }
 
     private ObservableList<Grade> getFilteredGrades(Model model) throws CommandException {

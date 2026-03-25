@@ -38,7 +38,7 @@ public class MainWindow extends UiPart<Stage> {
     private ResultDisplay resultDisplay;
     private HelpWindow helpWindow;
     private AssessmentListPanel assessmentListPanel;
-    // private GradeListPanel gradeListPanel;
+    private GradeListPanel gradeListPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -118,13 +118,15 @@ public class MainWindow extends UiPart<Stage> {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         studentListPanel = new StudentListPanel(logic.getFilteredStudentList());
         assessmentListPanel = new AssessmentListPanel(logic.getFilteredAssessmentList());
-        // gradeListPanel = new GradeListPanel(logic.getFilteredGradeList());
+        gradeListPanel = new GradeListPanel(
+                logic.getFilteredGradeList(),
+                logic.getAddressBook().getAssessmentList());
 
         personListPanelPlaceholder.getChildren().setAll(
                 personListPanel.getRoot(),
                 studentListPanel.getRoot(),
-                assessmentListPanel.getRoot()
-                // gradeListPanel.getRoot()
+                assessmentListPanel.getRoot(),
+                gradeListPanel.getRoot()
         );
 
         personListPanel.getRoot().setVisible(true);
@@ -136,8 +138,8 @@ public class MainWindow extends UiPart<Stage> {
         assessmentListPanel.getRoot().setVisible(false);
         assessmentListPanel.getRoot().setManaged(false);
 
-        // gradeListPanel.getRoot().setVisible(false);
-        // gradeListPanel.getRoot().setManaged(false);
+        gradeListPanel.getRoot().setVisible(false);
+        gradeListPanel.getRoot().setManaged(false);
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -158,7 +160,7 @@ public class MainWindow extends UiPart<Stage> {
         boolean showPersons = displayMode == DisplayMode.PERSONS;
         boolean showStudents = displayMode == DisplayMode.STUDENTS;
         boolean showAssessments = displayMode == DisplayMode.ASSESSMENTS;
-        // boolean showGrades = displayMode == DisplayMode.GRADES;
+        boolean showGrades = displayMode == DisplayMode.GRADES;
 
         personListPanel.getRoot().setVisible(showPersons);
         personListPanel.getRoot().setManaged(showPersons);
@@ -170,8 +172,8 @@ public class MainWindow extends UiPart<Stage> {
         assessmentListPanel.getRoot().setVisible(showAssessments);
         assessmentListPanel.getRoot().setManaged(showAssessments);
 
-        // gradeListPanel.getRoot().setVisible(showGrades);
-        // gradeListPanel.getRoot().setManaged(showGrades);
+        gradeListPanel.getRoot().setVisible(showGrades);
+        gradeListPanel.getRoot().setManaged(showGrades);
     }
 
     /**

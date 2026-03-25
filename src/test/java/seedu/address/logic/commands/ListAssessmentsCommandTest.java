@@ -271,5 +271,10 @@ public class ListAssessmentsCommandTest {
         public DisplayMode getDisplayMode() {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void updateFilteredGradeList(Predicate<Grade> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 }

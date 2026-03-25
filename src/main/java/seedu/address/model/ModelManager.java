@@ -220,6 +220,12 @@ public class ModelManager implements Model {
         return addressBook.getGradeList();
     }
 
+    @Override
+    public void updateFilteredGradeList(Predicate<Grade> predicate) {
+        requireNonNull(predicate);
+        filteredGrades.setPredicate(predicate);
+    }
+
     // =========== Course / Student operations
     // =============================================================
 

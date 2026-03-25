@@ -153,6 +153,14 @@ public interface Model {
     /** Returns an unmodifiable view of the filtered grade list. */
     ObservableList<Grade> getFilteredGradeList();
 
+    /**
+     * Updates the filter of the grade list shown in the GUI.
+     * Only grades that satisfy the given predicate will remain visible
+     * in the filtered grade list.
+     * @param predicate the predicate used to filter the displayed grades
+     */
+    void updateFilteredGradeList(Predicate<Grade> predicate);
+
     /** Sets which main list should be shown in the GUI. */
     void setDisplayMode(DisplayMode displayMode);
 

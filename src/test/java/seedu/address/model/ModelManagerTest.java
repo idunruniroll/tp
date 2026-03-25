@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import static seedu.address.testutil.Assert.assertThrows;
@@ -15,6 +16,10 @@ import java.util.Arrays;
 import org.junit.jupiter.api.Test;
 
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.assessment.AssessmentName;
+import seedu.address.model.grade.Grade;
+import seedu.address.model.grade.Score;
+import seedu.address.model.student.StudentId;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.testutil.AddressBookBuilder;
@@ -116,6 +121,29 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void updateFilteredGradeList_nullPredicate_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> modelManager.updateFilteredGradeList(null));
+    }
+
+    @Test
+    public void updateFilteredGradeList_validPredicate_filtersGradeList() {
+        Grade gradeOne = new Grade("CS2103T", new StudentId("A1234567X"),
+                new AssessmentName("Quiz 1"), new Score("10"));
+        Grade gradeTwo = new Grade("CS2101", new StudentId("A7654321B"),
+                new AssessmentName("Presentation"), new Score("18"));
+
+        AddressBook addressBook = new AddressBook();
+        addressBook.addGrade(gradeOne);
+        addressBook.addGrade(gradeTwo);
+
+        modelManager = new ModelManager(addressBook, new UserPrefs());
+        modelManager.updateFilteredGradeList(grade -> grade.getCourseCode().equalsIgnoreCase("CS2103T"));
+
+        assertEquals(1, modelManager.getFilteredGradeList().size());
+        assertIterableEquals(Arrays.asList(gradeOne), modelManager.getFilteredGradeList());
+    }
+
+    @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();
@@ -157,5 +185,19 @@ public class ModelManagerTest {
 
         // resets modelManager to initial state for upcoming tests
         modelManager.setDisplayMode(DisplayMode.PERSONS);
+
+        Grade gradeOne = new Grade("CS2103T", new StudentId("A1234567X"),
+                new AssessmentName("Quiz 1"), new Score("10"));
+        Grade gradeTwo = new Grade("CS2101", new StudentId("A7654321B"),
+                new AssessmentName("Presentation"), new Score("18"));
+
+        addressBook.addGrade(gradeOne);
+        addressBook.addGrade(gradeTwo);
+        modelManager = new ModelManager(addressBook, userPrefs);
+
+        modelManager.updateFilteredGradeList(grade -> grade.getCourseCode().equalsIgnoreCase("CS2103T"));
+        assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));
+
+        modelManager.updateFilteredGradeList(grade -> true);
     }
 }

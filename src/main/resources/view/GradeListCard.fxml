@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="cardPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox alignment="CENTER_LEFT" minHeight="100" spacing="6">
+        <padding>
+            <Insets top="8" right="8" bottom="8" left="15" />
+        </padding>
+
+        <HBox spacing="4">
+            <Label fx:id="id" styleClass="cell_big_label">
+                <minWidth>
+                    <Region fx:constant="USE_PREF_SIZE" />
+                </minWidth>
+            </Label>
+            <Label fx:id="assessmentName" styleClass="cell_big_label" />
+        </HBox>
+
+        <HBox spacing="6">
+            <Label fx:id="courseCode" styleClass="tag-label" />
+        </HBox>
+
+        <Label fx:id="studentId" styleClass="cell_small_label" />
+        <Label fx:id="score" styleClass="cell_small_label" />
+    </VBox>
+</HBox>
