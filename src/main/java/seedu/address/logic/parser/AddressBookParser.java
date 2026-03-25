@@ -7,7 +7,6 @@ import java.util.regex.Pattern;
 
 import seedu.address.logic.commands.AddAssessmentCommand;
 import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.ExportCourseCommand;
 import seedu.address.logic.commands.AddCourseCommand;
 import seedu.address.logic.commands.AddGradeCommand;
 import seedu.address.logic.commands.AddStudentCommand;
@@ -16,6 +15,7 @@ import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.ExportCourseCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListAssessmentsCommand;
@@ -100,11 +100,11 @@ public class AddressBookParser {
         case RemoveStudentCommand.COMMAND_WORD:
             return new RemoveStudentCommandParser().parse(arguments);
 
-            case ListStudentsCommand.COMMAND_WORD:
-                return new ListStudentsCommandParser().parse(arguments);
+        case ListStudentsCommand.COMMAND_WORD:
+            return new ListStudentsCommandParser().parse(arguments);
 
-            case ExportCourseCommand.COMMAND_WORD:
-                return new ExportCourseCommandParser().parse(arguments);
+        case ExportCourseCommand.COMMAND_WORD:
+            return new ExportCourseCommandParser().parse(arguments);
 
         case AddCourseCommand.COMMAND_WORD:
             return new AddCourseCommandParser().parse(arguments);

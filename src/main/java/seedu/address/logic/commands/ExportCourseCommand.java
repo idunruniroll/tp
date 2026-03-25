@@ -38,6 +38,9 @@ public class ExportCourseCommand extends Command {
 
     private final String courseCode;
 
+    /**
+     * Creates an ExportCourseCommand for the given course code.
+     */
     public ExportCourseCommand(String courseCode) {
         requireNonNull(courseCode);
         this.courseCode = courseCode;
