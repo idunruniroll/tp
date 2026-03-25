@@ -1,56 +1,49 @@
 package seedu.address.ui;
 
-import javafx.beans.property.SimpleStringProperty;
+import java.util.logging.Logger;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.student.Student;
 
 /**
- * Panel containing a table of students for a specific course.
+ * Panel containing the list of students for the currently displayed course.
  */
 public class StudentListPanel extends UiPart<Region> {
 
     private static final String FXML = "StudentListPanel.fxml";
+    private final Logger logger = LogsCenter.getLogger(StudentListPanel.class);
 
     @FXML
-    private Label courseHeader;
-
-    @FXML
-    private TableView<Student> studentTableView;
-
-    @FXML
-    private TableColumn<Student, String> studentIdColumn;
-
-    @FXML
-    private TableColumn<Student, String> studentNameColumn;
+    private ListView<Student> studentListView;
 
     /**
-     * Creates a StudentListPanel.
-     *
-     * @param studentList the list of students to display
+     * Creates a {@code StudentListPanel} bound to the given observable student list.
      */
     public StudentListPanel(ObservableList<Student> studentList) {
         super(FXML);
-
-        studentIdColumn.setCellValueFactory(
-                cellData -> new SimpleStringProperty(cellData.getValue().getStudentId()));
-        studentNameColumn.setCellValueFactory(
-                cellData -> new SimpleStringProperty(cellData.getValue().getStudentName()));
-
-        studentTableView.setItems(studentList);
-        setCourseHeader("");
+        studentListView.setItems(studentList);
+        studentListView.setCellFactory(listView -> new StudentListViewCell());
     }
 
-    public void setCourseHeader(String courseCode) {
-        if (courseCode == null || courseCode.isBlank()) {
-            courseHeader.setText("Students");
-        } else {
-            courseHeader.setText("Course: " + courseCode);
+    /**
+     * Custom {@code ListCell} that displays a {@code Student} using a {@code StudentCard}.
+     */
+    class StudentListViewCell extends ListCell<Student> {
+        @Override
+        protected void updateItem(Student student, boolean empty) {
+            super.updateItem(student, empty);
+
+            if (empty || student == null) {
+                setGraphic(null);
+                setText(null);
+            } else {
+                setGraphic(new StudentCard(student, getIndex() + 1).getRoot());
+            }
         }
     }
 }
-

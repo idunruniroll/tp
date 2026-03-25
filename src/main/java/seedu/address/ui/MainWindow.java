@@ -139,7 +139,6 @@ public class MainWindow extends UiPart<Stage> {
         personListPanel.getRoot().setVisible(!showStudents);
         personListPanel.getRoot().setManaged(!showStudents);
 
-        studentListPanel.setCourseHeader(currentCourse.orElse(""));
         studentListPanel.getRoot().setVisible(showStudents);
         studentListPanel.getRoot().setManaged(showStudents);
     }
