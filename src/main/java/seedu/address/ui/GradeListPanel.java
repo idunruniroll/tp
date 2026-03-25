@@ -10,6 +10,9 @@ import javafx.scene.layout.Region;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
 
+/**
+ * Panel containing the list of grades to be displayed in the UI.
+ */
 public class GradeListPanel extends UiPart<Region> {
 
     private static final String FXML = "GradeListPanel.fxml";
@@ -19,6 +22,10 @@ public class GradeListPanel extends UiPart<Region> {
     @FXML
     private ListView<Grade> gradeListView;
 
+    /**
+     * Creates a {@code GradeListPanel} that displays the given list of grades.
+     * @param gradeList The list of grades to display.
+     */
     public GradeListPanel(ObservableList<Grade> gradeList, ObservableList<Assessment> assessmentList) {
         super(FXML);
         this.assessmentList = assessmentList;

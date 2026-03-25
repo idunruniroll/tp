@@ -6,6 +6,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.grade.Grade;
 
+/**
+ * A UI component that displays information for a single {@code Grade}.
+ */
 public class GradeCard extends UiPart<Region> {
 
     private static final String FXML = "GradeListCard.fxml";
@@ -25,6 +28,12 @@ public class GradeCard extends UiPart<Region> {
     @FXML
     private Label score;
 
+    /**
+     * Creates a {@code GradeCard} for the given {@code Grade} and displays it
+     * using the given displayed index.
+     * @param grade          The grade to display.
+     * @param displayedIndex The index shown for this grade in the list.
+     */
     public GradeCard(Grade grade, int displayedIndex, String maxScoreText) {
         super(FXML);
         this.grade = grade;
