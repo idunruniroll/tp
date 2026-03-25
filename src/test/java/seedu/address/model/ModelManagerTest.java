@@ -19,9 +19,8 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.grade.Score;
-import seedu.address.model.student.StudentId;
-import seedu.address.model.DisplayMode;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.student.StudentId;
 import seedu.address.testutil.AddressBookBuilder;
 
 public class ModelManagerTest {
