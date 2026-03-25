@@ -58,7 +58,7 @@ public interface Logic {
     ObservableList<Student> getFilteredStudentList();
 
     Optional<String> getCurrentCourseForDisplay();
-    
+
     // =========== Assessment / Grade GUI display state
     // ========================================
 
