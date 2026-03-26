@@ -5,8 +5,8 @@ skinparam ArrowFontStyle plain
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":DeleteCommandParser" as DeleteCommandParser LOGIC_COLOR
-participant "d:DeleteCommand" as DeleteCommand LOGIC_COLOR
+participant ":AddGradeCommandParser" as AddGradeCommandParser LOGIC_COLOR
+participant "cmd:AddGradeCommand" as AddGradeCommand LOGIC_COLOR
 participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
@@ -14,56 +14,56 @@ box Model MODEL_COLOR_T1
 participant "m:Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("delete 1")
+[-> LogicManager : execute("addgrade c/CS2103T id/A0123456B as/Assignment1 g/95")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("delete 1")
+LogicManager -> AddressBookParser : parseCommand("addgrade c/CS2103T id/A0123456B as/Assignment1 g/95")
 activate AddressBookParser
 
-create DeleteCommandParser
-AddressBookParser -> DeleteCommandParser
-activate DeleteCommandParser
+create AddGradeCommandParser
+AddressBookParser -> AddGradeCommandParser
+activate AddGradeCommandParser
 
-DeleteCommandParser --> AddressBookParser
-deactivate DeleteCommandParser
+AddGradeCommandParser --> AddressBookParser
+deactivate AddGradeCommandParser
 
-AddressBookParser -> DeleteCommandParser : parse("1")
-activate DeleteCommandParser
+AddressBookParser -> AddGradeCommandParser : parse("c/CS2103T id/A0123456B as/Assignment1 g/95")
+activate AddGradeCommandParser
 
-create DeleteCommand
-DeleteCommandParser -> DeleteCommand
-activate DeleteCommand
+create AddGradeCommand
+AddGradeCommandParser -> AddGradeCommand
+activate AddGradeCommand
 
-DeleteCommand --> DeleteCommandParser :
-deactivate DeleteCommand
+AddGradeCommand --> AddGradeCommandParser :
+deactivate AddGradeCommand
 
-DeleteCommandParser --> AddressBookParser : d
-deactivate DeleteCommandParser
+AddGradeCommandParser --> AddressBookParser : cmd
+deactivate AddGradeCommandParser
 'Hidden arrow to position the destroy marker below the end of the activation bar.
-DeleteCommandParser -[hidden]-> AddressBookParser
-destroy DeleteCommandParser
+AddGradeCommandParser -[hidden]-> AddressBookParser
+destroy AddGradeCommandParser
 
-AddressBookParser --> LogicManager : d
+AddressBookParser --> LogicManager : cmd
 deactivate AddressBookParser
 
-LogicManager -> DeleteCommand : execute(m)
-activate DeleteCommand
+LogicManager -> AddGradeCommand : execute(m)
+activate AddGradeCommand
 
-DeleteCommand -> Model : deletePerson(1)
+AddGradeCommand -> Model : addGrade(courseCode, studentId, assessmentName, score)
 activate Model
 
-Model --> DeleteCommand
+Model --> AddGradeCommand
 deactivate Model
 
 create CommandResult
-DeleteCommand -> CommandResult
+AddGradeCommand -> CommandResult
 activate CommandResult
 
-CommandResult --> DeleteCommand
+CommandResult --> AddGradeCommand
 deactivate CommandResult
 
-DeleteCommand --> LogicManager : r
-deactivate DeleteCommand
+AddGradeCommand --> LogicManager : r
+deactivate AddGradeCommand
 
 [<--LogicManager
 deactivate LogicManager

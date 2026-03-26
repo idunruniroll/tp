@@ -8,13 +8,13 @@ Participant ":Logic" as logic LOGIC_COLOR
 Participant ":Model" as model MODEL_COLOR
 Participant ":Storage" as storage STORAGE_COLOR
 
-user -[USER_COLOR]> ui : "delete 1"
+user -[USER_COLOR]> ui : "addgrade c/CS2103T id/A0123456B a/Assignment1 s/95"
 activate ui UI_COLOR
 
-ui -[UI_COLOR]> logic : execute("delete 1")
+ui -[UI_COLOR]> logic : execute("addgrade c/CS2103T id/A0123456B a/Assignment1 s/95")
 activate logic LOGIC_COLOR
 
-logic -[LOGIC_COLOR]> model : deletePerson(p)
+logic -[LOGIC_COLOR]> model : addGrade(courseCode, studentId, assessmentName, score)
 activate model MODEL_COLOR
 
 model -[MODEL_COLOR]-> logic
@@ -31,9 +31,9 @@ deactivate storage
 storage --[STORAGE_COLOR]> logic
 deactivate storage
 
-logic --[LOGIC_COLOR]> ui
+logic --[LOGIC_COLOR]> ui : CommandResult
 deactivate logic
 
-ui--[UI_COLOR]> user
+ui--[UI_COLOR]> user : Display grade added
 deactivate ui
 @enduml
