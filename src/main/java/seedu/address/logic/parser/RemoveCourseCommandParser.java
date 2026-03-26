@@ -10,8 +10,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
 
-    public static final String MESSAGE_FORMAT_ERROR = "\u274C Format: removecourse COURSE_CODE";
-
     /**
      * Parses the given {@code String} of arguments in the context of the
      * RemoveCourseCommand
@@ -23,14 +21,14 @@ public class RemoveCourseCommandParser implements Parser<RemoveCourseCommand> {
         String trimmedArgs = args.trim();
 
         if (trimmedArgs.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveCourseCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT + RemoveCourseCommand.MESSAGE_USAGE));
         }
         try {
             String courseCode = ParserUtil.parseCourseCode(trimmedArgs);
             return new RemoveCourseCommand(courseCode);
         } catch (ParseException pe) {
             throw new ParseException(
-                String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveCourseCommand.MESSAGE_USAGE),
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT + RemoveCourseCommand.MESSAGE_USAGE),
                     pe);
         }
     }

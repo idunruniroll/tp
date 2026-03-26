@@ -31,12 +31,12 @@ public class ListDetailsCommandParserTest {
 
     @Test
     public void parse_missingPrefix_failure() {
-        assertParseFailure(parser, "CS2103T", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                                    ListDetailsCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "CS2103T", String.format(MESSAGE_INVALID_COMMAND_FORMAT
+                                    + ListDetailsCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_invalidCourseCode_failure() {
-        assertParseFailure(parser, " c/@@@", "\u274C Invalid course code. Example: c/CS2103T");
+        assertParseFailure(parser, " c/@@@", "\u274C Invalid course code. Example: CS2103T");
     }
 }

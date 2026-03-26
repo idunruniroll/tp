@@ -31,16 +31,16 @@ import seedu.address.model.person.Person;
 public class AddCourseCommandTest {
 
     @Test
-    public void constructor_nullCourseCode_throwsNullPointerException() {
+    public void constructor_nullCourseCodes_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> new AddCourseCommand(null));
     }
 
     @Test
-    public void execute_courseCodeAcceptedByModel_addSuccessful() throws Exception {
+    public void execute_singleCourseCodeAcceptedByModel_addSuccessful() throws Exception {
         ModelStubAcceptingCourseAdded modelStub = new ModelStubAcceptingCourseAdded();
         String validCourseCode = "CS2103T";
 
-        CommandResult commandResult = new AddCourseCommand(validCourseCode).execute(modelStub);
+        CommandResult commandResult = new AddCourseCommand(Arrays.asList(validCourseCode)).execute(modelStub);
 
         assertEquals(String.format(AddCourseCommand.MESSAGE_SUCCESS, validCourseCode),
                 commandResult.getFeedbackToUser());
@@ -48,27 +48,54 @@ public class AddCourseCommandTest {
     }
 
     @Test
+    public void execute_multipleCourseCodes_addSuccessful() throws Exception {
+        ModelStubAcceptingCourseAdded modelStub = new ModelStubAcceptingCourseAdded();
+        String courseCodeA = "CS2103T";
+        String courseCodeB = "CS2101";
+
+        CommandResult commandResult = new AddCourseCommand(Arrays.asList(courseCodeA, courseCodeB))
+                .execute(modelStub);
+
+        assertEquals(String.format(AddCourseCommand.MESSAGE_SUCCESS, courseCodeA + ", " + courseCodeB),
+                commandResult.getFeedbackToUser());
+        assertEquals(Arrays.asList(courseCodeA, courseCodeB), modelStub.coursesAdded);
+    }
+
+    @Test
     public void execute_duplicateCourseCode_throwsCommandException() {
         String validCourseCode = "CS2103T";
-        AddCourseCommand addCourseCommand = new AddCourseCommand(validCourseCode);
+        AddCourseCommand addCourseCommand = new AddCourseCommand(Arrays.asList(validCourseCode));
         ModelStub modelStub = new ModelStubWithCourse(validCourseCode);
 
         assertThrows(CommandException.class,
-            AddCourseCommand.MESSAGE_DUPLICATE_ASSESSMENT, () -> addCourseCommand.execute(modelStub));
+            String.format(AddCourseCommand.MESSAGE_DUPLICATE_COURSE, validCourseCode), () ->
+                                                    addCourseCommand.execute(modelStub));
+    }
+
+    @Test
+    public void execute_duplicateCourseCodeInList_throwsCommandException() {
+        String courseCodeA = "CS2103T";
+        String courseCodeB = "CS2101";
+        AddCourseCommand addCourseCommand = new AddCourseCommand(Arrays.asList(courseCodeA, courseCodeB));
+        ModelStub modelStub = new ModelStubWithCourse(courseCodeB);
+
+        assertThrows(CommandException.class,
+            String.format(AddCourseCommand.MESSAGE_DUPLICATE_COURSE, courseCodeB), () ->
+                                                    addCourseCommand.execute(modelStub));
     }
 
     @Test
     public void equals() {
         String courseCodeA = "CS2103T";
         String courseCodeB = "CS2101";
-        AddCourseCommand addCourseCommandA = new AddCourseCommand(courseCodeA);
-        AddCourseCommand addCourseCommandB = new AddCourseCommand(courseCodeB);
+        AddCourseCommand addCourseCommandA = new AddCourseCommand(Arrays.asList(courseCodeA));
+        AddCourseCommand addCourseCommandB = new AddCourseCommand(Arrays.asList(courseCodeB));
 
         // same object -> returns true
         assertTrue(addCourseCommandA.equals(addCourseCommandA));
 
         // same values -> returns true
-        AddCourseCommand addCourseCommandACopy = new AddCourseCommand(courseCodeA);
+        AddCourseCommand addCourseCommandACopy = new AddCourseCommand(Arrays.asList(courseCodeA));
         assertTrue(addCourseCommandA.equals(addCourseCommandACopy));
 
         // different types -> returns false
