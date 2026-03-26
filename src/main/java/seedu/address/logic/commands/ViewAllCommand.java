@@ -4,7 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
@@ -14,6 +16,8 @@ import seedu.address.model.grade.Grade;
  */
 public class ViewAllCommand extends Command {
 
+    private static final Logger logger = LogsCenter.getLogger(ViewAllCommand.class);
+
     public static final String COMMAND_WORD = "viewall";
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Shows an overview summary of all assessments and grades.\n"
@@ -22,6 +26,7 @@ public class ViewAllCommand extends Command {
     @Override
     public CommandResult execute(Model model) {
         requireNonNull(model);
+        logger.info("Executing viewall command");
 
         int assessmentCount = model.getAddressBook().getAssessmentList().size();
         int gradeCount = model.getAddressBook().getGradeList().size();
