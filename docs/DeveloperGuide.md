@@ -326,6 +326,10 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **Use Case: Add a student**
 
+The following activity diagram summarizes what happens when a user executes the `addstudent` command:
+
+<img src="images/AddStudentActivityDiagram.png" width="400" />
+
 **MSS**
 
 1. User requests to add a student to the list, including the course code (required), student ID (required), name
