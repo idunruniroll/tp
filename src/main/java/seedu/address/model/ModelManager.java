@@ -33,7 +33,6 @@ public class ModelManager implements Model {
     private final FilteredList<Assessment> filteredAssessments;
     private final FilteredList<Grade> filteredGrades;
     
-
     private ObservableList<Course> courses;
     private ObservableList<Grade> grades;
 
