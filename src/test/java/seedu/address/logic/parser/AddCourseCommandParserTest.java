@@ -39,14 +39,13 @@ public class AddCourseCommandParserTest {
 
     @Test
     public void parse_emptyInput_failure() {
-        assertParseFailure(parser, "", String.format(MESSAGE_INVALID_COMMAND_FORMAT
-                                    + AddCourseCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCourseCommand.MESSAGE_USAGE));
     }
 
     @Test
     public void parse_whitespaceOnlyInput_failure() {
-        assertParseFailure(parser, "   ", String.format(MESSAGE_INVALID_COMMAND_FORMAT
-                                    + AddCourseCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "   ",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCourseCommand.MESSAGE_USAGE));
     }
 }
-
