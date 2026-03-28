@@ -177,13 +177,15 @@ public class ModelManager implements Model {
     /**
      * Get a list of grades filtered by student ID.
      */
+    @Override
     public ObservableList<Grade> getGradesByStudentId(String studentId) {
         requireNonNull(studentId);
-        ObservableList<Grade> filteredGrades = FXCollections.observableArrayList(
+        String normalizedStudentId = studentId.trim().toUpperCase();
+
+        return FXCollections.observableArrayList(
                 addressBook.getGradeList().stream()
-                        .filter(grade -> grade.getStudentId().equals(studentId))
+                        .filter(grade -> grade.getStudentId().toString().equalsIgnoreCase(normalizedStudentId))
                         .collect(Collectors.toList()));
-        return filteredGrades;
     }
 
     /**
