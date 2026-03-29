@@ -322,6 +322,11 @@ public class AddCourseCommandTest {
         public void updateFilteredGradeList(Predicate<Grade> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**

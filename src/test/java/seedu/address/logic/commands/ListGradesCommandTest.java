@@ -353,5 +353,10 @@ public class ListGradesCommandTest {
         public ObservableList<Assessment> getFilteredAssessmentList() {
             return FXCollections.observableArrayList();
         }
+
+        @Override
+        public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 }

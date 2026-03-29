@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -46,7 +48,8 @@ public class ListAssessmentsCommandTest {
 
         assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
-        assertEquals(assessments, modelStub.getFilteredAssessmentList());
+        assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
+        assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));
     }
 
     @Test
@@ -60,7 +63,8 @@ public class ListAssessmentsCommandTest {
 
         assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
-        assertEquals(assessments, modelStub.getFilteredAssessmentList());
+        assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
+        assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));
     }
 
     /**
@@ -68,12 +72,14 @@ public class ListAssessmentsCommandTest {
      */
     private static class ModelStub implements Model {
         private final ObservableList<Assessment> assessments;
+        private final FilteredList<Assessment> filteredAssessments;
         private DisplayMode displayMode;
 
         private java.util.Optional<String> currentCourseForDisplay = java.util.Optional.empty();
 
         private ModelStub(ObservableList<Assessment> assessments) {
             this.assessments = assessments;
+            this.filteredAssessments = new FilteredList<>(assessments);
         }
 
         @Override
@@ -83,7 +89,7 @@ public class ListAssessmentsCommandTest {
 
         @Override
         public ObservableList<Assessment> getFilteredAssessmentList() {
-            return assessments;
+            return filteredAssessments;
         }
 
         @Override
@@ -274,6 +280,11 @@ public class ListAssessmentsCommandTest {
         @Override
         public void updateFilteredGradeList(Predicate<Grade> predicate) {
             throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
+            filteredAssessments.setPredicate(predicate);
         }
     }
 }

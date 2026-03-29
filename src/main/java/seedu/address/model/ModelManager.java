@@ -32,7 +32,6 @@ public class ModelManager implements Model {
     private final FilteredList<Person> filteredPersons;
     private final FilteredList<Assessment> filteredAssessments;
     private final FilteredList<Grade> filteredGrades;
-
     private ObservableList<Course> courses;
     private ObservableList<Grade> grades;
 
@@ -153,6 +152,12 @@ public class ModelManager implements Model {
     @Override
     public ObservableList<Assessment> getAssessmentList() {
         return addressBook.getAssessmentList();
+    }
+
+    @Override
+    public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
+        requireNonNull(predicate);
+        filteredAssessments.setPredicate(predicate);
     }
 
     @Override

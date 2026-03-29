@@ -126,8 +126,7 @@ public class MainWindow extends UiPart<Stage> {
                 personListPanel.getRoot(),
                 studentListPanel.getRoot(),
                 assessmentListPanel.getRoot(),
-                gradeListPanel.getRoot()
-        );
+                gradeListPanel.getRoot());
 
         personListPanel.getRoot().setVisible(true);
         personListPanel.getRoot().setManaged(true);

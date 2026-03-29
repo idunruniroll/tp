@@ -58,8 +58,6 @@ public class AddAssessmentCommand extends Command {
             throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
-        // Create the assessment object using the provided courseCode, assessmentName,
-        // and maxScore
         Assessment assessment = new Assessment(courseCode, assessmentName, maxScore);
 
         if (model.hasAssessment(assessment)) {
