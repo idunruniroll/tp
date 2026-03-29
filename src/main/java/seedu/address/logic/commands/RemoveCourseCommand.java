@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,8 +20,8 @@ public class RemoveCourseCommand extends Command {
 
     // Delete by course index on displaying
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Removes an existing course.\n"
-            + "Parameters: COURSE_CODE \n"
-            + "Example: " + COMMAND_WORD + " CS2102 ";
+            + "Parameters: " + PREFIX_COURSE_CODE + "COURSE_CODE\n"
+            + "Example: " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2102";
 
     public static final String MESSAGE_SUCCESS = "\u2705 Removed course %s.";
     public static final String MESSAGE_COURSE_NOT_FOUND = "\u274C Course %s not found.";

@@ -366,3 +366,13 @@
     -fx-font-size: 12px;
     -fx-text-fill: #5c7cfa;
 }
+
+.section-bubble-label {
+    -fx-background-color: #2f9e74;
+    -fx-text-fill: white;
+    -fx-padding: 2 10 2 10;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}

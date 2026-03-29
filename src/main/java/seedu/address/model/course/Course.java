@@ -8,13 +8,15 @@ package seedu.address.model.course;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.assessment.Assessment;
-import seedu.address.model.assessment.UniqueAssessmentList;
 import seedu.address.model.student.Student;
 
 /**
  * Represents a course in the address book.
+ * Maintains a list of Student objects enrolled in the course.
+ * Contains a filtered list of Assessment objects from global UniqueAssessmentList.
  */
 public class Course {
 
@@ -22,7 +24,7 @@ public class Course {
 
     private final String courseCode;
     private final ArrayList<Student> students;
-    private final UniqueAssessmentList assessments;
+    private ObservableList<Assessment> assessmentSource;
 
     /**
      * Constructs a Course with the specified course code.
@@ -32,7 +34,7 @@ public class Course {
     public Course(String courseCode) {
         this.courseCode = courseCode.trim().toUpperCase();
         this.students = new ArrayList<Student>();
-        this.assessments = new UniqueAssessmentList();
+        this.assessmentSource = FXCollections.emptyObservableList();
     }
 
     public String getCourseCode() {
@@ -76,7 +78,7 @@ public class Course {
      * @return ObservableList of Assessment
      */
     public ObservableList<Assessment> getAssessments() {
-        return assessments.asUnmodifiableObservableList();
+        return assessmentSource.filtered(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode));
     }
 
     /**
@@ -84,27 +86,14 @@ public class Course {
      * in this course.
      */
     public boolean hasAssessment(Assessment assessmentToCheck) {
-        return assessments.contains(assessmentToCheck);
-    }
-
-    /** Adds an assessment to this course. */
-    public void addAssessment(Assessment assessmentToAdd) {
-        assessments.add(assessmentToAdd);
+        return getAssessments().stream().anyMatch(assessmentToCheck::isSameAssessment);
     }
 
     /**
-     * Removes the assessment with the given Assessment object
-     * if the assessment exists.
+     * Sets the global assessment source used by this course to expose a filtered course view.
      */
-    public void removeAssessment(Assessment assessmentToRemove) {
-        assessments.remove(assessmentToRemove);
-    }
-
-    /**
-     * Reset the assessment list.
-     */
-    public void resetAssessmentList() {
-        assessments.setAssessments(new ArrayList<>());;
+    public void setAssessmentSource(ObservableList<Assessment> assessmentSource) {
+        this.assessmentSource = assessmentSource;
     }
 
     /**

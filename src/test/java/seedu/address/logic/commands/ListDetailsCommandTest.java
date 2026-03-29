@@ -33,7 +33,6 @@ public class ListDetailsCommandTest {
     @Test
     public void execute_singleCourse_success() throws Exception {
         Course course = new Course("CS2103T");
-        course.addAssessment(new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")));
         course.addStudent(new Student("A1234567X", "Alice"));
 
         ModelStub modelStub = new ModelStub();
@@ -86,7 +85,8 @@ public class ListDetailsCommandTest {
 
         @Override
         public ObservableList<Assessment> getAssessmentList() {
-            return FXCollections.observableArrayList();
+            return FXCollections.observableArrayList(
+                    new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")));
         }
 
         // Remaining methods not needed for these tests

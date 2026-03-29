@@ -24,12 +24,12 @@
         <Label fx:id="summary" styleClass="cell_small_label" />
 
         <VBox spacing="4">
-            <Label text="Assessments" styleClass="course-section-header" />
+            <Label text="Assessments" styleClass="section-bubble-label" />
             <VBox fx:id="assessmentsContainer" spacing="3" />
         </VBox>
 
         <VBox spacing="4">
-            <Label text="Students" styleClass="course-section-header" />
+            <Label text="Students" styleClass="section-bubble-label" />
             <VBox fx:id="studentsContainer" spacing="3" />
         </VBox>
     </VBox>

@@ -171,7 +171,6 @@ public class AddressBookTest {
         AddressBook addressBook = new AddressBook();
         addressBook.addCourse(course);
         addressBook.addStudentToCourse("CS2103T", student);
-        course.addAssessment(assessment);
         addressBook.addAssessment(assessment);
         addressBook.addGrade(grade);
 

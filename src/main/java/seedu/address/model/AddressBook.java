@@ -60,6 +60,7 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     public void setAssessments(List<Assessment> assessments) {
         this.assessments.setAssessments(assessments);
+        bindCoursesToAssessmentList();
     }
 
     public void setGrades(List<Grade> grades) {
@@ -69,6 +70,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void setCourses(List<Course> courseList) {
         requireNonNull(courseList);
         this.courses.setCourses(courseList);
+        bindCoursesToAssessmentList();
     }
 
     /**
@@ -195,6 +197,7 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void addCourse(Course course) {
         requireNonNull(course);
+        course.setAssessmentSource(assessments.asUnmodifiableObservableList());
         courses.add(course);
     }
 
@@ -261,6 +264,11 @@ public class AddressBook implements ReadOnlyAddressBook {
     @Override
     public ObservableList<Course> getCourseList() {
         return courses.asUnmodifiableObservableList();
+    }
+
+    private void bindCoursesToAssessmentList() {
+        ObservableList<Assessment> globalAssessments = assessments.asUnmodifiableObservableList();
+        courses.asUnmodifiableObservableList().forEach(course -> course.setAssessmentSource(globalAssessments));
     }
 
     //// util methods

@@ -13,10 +13,11 @@ public class RemoveCourseCommandParserTest {
 
     @Test
     public void parse_validCourseCode_success() {
+        String input = "c/CS2103T";
         String validCourseCode = "CS2103T";
         RemoveCourseCommand expectedCommand = new RemoveCourseCommand(validCourseCode);
 
-        assertParseSuccess(parser, validCourseCode, expectedCommand);
+        assertParseSuccess(parser, input, expectedCommand);
     }
 
     @Test
@@ -25,7 +26,7 @@ public class RemoveCourseCommandParserTest {
         RemoveCourseCommand expectedCommand = new RemoveCourseCommand(validCourseCode);
 
         // Leading whitespace should be trimmed
-        assertParseSuccess(parser, "   " + validCourseCode, expectedCommand);
+        assertParseSuccess(parser, "   c/" + validCourseCode, expectedCommand);
     }
 
     @Test
@@ -34,7 +35,13 @@ public class RemoveCourseCommandParserTest {
         RemoveCourseCommand expectedCommand = new RemoveCourseCommand(validCourseCode);
 
         // Trailing whitespace should be trimmed
-        assertParseSuccess(parser, validCourseCode + "   ", expectedCommand);
+        assertParseSuccess(parser, "c/" + validCourseCode + "   ", expectedCommand);
+    }
+
+    @Test
+    public void parse_missingPrefix_failure() {
+        assertParseFailure(parser, "CS2103T",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveCourseCommand.MESSAGE_USAGE));
     }
 
     @Test
