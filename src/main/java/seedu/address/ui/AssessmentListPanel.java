@@ -60,15 +60,28 @@ public class AssessmentListPanel extends UiPart<Region> {
         private final String courseCode;
         private final List<Assessment> assessments;
 
+        /**
+         * Creates a grouped assessment entry for a course.
+         * @param courseCode  the course code
+         * @param assessments the assessments belonging to the course
+         */
         public GroupedAssessment(String courseCode, List<Assessment> assessments) {
             this.courseCode = courseCode;
             this.assessments = assessments;
         }
 
+        /**
+         * Returns the course code for this group.
+         * @return the course code
+         */
         public String getCourseCode() {
             return courseCode;
         }
 
+        /**
+         * Returns the assessments in this group.
+         * @return the list of assessments
+         */
         public List<Assessment> getAssessments() {
             return assessments;
         }

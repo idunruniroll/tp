@@ -114,6 +114,13 @@ public class GradeListPanel extends UiPart<Region> {
         private final String maxScoreText;
         private final List<GradeRow> rows;
 
+        /**
+         * Creates a grouped grade entry for a course assessment.
+         * @param courseCode     the course code
+         * @param assessmentName the assessment name
+         * @param maxScoreText   the max score text
+         * @param rows           the grade rows in this group
+         */
         public GroupedGrade(String courseCode, String assessmentName, String maxScoreText, List<GradeRow> rows) {
             this.courseCode = courseCode;
             this.assessmentName = assessmentName;
@@ -121,18 +128,34 @@ public class GradeListPanel extends UiPart<Region> {
             this.rows = rows;
         }
 
+        /**
+         * Returns the course code for this group.
+         * @return the course code
+         */
         public String getCourseCode() {
             return courseCode;
         }
 
+        /**
+         * Returns the assessment name for this group.
+         * @return the assessment name
+         */
         public String getAssessmentName() {
             return assessmentName;
         }
 
+        /**
+         * Returns the max score text for this group.
+         * @return the max score text
+         */
         public String getMaxScoreText() {
             return maxScoreText;
         }
 
+        /**
+         * Returns the grade rows in this group.
+         * @return the grade rows
+         */
         public List<GradeRow> getRows() {
             return rows;
         }
