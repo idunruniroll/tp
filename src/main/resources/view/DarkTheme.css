@@ -360,3 +360,13 @@
     -fx-font-size: 11px;
     -fx-font-weight: bold;
 }
+
+.group-header-tag {
+    -fx-background-color: #5c7cfa;
+    -fx-text-fill: white;
+    -fx-padding: 4 10 4 10;
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}

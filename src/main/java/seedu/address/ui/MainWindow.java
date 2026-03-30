@@ -120,7 +120,8 @@ public class MainWindow extends UiPart<Stage> {
         assessmentListPanel = new AssessmentListPanel(logic.getFilteredAssessmentList());
         gradeListPanel = new GradeListPanel(
                 logic.getFilteredGradeList(),
-                logic.getAddressBook().getAssessmentList());
+                logic.getAddressBook().getAssessmentList(),
+                logic.getAddressBook().getCourseList());
 
         personListPanelPlaceholder.getChildren().setAll(
                 personListPanel.getRoot(),
