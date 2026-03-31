@@ -15,10 +15,10 @@ public class ListAssessmentsCommand extends Command {
 
     public static final String COMMAND_WORD = "listassessments";
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Lists all assessments, optionally filtered by course.\n"
-            + "Parameters: [c/COURSE_CODE]\n"
-            + "Example: " + COMMAND_WORD + "\n"
-            + "Example: " + COMMAND_WORD + " c/CS2103T";
+        + ": Lists all assessments, optionally filtered by course.\n"
+        + "Parameters: [c/COURSE_CODE]\n"
+        + "Example: " + COMMAND_WORD + "\n"
+        + "Example: " + COMMAND_WORD + " c/CS2103T";
 
     public static final String MESSAGE_SUCCESS = "Listed all assessments";
     public static final String MESSAGE_SUCCESS_FILTERED = "Listed all assessments for course: %1$s";
