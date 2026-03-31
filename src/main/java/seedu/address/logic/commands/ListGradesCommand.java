@@ -45,6 +45,12 @@ public class ListGradesCommand extends Command {
     private final String filterValue1;
     private final Index assessmentIndex;
 
+    /**
+        * Constructs a ListGradesCommand with the specified filter type and values.
+        * @param filterType      the type of filter ("student", "course", or "courseassessment")
+        * @param filterValue1    the value for the filter (student ID or course code)
+        * @param assessmentIndex the index of the assessment (only used for "courseassessment" filter type)
+    */
     public ListGradesCommand(String filterType, String filterValue1, Index assessmentIndex) {
         this.filterType = filterType;
 
@@ -126,7 +132,7 @@ public class ListGradesCommand extends Command {
         }
         ListGradesCommand otherCommand = (ListGradesCommand) other;
         return filterType.equalsIgnoreCase(otherCommand.filterType)
-                && filterValue1.equals(otherCommand.filterValue1)
-                && java.util.Objects.equals(assessmentIndex, otherCommand.assessmentIndex);
+            && filterValue1.equals(otherCommand.filterValue1)
+            && java.util.Objects.equals(assessmentIndex, otherCommand.assessmentIndex);
     }
 }
