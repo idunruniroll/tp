@@ -3,7 +3,11 @@ layout: page
 title: User Guide
 ---
 
-AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized for use via a Command Line Interface** (CLI) while still having the benefits of a Graphical User Interface (GUI). If you can type fast, AB3 can get your contact management tasks done faster than traditional GUI apps.
+# GradeBookPlus User Guide
+
+GradeBookPlus is a **desktop gradebook application** for managing courses, students, assessments, and grades. It is optimized for use via a **Command Line Interface** while still providing a **Graphical User Interface** for viewing data clearly.
+
+If you prefer typing commands quickly, GradeBookPlus helps you manage class records faster than clicking through menus.
 
 * Table of Contents
 {:toc}
@@ -12,31 +16,27 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 ## Quick start
 
-1. Ensure you have Java `17` or above installed in your Computer.<br>
-   **Mac users:** Ensure you have the precise JDK version prescribed [here](https://se-education.org/guides/tutorials/javaInstallationMac.html).
+1. Ensure you have **Java 17 or above** installed on your computer.
 
-1. Download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
+2. Download the latest `.jar` file from your team’s release page.
 
-1. Copy the file to the folder you want to use as the _home folder_ for your AddressBook.
+3. Copy the `.jar` file into the folder you want to use as the app’s home folder.
 
-1. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar addressbook.jar` command to run the application.<br>
-   A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
-   ![Ui](images/Ui.png)
+4. Open a terminal in that folder and run:
 
-1. Type the command in the command box and press Enter to execute it. e.g. typing **`help`** and pressing Enter will open the help window.<br>
-   Some example commands you can try:
+   `java -jar gradebookplus.jar`
 
-   * `list` : Lists all contacts.
+5. Wait a few seconds for the application window to appear.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01` : Adds a contact named `John Doe` to the Address Book.
+6. Type commands into the command box and press Enter to execute them.
 
-   * `delete 3` : Deletes the 3rd contact shown in the current list.
+Some example commands you can try:
 
-   * `clear` : Deletes all contacts.
-
-   * `exit` : Exits the app.
-
-1. Refer to the [Features](#features) below for details of each command.
+* `addcourse c/CS2103T`
+* `addstudent c/CS2103T id/A0123456X n/Alex Yeoh e/alex@example.com`
+* `addassessment c/CS2103T an/Quiz 1 m/10`
+* `addgrade c/CS2103T id/A0123456X as/1 g/8`
+* `listgrades c/CS2103T`
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -44,157 +44,211 @@ AddressBook Level 3 (AB3) is a **desktop app for managing contacts, optimized fo
 
 <div markdown="block" class="alert alert-info">
 
-**:information_source: Notes about the command format:**<br>
+**Notes about the command format:**<br>
 
-* Words in `UPPER_CASE` are the parameters to be supplied by the user.<br>
-  e.g. in `add n/NAME`, `NAME` is a parameter which can be used as `add n/John Doe`.
+* Words in `UPPER_CASE` are parameters to be supplied by the user.<br>
+  e.g. in `addcourse c/COURSE_CODE`, `COURSE_CODE` is a parameter.
 
 * Items in square brackets are optional.<br>
-  e.g `n/NAME [t/TAG]` can be used as `n/John Doe t/friend` or as `n/John Doe`.
+  e.g. `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
 
-* Items with `…`​ after them can be used multiple times including zero times.<br>
-  e.g. `[t/TAG]…​` can be used as ` ` (i.e. 0 times), `t/friend`, `t/friend t/family` etc.
+* Parameters can be in any order unless stated otherwise.
 
-* Parameters can be in any order.<br>
-  e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
+* Course codes are case-insensitive.<br>
+  e.g. `c/cs2103t` and `c/CS2103T` are treated as the same course.
 
-* Extraneous parameters for commands that do not take in parameters (such as `help`, `list`, `exit` and `clear`) will be ignored.<br>
-  e.g. if the command specifies `help 123`, it will be interpreted as `help`.
+* Assessment indexes refer to the indexes shown in the displayed assessment list for that course.
 
-* If you are using a PDF version of this document, be careful when copying and pasting commands that span multiple lines as space characters surrounding line-breaks may be omitted when copied over to the application.
 </div>
 
-### Viewing help : `help`
+### Viewing help: `help`
 
-Shows a message explaining how to access the help page.
-
-![help message](images/helpMessage.png)
+Shows the help window.
 
 Format: `help`
 
+---
 
-### Adding a person: `add`
+## Course management
 
-Adds a person to the address book.
+### Adding a course: `addcourse`
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​`
 
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0)
-</div>
 
-Examples:
-* `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
-* `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 t/criminal`
+### Listing all courses: `listcourses`
 
-### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
 
-Format: `list`
+### Removing a course: `removecourse`
 
-### Editing a person : `edit`
 
-Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`
+---
 
-* Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
-* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
-* You can remove all the person’s tags by typing `t/` without
-    specifying any tags after it.
+## Student management
 
-Examples:
-*  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
-*  `edit 2 n/Betsy Crower t/` Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
+### Adding a student to a course: `addstudent`
 
-### Locating persons by name: `find`
+Adds a student to a course roster.
 
-Finds persons whose names contain any of the given keywords.
 
-Format: `find KEYWORD [MORE_KEYWORDS]`
 
-* The search is case-insensitive. e.g `hans` will match `Hans`
-* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
-* Only the name is searched.
-* Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search).
-  e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+### Listing students in a course: `liststudents`
+
+
+
+### Removing a student from a course: `removestudent`
+
+
+
+---
+
+## Assessment management
+
+### Adding an assessment: `addassessment`
+
+Adds an assessment to a course.
+
+Format: `addassessment c/COURSE_CODE an/ASSESSMENT_NAME m/MAX_SCORE`
 
 Examples:
-* `find John` returns `john` and `John Doe`
-* `find alex david` returns `Alex Yeoh`, `David Li`<br>
-  ![result for 'find alex david'](images/findAlexDavidResult.png)
+* `addassessment c/CS2103T an/Quiz 1 m/10`
+* `addassessment c/CS2103T an/Final Exam m/100`
 
-### Deleting a person : `delete`
+### Listing assessments: `listassessments`
 
-Deletes the specified person from the address book.
+Lists all assessments, optionally filtered by course.
 
-Format: `delete INDEX`
-
-* Deletes the person at the specified `INDEX`.
-* The index refers to the index number shown in the displayed person list.
-* The index **must be a positive integer** 1, 2, 3, …​
+Format:
+* `listassessments`
+* `listassessments c/COURSE_CODE`
 
 Examples:
-* `list` followed by `delete 2` deletes the 2nd person in the address book.
-* `find Betsy` followed by `delete 1` deletes the 1st person in the results of the `find` command.
+* `listassessments`
+* `listassessments c/CS2103T`
 
-### Clearing all entries : `clear`
+### Removing an assessment: `removeassessment`
 
-Clears all entries from the address book.
+Removes an assessment from a course using its displayed index.
 
-Format: `clear`
+Format: `removeassessment c/COURSE_CODE as/ASSESSMENT_INDEX`
 
-### Exiting the program : `exit`
+Example:
+* `removeassessment c/CS2103T as/1`
 
-Exits the program.
+> Removing an assessment also removes all grades associated with that assessment.
+
+---
+
+## Grade management
+
+### Adding a grade: `addgrade`
+
+Adds a grade for a student in a course assessment.
+
+Format: `addgrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX g/SCORE`
+
+Examples:
+* `addgrade c/CS2103T id/A0123456X as/1 g/8`
+* `addgrade c/CS2103T id/A0123456X as/2 g/85`
+
+> The student must already be enrolled in the course.<br>
+> The score cannot exceed the assessment’s max score.
+
+### Removing a grade: `removegrade`
+
+Removes a grade for a student from a course assessment.
+
+Format: `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
+
+Example:
+* `removegrade c/CS2103T id/A0123456X as/1`
+
+### Listing grades: `listgrades`
+
+Lists grades by course, by assessment within a course, or by student ID.
+
+Format:
+* `listgrades c/COURSE_CODE`
+* `listgrades c/COURSE_CODE as/ASSESSMENT_INDEX`
+* `listgrades id/STUDENT_ID`
+
+Examples:
+* `listgrades c/CS2103T`
+* `listgrades c/CS2103T as/1`
+* `listgrades id/A0123456X`
+
+---
+
+## Other commands
+
+### Viewing detailed course information: `listdetails`
+
+Displays detailed information for a course.
+
+Format: `listdetails c/COURSE_CODE`
+
+Example:
+* `listdetails c/CS2103T`
+
+### Exporting a course: `exportcourse`
+
+Exports course-related information.
+
+Format: `exportcourse c/COURSE_CODE`
+
+Example:
+* `exportcourse c/CS2103T`
+
+### Viewing all main lists: `viewall`
+
+Returns the app to the default overall view.
+
+Format: `viewall`
+
+### Exiting the program: `exit`
+
+Exits the application.
 
 Format: `exit`
-
-### Saving the data
-
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
-
-### Editing the data file
-
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
-
-<div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
-If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the AddressBook to behave in unexpected ways (e.g., if a value entered is outside of the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
-</div>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**Q:** How do I move my data to another computer?<br>
+**A:** Copy the data file from the old computer into the data folder used by GradeBookPlus on the new computer.
+
+**Q:** Where is my data stored?<br>
+**A:** Data is stored automatically in the app’s data folder as a JSON file.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues
 
-1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
-2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+1. If you move the application between multiple monitors, the window may reopen off-screen. Delete `preferences.json` and relaunch the app.
+2. If the Help window is minimized, reopening help may not restore it automatically. Restore it manually.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Command summary
 
-Action | Format, Examples
+Action | Format
 --------|------------------
-**Add** | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]…​` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/friend t/colleague`
-**Clear** | `clear`
-**Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit** | `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]…​`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
-**Find** | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List** | `list`
+**Add course** | `addcourse c/COURSE_CODE[,COURSE_CODE]...`
+**List courses** | `listcourses`
+**Remove course** | `removecourse c/COURSE_CODE[,COURSE_CODE]...`
+**Add student** | `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
+**List students** | `liststudents c/COURSE_CODE`
+**Remove student** | `removestudent c/COURSE_CODE id/STUDENT_ID`
+**Add assessment** | `addassessment c/COURSE_CODE an/ASSESSMENT_NAME m/MAX_SCORE`
+**List assessments** | `listassessments [c/COURSE_CODE]`
+**Remove assessment** | `removeassessment c/COURSE_CODE as/ASSESSMENT_INDEX`
+**Add grade** | `addgrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX g/SCORE`
+**Remove grade** | `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
+**List grades** | `listgrades c/COURSE_CODE` / `listgrades c/COURSE_CODE as/ASSESSMENT_INDEX` / `listgrades id/STUDENT_ID`
+**List details** | `listdetails c/COURSE_CODE`
+**Export course** | `exportcourse c/COURSE_CODE`
+**View all** | `viewall`
 **Help** | `help`
+**Exit** | `exit`
