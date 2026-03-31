@@ -85,6 +85,17 @@ public class AddCourseCommandTest {
     }
 
     @Test
+    public void execute_duplicateCourseCodeInputsIgnoringCase_throwsCommandException() {
+        AddCourseCommand addCourseCommand =
+                new AddCourseCommand(Arrays.asList("CS1231S", "cs1231S", "cS1231s"));
+        ModelStub modelStub = new ModelStubAcceptingCourseAdded();
+
+        assertThrows(CommandException.class,
+                String.format(AddCourseCommand.MESSAGE_DUPLICATE_COURSE_INPUT, "CS1231S"), ()
+                                    -> addCourseCommand.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         String courseCodeA = "CS2103T";
         String courseCodeB = "CS2101";
