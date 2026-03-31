@@ -15,8 +15,8 @@ import seedu.address.logic.parser.exceptions.ParseException;
  */
 public class RemoveGradeCommandParser implements Parser<RemoveGradeCommand> {
 
-     @Override
-     public RemoveGradeCommand parse(String args) throws ParseException {
+    @Override
+    public RemoveGradeCommand parse(String args) throws ParseException {
         requireNonNull(args);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
@@ -25,11 +25,11 @@ public class RemoveGradeCommandParser implements Parser<RemoveGradeCommand> {
         if (!ParserUtil.arePrefixesPresent(argMultimap,
             PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE)
             || !argMultimap.getPreamble().isEmpty()) {
-                    throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                        RemoveGradeCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                RemoveGradeCommand.MESSAGE_USAGE));
         }
 
-       argMultimap.verifyNoDuplicatePrefixesFor(
+        argMultimap.verifyNoDuplicatePrefixesFor(
             PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE);
 
         String studentId = ParserUtil.parseStudentId(argMultimap.getValue(PREFIX_STUDENT_ID).get());

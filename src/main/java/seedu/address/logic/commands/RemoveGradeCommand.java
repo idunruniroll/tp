@@ -33,7 +33,8 @@ public class RemoveGradeCommand extends Command {
         + PREFIX_STUDENT_ID + "A0123456X "
         + PREFIX_ASSESSMENT + "2";
 
-    public static final String MESSAGE_SUCCESS = "Removed grade: Student ID: %1$s, Assessment name: %2$s in Course: %3$s";
+    public static final String MESSAGE_SUCCESS = "Removed grade: Student ID: %1$s, " 
+        + "Assessment name: %2$s in Course: %3$s";
     public static final String MESSAGE_INVALID_STUDENT_ID = "The student ID provided is not enrolled in this course.";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
     public static final String MESSAGE_INVALID_COURSE_CODE = "Invalid course code.";

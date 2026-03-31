@@ -97,10 +97,10 @@ public class AddGradeCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this
-        || (other instanceof AddGradeCommand
-            && courseCode.equalsIgnoreCase(((AddGradeCommand) other).courseCode)
-            && studentId.equalsIgnoreCase(((AddGradeCommand) other).studentId)
-            && assessmentIndex.equals(((AddGradeCommand) other).assessmentIndex)
-            && score.equals(((AddGradeCommand) other).score));
+            || (other instanceof AddGradeCommand
+                && courseCode.equalsIgnoreCase(((AddGradeCommand) other).courseCode)
+                && studentId.equalsIgnoreCase(((AddGradeCommand) other).studentId)
+                && assessmentIndex.equals(((AddGradeCommand) other).assessmentIndex)
+                && score.equals(((AddGradeCommand) other).score));
     }
 }
