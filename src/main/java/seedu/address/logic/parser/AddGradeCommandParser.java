@@ -32,7 +32,7 @@ public class AddGradeCommandParser implements Parser<AddGradeCommand> {
 
         if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_STUDENT_ID, PREFIX_ASSESSMENT,
             PREFIX_GRADE, PREFIX_COURSE_CODE) || !argMultimap.getPreamble().isEmpty()) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                     AddGradeCommand.MESSAGE_USAGE));
         }
 
