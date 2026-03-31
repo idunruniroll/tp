@@ -29,7 +29,7 @@ public class ListAssessmentsCommandTest {
     public static final String MESSAGE_SUCCESS = "Listed all assessments";
 
     @Test
-    public void execute_noAssessments_returnsNoAssessmentsMessage() {
+    public void execute_noAssessments_returnsNoAssessmentsMessage() throws Exception {
         ModelStub modelStub = new ModelStub(FXCollections.observableArrayList());
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
@@ -38,7 +38,7 @@ public class ListAssessmentsCommandTest {
     }
 
     @Test
-    public void execute_singleCourseMultipleAssessments_listsAssessmentsWithIndexes() {
+    public void execute_singleCourseMultipleAssessments_listsAssessmentsWithIndexes() throws Exception {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList(
                 new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
                 new Assessment("CS2103T", new AssessmentName("Finals"), new MaxScore("100")));
@@ -53,7 +53,7 @@ public class ListAssessmentsCommandTest {
     }
 
     @Test
-    public void execute_multipleCourses_outputContainsAllCourseSections() {
+    public void execute_multipleCourses_outputContainsAllCourseSections() throws Exception {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList(
                 new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
                 new Assessment("CS2101", new AssessmentName("OPM"), new MaxScore("20")));
