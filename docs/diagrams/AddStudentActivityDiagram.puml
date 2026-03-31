@@ -11,38 +11,38 @@ start
 
 if () then ([missing required parameters?])
     :return format error message;
-    kill
+    stop
 else ([else])
 endif
 
 if () then ([invalid course code?])
     :return "Invalid course code";
-    kill
+    stop
 else ([else])
 endif
 
 if () then ([course code not found?])
     :return "Course <code> not found";
-    kill
+    stop
 else ([else])
 endif
 
 if () then ([invalid student ID?])
     :return "Invalid student ID";
-    kill
+    stop
 else ([else])
 endif
 
 if () then ([invalid name?])
     :return "Invalid name";
-    kill
+    stop
 else ([else])
 endif
 
 if () then ([email provided?])
     if () then ([invalid email?])
         :return "Invalid email address";
-        kill
+        stop
     else ([else])
     endif
 else ([else])
@@ -50,7 +50,7 @@ endif
 
 if () then ([duplicate student ID in course?])
     :return "Student <id> already exists\nin <course>";
-    kill
+    stop
 else ([else])
 endif
 
@@ -59,7 +59,7 @@ endif
 
 if () then ([save failed?])
     :return "Unable to save changes";
-    kill
+    stop
 else ([else])
 endif
 
