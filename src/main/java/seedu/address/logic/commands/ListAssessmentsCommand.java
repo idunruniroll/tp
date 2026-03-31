@@ -4,10 +4,9 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
-import javafx.collections.ObservableList;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
-import seedu.address.model.assessment.Assessment;
 
 /**
  * Lists all assessments in the system, optionally filtered by course.
@@ -25,6 +24,7 @@ public class ListAssessmentsCommand extends Command {
     public static final String MESSAGE_SUCCESS_FILTERED = "Listed all assessments for course: %1$s";
     public static final String MESSAGE_NO_ASSESSMENTS = "No assessments found.";
     public static final String MESSAGE_NO_ASSESSMENTS_FOR_COURSE = "No assessments found for course: %1$s";
+    public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
 
     private final String courseCode;
 
@@ -37,30 +37,31 @@ public class ListAssessmentsCommand extends Command {
     }
 
     @Override
-    public CommandResult execute(Model model) {
+    public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-
-        ObservableList<Assessment> allAssessments = model.getAssessmentList();
-
-        if (allAssessments.isEmpty()) {
-            return new CommandResult(MESSAGE_NO_ASSESSMENTS);
-        }
 
         if (courseCode == null) {
             model.updateFilteredAssessmentList(assessment -> true);
             model.setDisplayMode(DisplayMode.ASSESSMENTS);
+
+            if (model.getFilteredAssessmentList().isEmpty()) {
+                return new CommandResult(MESSAGE_NO_ASSESSMENTS);
+            }
             return new CommandResult(MESSAGE_SUCCESS);
+        }
+
+        if (!model.hasCourse(courseCode)) {
+            throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
         model.updateFilteredAssessmentList(
                 assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode));
+        model.setDisplayMode(DisplayMode.ASSESSMENTS);
 
         if (model.getFilteredAssessmentList().isEmpty()) {
-            model.updateFilteredAssessmentList(assessment -> true);
             return new CommandResult(String.format(MESSAGE_NO_ASSESSMENTS_FOR_COURSE, courseCode));
         }
 
-        model.setDisplayMode(DisplayMode.ASSESSMENTS);
         return new CommandResult(String.format(MESSAGE_SUCCESS_FILTERED, courseCode));
     }
 
