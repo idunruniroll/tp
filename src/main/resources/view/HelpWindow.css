@@ -1,19 +1,56 @@
-#copyButton, #helpMessage {
-    -fx-text-fill: white;
-}
-
-#copyButton {
-    -fx-background-color: dimgray;
-}
-
-#copyButton:hover {
-    -fx-background-color: gray;
-}
-
-#copyButton:armed {
-    -fx-background-color: darkgray;
-}
-
-#helpMessageContainer {
+#helpContainer {
     -fx-background-color: derive(#1d1d1d, 20%);
+}
+
+#titleLabel {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.scroll-pane {
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane>.viewport {
+    -fx-background-color: transparent;
+}
+
+#helpContent {
+    -fx-padding: 4 2 4 2;
+}
+
+.help-section {
+    -fx-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.help-normal {
+    -fx-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI";
+}
+
+.help-code {
+    -fx-fill: #d6e4ff;
+    -fx-font-size: 14px;
+    -fx-font-family: "Consolas";
+    -fx-font-weight: bold;
+}
+
+#userGuideButton {
+    -fx-text-fill: white;
+    -fx-background-color: #4a6fa5;
+    -fx-padding: 6 12 6 12;
+}
+
+#userGuideButton:hover {
+    -fx-background-color: #5b82bc;
+}
+
+#userGuideButton:armed {
+    -fx-background-color: #3d5d8a;
 }
