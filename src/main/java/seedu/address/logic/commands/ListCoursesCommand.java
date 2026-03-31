@@ -16,6 +16,8 @@ import seedu.address.model.course.Course;
 public class ListCoursesCommand extends Command {
 
     public static final String COMMAND_WORD = "listcourses";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all courses in the system.\n"
+            + "Example: " + COMMAND_WORD;
 
     /**
      * Executes the list courses command.

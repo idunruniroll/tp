@@ -1,5 +1,7 @@
 package seedu.address.logic.parser;
 
+import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
 import org.junit.jupiter.api.Test;
@@ -16,19 +18,18 @@ public class ListCoursesCommandParserTest {
 
     @Test
     public void parse_whitespaceOnlyArgs_success() {
-        // Parser ignores arguments, so whitespace should be accepted
         assertParseSuccess(parser, "   ", new ListCoursesCommand());
     }
 
     @Test
-    public void parse_anyArgs_success() {
-        // Parser ignores arguments, so any input should be accepted
-        assertParseSuccess(parser, "some random text", new ListCoursesCommand());
+    public void parse_nonEmptyArgs_throwsParseException() {
+        assertParseFailure(parser, "some random text",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCoursesCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void parse_multipleWords_success() {
-        // Parser ignores arguments, so multiple words should be accepted
-        assertParseSuccess(parser, "extra arguments here", new ListCoursesCommand());
+    public void parse_multipleWords_throwsParseException() {
+        assertParseFailure(parser, "extra arguments here",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCoursesCommand.MESSAGE_USAGE));
     }
 }
