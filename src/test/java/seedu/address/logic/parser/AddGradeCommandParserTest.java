@@ -44,7 +44,7 @@ public class AddGradeCommandParserTest {
 
     @Test
     public void parse_missingCourseCode_failure() {
-        String userInput = " " + PREFIX_STUDENT + "1 "
+        String userInput = " " + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
@@ -65,7 +65,7 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_missingAssessmentIndex_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_GRADE + "9";
 
         assertParseFailure(parser, userInput,
@@ -75,7 +75,7 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_missingGrade_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1";
 
         assertParseFailure(parser, userInput,
@@ -85,7 +85,7 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_nonEmptyPreamble_failure() {
         String userInput = "preamble " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
@@ -96,7 +96,7 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_invalidCourseCode_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS 2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
@@ -106,8 +106,8 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_invalidStudentIndex_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "0 "
-                + PREFIX_ASSESSMENT + "1 "
+                + PREFIX_STUDENT_ID + "A!123456X "
+                + PREFIX_ASSESSMENT + "0 "
                 + PREFIX_GRADE + "9";
 
         assertParseFailure(parser, userInput, ParserUtil.MESSAGE_INVALID_INDEX);
@@ -116,7 +116,7 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_invalidAssessmentIndex_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "0 "
                 + PREFIX_GRADE + "9";
 
@@ -126,7 +126,7 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_invalidScore_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "-1";
 
@@ -137,7 +137,7 @@ public class AddGradeCommandParserTest {
     public void parse_multipleCourseCodeValues_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
                 + PREFIX_COURSE_CODE + "CS2101 "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
@@ -148,19 +148,19 @@ public class AddGradeCommandParserTest {
     @Test
     public void parse_multipleStudentValues_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
-                + PREFIX_STUDENT + "2 "
+                + PREFIX_STUDENT_ID + "A0123456X "
+                + PREFIX_STUDENT_ID + "A0123456Y "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
         assertParseFailure(parser, userInput,
-                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_STUDENT));
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_STUDENT_ID));
     }
 
     @Test
     public void parse_multipleAssessmentValues_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_ASSESSMENT + "2 "
                 + PREFIX_GRADE + "9";
