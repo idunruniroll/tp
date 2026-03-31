@@ -60,7 +60,7 @@ public class RemoveGradeCommandParserTest {
     @Test
     public void parse_missingAssessmentIndex_failure() {
         String userInput = " " + PREFIX_COURSE_CODE + "CS2103T " + PREFIX_STUDENT_ID + "A0123456X";
-        
+
         assertParseFailure(parser, userInput,
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, RemoveGradeCommand.MESSAGE_USAGE));
     }
