@@ -22,12 +22,12 @@ public class AddGradeCommandParserTest {
 
     @Test
     public void parse_invalidStudentId_failure() {
-            String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
-                            + PREFIX_STUDENT_ID + "A12 "
-                            + PREFIX_ASSESSMENT + "1 "
-                            + PREFIX_GRADE + "9";
+        String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
+        + PREFIX_STUDENT_ID + "A12 "
+        + PREFIX_ASSESSMENT + "1 "
+        + PREFIX_GRADE + "9";
 
-            assertParseFailure(parser, userInput, "❌ Invalid student ID. Example: id/A0123456X");
+        assertParseFailure(parser, userInput, "❌ Invalid student ID. Example: id/A0123456X");
     }
 
     @Test
