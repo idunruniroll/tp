@@ -20,6 +20,8 @@ import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.assessment.Assessment;
+import seedu.address.model.assessment.AssessmentName;
+import seedu.address.model.assessment.MaxScore;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
@@ -58,10 +60,27 @@ public class ListCoursesCommandTest {
         assertEquals(expectedOutput, result.getFeedbackToUser());
     }
 
+    @Test
+    public void execute_assessmentsAddedAfterwards_courseAssessmentViewUpdates() {
+        Course course = new Course("CS2103T");
+        ObservableList<Assessment> assessments = FXCollections.observableArrayList(
+                new Assessment("CS2103T", new AssessmentName("Midterm"), new MaxScore("100")),
+                new Assessment("CS2101", new AssessmentName("Quiz"), new MaxScore("20")));
+        ModelStubWithCourses modelStub = new ModelStubWithCourses(List.of(course), assessments);
+
+        new ListCoursesCommand().execute(modelStub);
+        assertEquals(1, course.getAssessments().size());
+
+        assessments.add(new Assessment("CS2103T", new AssessmentName("Final"), new MaxScore("100")));
+        new ListCoursesCommand().execute(modelStub);
+        assertEquals(2, course.getAssessments().size());
+    }
+
     /**
      * A default model stub that have all of the methods failing.
      */
     private class ModelStub implements Model {
+        protected ObservableList<Assessment> assessmentList = FXCollections.observableArrayList();
         private ObservableList<Grade> gradeList = FXCollections.observableArrayList();
 
         @Override
@@ -209,8 +228,9 @@ public class ListCoursesCommandTest {
             throw new AssertionError("This method should not be called.");
         }
 
+        @Override
         public ObservableList<Assessment> getAssessmentList() {
-            return FXCollections.observableArrayList();
+            return assessmentList;
         }
 
         @Override
@@ -296,8 +316,13 @@ public class ListCoursesCommandTest {
         private final ObservableList<Course> courses;
 
         ModelStubWithCourses(List<Course> courseList) {
+            this(courseList, FXCollections.observableArrayList());
+        }
+
+        ModelStubWithCourses(List<Course> courseList, ObservableList<Assessment> assessmentList) {
             requireNonNull(courseList);
             this.courses = FXCollections.observableArrayList(courseList);
+            this.assessmentList = assessmentList;
         }
 
         @Override

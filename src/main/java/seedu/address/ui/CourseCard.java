@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -37,13 +38,7 @@ public class CourseCard extends UiPart<Region> {
 
         id.setText(displayedIndex + ". ");
         courseCode.setText(course.getCourseCode());
-        assessmentCount.setText("Assessments: " + countAssessmentsForCourse(assessmentList));
+        assessmentCount.textProperty().bind(Bindings.size(course.getAssessments()).asString("Assessments: %d"));
         studentCount.setText("Students: " + course.getStudents().size());
-    }
-
-    private long countAssessmentsForCourse(ObservableList<Assessment> assessmentList) {
-        return assessmentList.stream()
-                .filter(assessment -> assessment.getCourseCode().equalsIgnoreCase(course.getCourseCode()))
-                .count();
     }
 }
