@@ -76,8 +76,9 @@ public class GradeListPanel extends UiPart<Region> {
 
             List<GradeRow> rows = new ArrayList<>();
             for (Grade grade : grades) {
-                String studentName = findStudentName(courseCode, grade.getStudentId().toString());
-                rows.add(new GradeRow(studentName, grade.getScore().toString(), grade.getStudentId().toString()));
+                rows.add(new GradeRow(grade.getStudentId().toString(),
+                        grade.getScore().toString(),
+                        grade.getStudentId().toString()));
             }
 
             groupedGrades.add(new GroupedGrade(courseCode, assessmentName, maxScoreText, rows));

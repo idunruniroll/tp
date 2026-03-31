@@ -5,7 +5,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GRADE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.AddGradeCommand;
@@ -17,34 +17,34 @@ import seedu.address.model.grade.Score;
  */
 public class AddGradeCommandParser implements Parser<AddGradeCommand> {
 
-    /**
-     * Parses the given {@code String} of arguments in the context of the
-     * AddGradeCommand
-     * and returns an AddGradeCommand object for execution.
-     *
-     * @throws ParseException if the user input does not conform the expected format
-     */
-    public AddGradeCommand parse(String args) throws ParseException {
-        requireNonNull(args);
+        /**
+         * Parses the given {@code String} of arguments in the context of the
+         * AddGradeCommand
+         * and returns an AddGradeCommand object for execution.
+         * @throws ParseException if the user input does not conform the expected format
+         */
+        @Override
+        public AddGradeCommand parse(String args) throws ParseException {
+                requireNonNull(args);
 
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_STUDENT, PREFIX_ASSESSMENT,
-                PREFIX_GRADE, PREFIX_COURSE_CODE);
+                ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
+                                args, PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_GRADE, PREFIX_COURSE_CODE);
 
-        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_GRADE,
-                PREFIX_COURSE_CODE)
-                || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    AddGradeCommand.MESSAGE_USAGE));
+                if (!ParserUtil.arePrefixesPresent(argMultimap,
+                                PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_GRADE, PREFIX_COURSE_CODE)
+                                || !argMultimap.getPreamble().isEmpty()) {
+                        throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                                        AddGradeCommand.MESSAGE_USAGE));
+                }
+
+                argMultimap.verifyNoDuplicatePrefixesFor(
+                                PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_GRADE, PREFIX_COURSE_CODE);
+
+                String studentId = ParserUtil.parseStudentId(argMultimap.getValue(PREFIX_STUDENT_ID).get());
+                Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
+                Score score = ParserUtil.parseScore(argMultimap.getValue(PREFIX_GRADE).get());
+                String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
+
+                return new AddGradeCommand(courseCode, studentId, assessmentIndex, score);
         }
-
-        argMultimap.verifyNoDuplicatePrefixesFor(
-                PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_GRADE, PREFIX_COURSE_CODE);
-
-        Index studentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_STUDENT).get());
-        Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
-        Score score = ParserUtil.parseScore(argMultimap.getValue(PREFIX_GRADE).get());
-        String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
-
-        return new AddGradeCommand(courseCode, studentIndex, assessmentIndex, score);
-    }
 }

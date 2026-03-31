@@ -43,7 +43,7 @@ public class GradeGroupCard extends UiPart<Region> {
         Label indexLabel = new Label(index + ".");
         indexLabel.getStyleClass().add("cell_small_label");
 
-        Label studentLabel = new Label(row.getStudentName());
+        Label studentLabel = new Label(row.getStudentId());
         studentLabel.getStyleClass().add("cell_big_label");
 
         Region spacer = new Region();

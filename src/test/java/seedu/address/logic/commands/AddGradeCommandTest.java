@@ -37,11 +37,11 @@ public class AddGradeCommandTest {
     @Test
     public void constructor_nullCourseCode_throwsNullPointerException() {
         assertThrows(NullPointerException.class, (
-            ) -> new AddGradeCommand(null, Index.fromOneBased(1), Index.fromOneBased(1), new Score("10")));
+            ) -> new AddGradeCommand(null, "A1234567X", Index.fromOneBased(1), new Score("10")));
     }
 
     @Test
-    public void constructor_nullStudentIndex_throwsNullPointerException() {
+    public void constructor_nullStudentId_throwsNullPointerException() {
         assertThrows(NullPointerException.class, (
             ) -> new AddGradeCommand("CS2103T", null, Index.fromOneBased(1), new Score("10")));
     }
@@ -49,13 +49,13 @@ public class AddGradeCommandTest {
     @Test
     public void constructor_nullAssessmentIndex_throwsNullPointerException() {
         assertThrows(NullPointerException.class, (
-            ) -> new AddGradeCommand("CS2103T", Index.fromOneBased(1), null, new Score("10")));
+            ) -> new AddGradeCommand("CS2103T", "A1234567X", null, new Score("10")));
     }
 
     @Test
     public void constructor_nullScore_throwsNullPointerException() {
         assertThrows(NullPointerException.class, (
-            ) -> new AddGradeCommand("CS2103T", Index.fromOneBased(1), Index.fromOneBased(1), null));
+            ) -> new AddGradeCommand("CS2103T", "A1234567X", Index.fromOneBased(1), null));
     }
 
     @Test
@@ -72,7 +72,7 @@ public class AddGradeCommandTest {
         modelStub.assessments.add(new Assessment("CS2101", new AssessmentName("Presentation"), new MaxScore("20")));
 
         AddGradeCommand command = new AddGradeCommand("cs2103t",
-                Index.fromOneBased(1), Index.fromOneBased(1), new Score("9"));
+                "A1234567X", Index.fromOneBased(1), new Score("9"));
 
         CommandResult commandResult = command.execute(modelStub);
 
@@ -89,7 +89,7 @@ public class AddGradeCommandTest {
     public void execute_courseDoesNotExist_throwsCommandException() {
         ModelStubAcceptingGradeAdded modelStub = new ModelStubAcceptingGradeAdded();
         AddGradeCommand command = new AddGradeCommand("CS9999",
-                Index.fromOneBased(1), Index.fromOneBased(1), new Score("9"));
+                "A1234567X", Index.fromOneBased(1), new Score("9"));
 
         assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_COURSE_CODE, (
             ) -> command.execute(modelStub));
@@ -106,9 +106,9 @@ public class AddGradeCommandTest {
         modelStub.assessments.add(new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")));
 
         AddGradeCommand command = new AddGradeCommand("CS2103T",
-                Index.fromOneBased(2), Index.fromOneBased(1), new Score("9"));
+                "A2345678Y", Index.fromOneBased(1), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_STUDENT_INDEX, (
+        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_STUDENT_ID, (
             ) -> command.execute(modelStub));
     }
 
@@ -124,7 +124,7 @@ public class AddGradeCommandTest {
         modelStub.assessments.add(new Assessment("CS2101", new AssessmentName("Presentation"), new MaxScore("20")));
 
         AddGradeCommand command = new AddGradeCommand("CS2103T",
-                Index.fromOneBased(1), Index.fromOneBased(2), new Score("9"));
+                "A1234567X", Index.fromOneBased(2), new Score("9"));
 
         assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
             ) -> command.execute(modelStub));
@@ -141,7 +141,7 @@ public class AddGradeCommandTest {
         modelStub.assessments.add(new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")));
 
         AddGradeCommand command = new AddGradeCommand("CS2103T",
-                Index.fromOneBased(1), Index.fromOneBased(1), new Score("11"));
+                "A1234567X", Index.fromOneBased(1), new Score("11"));
 
         assertThrows(CommandException.class, AddGradeCommand.MESSAGE_SCORE_EXCEEDS_MAX, (
             ) -> command.execute(modelStub));
@@ -163,7 +163,7 @@ public class AddGradeCommandTest {
         modelStub.existingGrade = existingGrade;
 
         AddGradeCommand command = new AddGradeCommand("CS2103T",
-                Index.fromOneBased(1), Index.fromOneBased(1), new Score("9"));
+                "A1234567X", Index.fromOneBased(1), new Score("9"));
 
         assertThrows(CommandException.class, AddGradeCommand.MESSAGE_DUPLICATE_GRADE, (
             ) -> command.execute(modelStub));
@@ -171,18 +171,18 @@ public class AddGradeCommandTest {
 
     @Test
     public void equals() {
-        AddGradeCommand firstCommand = new AddGradeCommand("CS2103T", Index.fromOneBased(1), Index.fromOneBased(1),
+        AddGradeCommand firstCommand = new AddGradeCommand("CS2103T", "A1234567X", Index.fromOneBased(1),
                 new Score("9"));
-        AddGradeCommand firstCommandCopy = new AddGradeCommand("cs2103t", Index.fromOneBased(1), Index.fromOneBased(1),
+        AddGradeCommand firstCommandCopy = new AddGradeCommand("cs2103t", "A1234567X", Index.fromOneBased(1),
                 new Score("9"));
-        AddGradeCommand secondCommand = new AddGradeCommand("CS2103T", Index.fromOneBased(2), Index.fromOneBased(1),
+        AddGradeCommand secondCommand = new AddGradeCommand("CS2103T", "A2345678Y", Index.fromOneBased(1),
                 new Score("9"));
-        AddGradeCommand differentAssessmentCommand = new AddGradeCommand("CS2103T", Index.fromOneBased(1),
-                Index.fromOneBased(2), new Score("9"));
-        AddGradeCommand differentScoreCommand = new AddGradeCommand("CS2103T", Index.fromOneBased(1),
-                Index.fromOneBased(1), new Score("10"));
-        AddGradeCommand differentCourseCommand = new AddGradeCommand("CS2101", Index.fromOneBased(1),
-                Index.fromOneBased(1), new Score("9"));
+        AddGradeCommand differentAssessmentCommand = new AddGradeCommand("CS2103T", "A1234567X", Index.fromOneBased(2),
+                new Score("9"));
+        AddGradeCommand differentScoreCommand = new AddGradeCommand("CS2103T", "A1234567X", Index.fromOneBased(1),
+                new Score("10"));
+        AddGradeCommand differentCourseCommand = new AddGradeCommand("CS2101", "A1234567X", Index.fromOneBased(1),
+                new Score("9"));
 
         assertTrue(firstCommand.equals(firstCommand));
         assertTrue(firstCommand.equals(firstCommandCopy));

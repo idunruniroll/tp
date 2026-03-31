@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_GRADE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
 
@@ -20,27 +21,24 @@ public class AddGradeCommandParserTest {
     private final AddGradeCommandParser parser = new AddGradeCommandParser();
 
     @Test
-    public void parse_allFieldsPresent_success() {
-        String userInput = " " + PREFIX_COURSE_CODE + "cs2103t "
-                + PREFIX_STUDENT + "1 "
-                + PREFIX_ASSESSMENT + "2 "
-                + PREFIX_GRADE + "85";
+    public void parse_invalidStudentId_failure() {
+            String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
+                            + PREFIX_STUDENT_ID + "A12 "
+                            + PREFIX_ASSESSMENT + "1 "
+                            + PREFIX_GRADE + "9";
 
-        AddGradeCommand expectedCommand = new AddGradeCommand("CS2103T",
-                Index.fromOneBased(1), Index.fromOneBased(2), new Score("85"));
-
-        assertParseSuccess(parser, userInput, expectedCommand);
+            assertParseFailure(parser, userInput, "❌ Invalid student ID. Example: id/A0123456X");
     }
 
     @Test
     public void parse_whitespaceOnlyPreamble_success() {
         String userInput = " \n \t " + PREFIX_COURSE_CODE + "CS2103T "
-                + PREFIX_STUDENT + "1 "
+                + PREFIX_STUDENT_ID + "A0123456X "
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
         AddGradeCommand expectedCommand = new AddGradeCommand("CS2103T",
-                Index.fromOneBased(1), Index.fromOneBased(1), new Score("9"));
+                "A0123456X", Index.fromOneBased(1), new Score("9"));
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
