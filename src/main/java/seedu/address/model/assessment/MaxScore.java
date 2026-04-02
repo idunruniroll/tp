@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class MaxScore {
 
-    public static final String MESSAGE_CONSTRAINTS = "Max score must be a " 
+    public static final String MESSAGE_CONSTRAINTS = "Max score must be a "
         + "number 0 or above, with at most 1 decimal place.";
 
     private static final String MAX_SCORE_VALIDATION_REGEX = "^\\d+(\\.\\d)?$";
