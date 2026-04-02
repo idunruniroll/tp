@@ -20,7 +20,7 @@ import seedu.address.model.student.Student;
  */
 public class Course {
 
-    public static final String MESSAGE_CONSTRAINTS = "\u274C Invalid course code. Example: CS2103";
+    public static final String MESSAGE_CONSTRAINTS = "\u274C Invalid course code. Example: CS2103T";
 
     private final String courseCode;
     private final ArrayList<Student> students;
