@@ -24,6 +24,7 @@ class JsonSerializableAddressBook {
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
     public static final String MESSAGE_DUPLICATE_ASSESSMENT = "Assessments list contains duplicate assessment(s).";
     public static final String MESSAGE_DUPLICATE_GRADE = "Grades list contains duplicate grade(s).";
+    public static final String MESSAGE_DUPLICATE_COURSE = "Courses list contains duplicate course(s).";
 
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
     private final List<JsonAdaptedAssessment> assessments = new ArrayList<>();
@@ -109,7 +110,7 @@ class JsonSerializableAddressBook {
         for (JsonAdaptedCourse jsonAdaptedCourse : courses) {
             Course course = jsonAdaptedCourse.toModelType();
             if (addressBook.hasCourse(course)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_GRADE);
+                continue;
             }
             addressBook.addCourse(course);
         }

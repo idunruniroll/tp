@@ -12,6 +12,7 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.assessment.MaxScore;
+import seedu.address.model.course.Course;
 import seedu.address.model.grade.Score;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
@@ -197,8 +198,8 @@ public class ParserUtil {
         requireNonNull(courseCode);
         String trimmed = courseCode.trim().toUpperCase();
 
-        if (!trimmed.matches("[A-Za-z0-9]{2,10}")) {
-            throw new ParseException("\u274C Invalid course code. Example: CS2103T");
+        if (!trimmed.matches("[A-Z0-9]{2,10}")) {
+            throw new ParseException(Course.MESSAGE_CONSTRAINTS);
         }
 
         return trimmed;
