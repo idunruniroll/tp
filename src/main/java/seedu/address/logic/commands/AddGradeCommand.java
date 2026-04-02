@@ -80,10 +80,10 @@ public class AddGradeCommand extends Command {
 
         Assessment assessment = courseAssessments.get(assessmentIndex.getZeroBased());
 
-        if (score.value > assessment.getMaxScore().value) {
-            throw new CommandException(MESSAGE_SCORE_EXCEEDS_MAX);
+        if (score.toDouble() > assessment.getMaxScore().toDouble()) {
+            throw new CommandException("Score cannot be more than the assessment max score.");
         }
-
+        
         Grade toAdd = new Grade(courseCode, new StudentId(studentId), assessment.getAssessmentName(), score);
 
         if (model.hasGrade(toAdd)) {

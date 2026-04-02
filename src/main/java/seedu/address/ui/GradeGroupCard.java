@@ -40,20 +40,17 @@ public class GradeGroupCard extends UiPart<Region> {
     }
 
     private HBox createGradeRow(int index, GradeListPanel.GradeRow row, String maxScoreText) {
-        Label indexLabel = new Label(index + ".");
-        indexLabel.getStyleClass().add("cell_small_label");
-
-        Label studentLabel = new Label(row.getStudentId());
-        studentLabel.getStyleClass().add("cell_big_label");
+        Label studentEntryLabel = new Label(index + ".  " + row.getStudentId());
+        studentEntryLabel.getStyleClass().add("grade-row-text");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
         Label scoreLabel = new Label(row.getScore() + "/" + maxScoreText);
-        scoreLabel.getStyleClass().add("cell_small_label");
+        scoreLabel.getStyleClass().add("grade-score-text");
 
-        HBox hBox = new HBox(12);
-        hBox.getChildren().addAll(indexLabel, studentLabel, spacer, scoreLabel);
+        HBox hBox = new HBox(10);
+        hBox.getChildren().addAll(studentEntryLabel, spacer, scoreLabel);
         return hBox;
     }
 }
