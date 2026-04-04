@@ -20,11 +20,11 @@ title: GradeBookPlus
 ---
 
 ### ✨ Key Features
-* Manage multiple courses and students  
-* Create and organize assessments  
-* Record and track grades  
-* View structured course and grade information  
-* Export data for external use  
+* Manage multiple courses and students
+* Create and organize assessments
+* Record and track grades
+* View structured course and grade information
+* Export data for external use
 
 ---
 

@@ -268,4 +268,8 @@ public class MainWindow extends UiPart<Stage> {
             throw e;
         }
     }
+
+    public void centerWindowOnScreen() {
+        primaryStage.centerOnScreen();
+    }
 }

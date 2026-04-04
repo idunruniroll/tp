@@ -91,7 +91,7 @@ public class Grade {
 
     @Override
     public String toString() {
-        return studentId + ", Assessment Name: " + assessmentName + " , Grade: " + score;
+        return studentId + ", Assessment Name: " + assessmentName + ", Grade: " + score;
     }
 
     @Override
