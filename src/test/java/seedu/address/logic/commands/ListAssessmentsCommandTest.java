@@ -23,6 +23,7 @@ import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
 import seedu.address.model.student.Student;
+import seedu.address.logic.Messages;
 
 public class ListAssessmentsCommandTest {
 
@@ -46,7 +47,7 @@ public class ListAssessmentsCommandTest {
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-        assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
         assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
         assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));
@@ -61,7 +62,7 @@ public class ListAssessmentsCommandTest {
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-        assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
         assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
         assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));
