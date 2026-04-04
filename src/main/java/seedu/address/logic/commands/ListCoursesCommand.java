@@ -36,7 +36,7 @@ public class ListCoursesCommand extends Command {
         model.setDisplayMode(DisplayMode.COURSES);
 
         if (courses.isEmpty()) {
-            return new CommandResult("");
+            return new CommandResult("No courses added");
         }
         return new CommandResult("");
     }
