@@ -57,11 +57,11 @@ public class AddAssessmentCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        Assessment toAdd = new Assessment(courseCode, assessmentName, maxScore);
-
-        if (!model.hasCourse(toAdd.getCourseCode())) {
-            throw new CommandException(Messages.MESSAGE_INVALID_COURSE_CODE);
+        if (!model.hasCourse(courseCode)) {
+            throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
+
+        Assessment toAdd = new Assessment(courseCode, assessmentName, maxScore);
 
         if (model.hasAssessment(toAdd)) {
             throw new CommandException(MESSAGE_DUPLICATE_ASSESSMENT);
@@ -69,12 +69,10 @@ public class AddAssessmentCommand extends Command {
 
         for (Assessment existing : model.getAssessmentList()) {
             if (existing.getCourseCode().equalsIgnoreCase(toAdd.getCourseCode())) {
-
                 String existingName = existing.getAssessmentName().getNormalizedName();
                 String newName = toAdd.getAssessmentName().getNormalizedName();
 
-                if (!existingName.equals(newName)
-                        && areLikelyTypos(existingName, newName)) {
+                if (!existingName.equals(newName) && areLikelyTypos(existingName, newName)) {
                     throw new CommandException(String.format(
                             MESSAGE_SIMILAR_ASSESSMENT, existing.getAssessmentName()));
                 }
