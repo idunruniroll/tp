@@ -22,12 +22,12 @@ import seedu.address.model.assessment.MaxScore;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.person.Person;
-import seedu.address.model.student.Student;
 import seedu.address.logic.Messages;
+import seedu.address.model.student.Student;
 
 public class ListAssessmentsCommandTest {
 
-    public static final String MESSAGE_SUCCESS = "Listed all assessments";
+    public static final String MESSAGE_SUCCESS = Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS;
 
     @Test
     public void execute_noAssessments_returnsNoAssessmentsMessage() throws Exception {
