@@ -119,15 +119,29 @@ Example:
 
 Adds a student to a course roster.
 
+Format: `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
 
+Examples:
+* `addstudent c/CS2103T id/A0123456X n/Alex Yeoh`
+* `addstudent c/CS2103T id/A0123456X n/Alex Yeoh e/alex@example.com`
 
 ### Listing students in a course: `liststudents`
 
+Lists all students enrolled in the specified course.
 
+Format: `liststudents c/COURSE_CODE`
+
+Examples:
+* `liststudents c/CS2103T`
 
 ### Removing a student from a course: `removestudent`
 
+Removes a student from the specified course.
 
+Format: `removestudent c/COURSE_CODE id/STUDENT_ID`
+
+Examples:
+* `removestudent c/CS2103T id/A0123456X`
 
 ---
 
