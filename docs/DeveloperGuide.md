@@ -503,37 +503,73 @@ testers are expected to do more *exploratory* testing.
 ### Launch and shutdown
 
 1. Initial launch
-   1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy it into an empty folder.
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Open a terminal in that folder and run `java -jar "GradeBookPlus.jar"`.<br>
+      Expected: Shows the GradeBookPlus GUI. The app may initialize sample data depending on the current release.
 
 1. Saving window preferences
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   1. Re-launch the app.<br>
       Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a course
 
-### Deleting a person
+1. Adding a course
+   1. Test case: `addcourse c/CS2103T`<br>
+      Expected: The course is added successfully and a success message is shown.
 
-1. Deleting a person while all persons are being shown
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Test case: `addcourse c/CS2103T` again<br>
+      Expected: The app rejects the duplicate course and shows an error message.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+### Adding a student
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+1. Adding a student to an existing course
+   1. Prerequisite: A course such as `CS2103T` already exists.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+   1. Test case: `addstudent c/CS2103T id/A0123456X n/Alex Yeoh`<br>
+      Expected: The student is added successfully.
 
-1. _{ more test cases …​ }_
+   1. Test case: `addstudent c/FAKE1234 id/A0123456X n/Alex Yeoh`<br>
+      Expected: The app rejects the command because the course does not exist.
+
+### Adding an assessment
+
+1. Adding an assessment to an existing course
+   1. Prerequisite: A course such as `CS2103T` already exists.
+
+   1. Test case: `addassessment c/CS2103T an/Midterm m/100`<br>
+      Expected: The assessment is added successfully.
+
+   1. Test case: `addassessment c/CS2103T an/Midterm m/100` again<br>
+      Expected: The app rejects the duplicate assessment and shows an error message.
+
+### Adding a grade
+
+1. Adding a grade for a student
+   1. Prerequisites:
+      - A course such as `CS2103T` already exists.
+      - A student has already been added to the course.
+      - At least one assessment exists for the course.
+
+   1. Test case: `addgrade c/CS2103T id/A0123456X as/1 g/85`<br>
+      Expected: The grade is added successfully.
+
+   1. Test case: `addgrade c/CS2103T id/A0123456X as/99 g/85`<br>
+      Expected: The app rejects the invalid assessment index and shows an error message.
+
+### Viewing the overall summary
+
+1. Viewing summary information
+   1. Test case: `viewall`<br>
+      Expected: Displays a summary showing the total number of assessments, the total number of grades, and the number of grades recorded for each assessment.
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Start the app in a fresh folder without existing data files.<br>
+      Expected: The app creates the required files automatically.
 
-1. _{ more test cases …​ }_
+   1. Modify or remove the data file manually and relaunch the app.<br>
+      Expected: The app handles the situation gracefully and informs the user if recovery is not possible.
