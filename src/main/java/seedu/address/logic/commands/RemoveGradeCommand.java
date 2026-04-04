@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
@@ -32,13 +33,6 @@ public class RemoveGradeCommand extends Command {
         + PREFIX_COURSE_CODE + "CS2103T "
         + PREFIX_STUDENT_ID + "A0123456X "
         + PREFIX_ASSESSMENT + "2";
-
-    public static final String MESSAGE_SUCCESS = "Removed grade: Student ID: %1$s, "
-        + "Assessment name: %2$s in Course: %3$s";
-    public static final String MESSAGE_INVALID_STUDENT_ID = "The student ID provided is not enrolled in this course.";
-    public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
-    public static final String MESSAGE_INVALID_COURSE_CODE = "Invalid course code.";
-    public static final String MESSAGE_GRADE_NOT_FOUND = "Grade not found.";
 
     private final String courseCode;
     private final String studentId;
@@ -65,14 +59,14 @@ public class RemoveGradeCommand extends Command {
         requireNonNull(model);
 
         if (model.getCourse(courseCode).isEmpty()) {
-            throw new CommandException(MESSAGE_INVALID_COURSE_CODE);
+            throw new CommandException(Messages.MESSAGE_INVALID_COURSE_CODE);
         }
 
         boolean studentExistsInCourse = model.getCourse(courseCode).get().getStudents().stream()
                 .anyMatch(student -> student.getStudentId().equalsIgnoreCase(studentId));
 
         if (!studentExistsInCourse) {
-            throw new CommandException(MESSAGE_INVALID_STUDENT_ID);
+            throw new CommandException(Messages.MESSAGE_INVALID_STUDENT_ID);
         }
 
         List<Assessment> courseAssessments = model.getAssessmentList().stream()
@@ -80,7 +74,7 @@ public class RemoveGradeCommand extends Command {
                 .collect(Collectors.toList());
 
         if (assessmentIndex.getZeroBased() >= courseAssessments.size()) {
-            throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX);
         }
 
         Assessment assessment = courseAssessments.get(assessmentIndex.getZeroBased());
@@ -88,11 +82,11 @@ public class RemoveGradeCommand extends Command {
         Grade toRemove = new Grade(new StudentId(studentId), assessment.getAssessmentName(), courseCode);
 
         if (!model.hasGrade(toRemove)) {
-            throw new CommandException(MESSAGE_GRADE_NOT_FOUND);
+            throw new CommandException(Messages.MESSAGE_GRADE_NOT_FOUND);
         }
 
         model.removeGrade(toRemove);
-        return new CommandResult(String.format(MESSAGE_SUCCESS,
+        return new CommandResult(String.format(Messages.MESSAGE_REMOVE_GRADE_SUCCESS,
                 studentId,
                 assessment.getAssessmentName(),
                 courseCode));

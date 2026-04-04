@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.Objects;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -19,12 +20,6 @@ public class ListAssessmentsCommand extends Command {
         + "Parameters: [c/COURSE_CODE]\n"
         + "Example: " + COMMAND_WORD + "\n"
         + "Example: " + COMMAND_WORD + " c/CS2103T";
-
-    public static final String MESSAGE_SUCCESS = "Listed all assessments";
-    public static final String MESSAGE_SUCCESS_FILTERED = "Listed all assessments for course: %1$s";
-    public static final String MESSAGE_NO_ASSESSMENTS = "No assessments found.";
-    public static final String MESSAGE_NO_ASSESSMENTS_FOR_COURSE = "No assessments found for course: %1$s";
-    public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
 
     private final String courseCode;
 
@@ -45,13 +40,13 @@ public class ListAssessmentsCommand extends Command {
             model.setDisplayMode(DisplayMode.ASSESSMENTS);
 
             if (model.getFilteredAssessmentList().isEmpty()) {
-                return new CommandResult(MESSAGE_NO_ASSESSMENTS);
+                return new CommandResult(Messages.MESSAGE_NO_ASSESSMENTS);
             }
-            return new CommandResult(MESSAGE_SUCCESS);
+            return new CommandResult(Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS);
         }
 
         if (!model.hasCourse(courseCode)) {
-            throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
+            throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
         model.updateFilteredAssessmentList(
@@ -59,10 +54,10 @@ public class ListAssessmentsCommand extends Command {
         model.setDisplayMode(DisplayMode.ASSESSMENTS);
 
         if (model.getFilteredAssessmentList().isEmpty()) {
-            return new CommandResult(String.format(MESSAGE_NO_ASSESSMENTS_FOR_COURSE, courseCode));
+            return new CommandResult(String.format(Messages.MESSAGE_NO_ASSESSMENTS_FOR_COURSE, courseCode));
         }
 
-        return new CommandResult(String.format(MESSAGE_SUCCESS_FILTERED, courseCode));
+        return new CommandResult(String.format(Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS_FILTERED, courseCode));
     }
 
     @Override

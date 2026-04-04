@@ -2,10 +2,12 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
@@ -23,13 +25,6 @@ public class AddGradeCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a grade for a student for an assessment.\n"
             + "Parameters: c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX g/SCORE\n"
             + "Example: " + COMMAND_WORD + " c/CS2103T id/A0123456X as/1 g/85";
-
-    public static final String MESSAGE_SUCCESS = "New grade added: %1$s";
-    public static final String MESSAGE_DUPLICATE_GRADE = "This grade already exists for the student and assessment.";
-    public static final String MESSAGE_INVALID_STUDENT_ID = "The student ID provided is not enrolled in this course.";
-    public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
-    public static final String MESSAGE_SCORE_EXCEEDS_MAX = "Score cannot be more than the assessment max score.";
-    public static final String MESSAGE_INVALID_COURSE_CODE = "Invalid course code.";
 
     private final String courseCode;
     private final String studentId;
@@ -60,14 +55,14 @@ public class AddGradeCommand extends Command {
         requireNonNull(model);
 
         if (model.getCourse(courseCode).isEmpty()) {
-            throw new CommandException(MESSAGE_INVALID_COURSE_CODE);
+            throw new CommandException(Messages.MESSAGE_INVALID_COURSE_CODE);
         }
 
         boolean studentExistsInCourse = model.getCourse(courseCode).get().getStudents().stream()
                 .anyMatch(student -> student.getStudentId().equalsIgnoreCase(studentId));
 
         if (!studentExistsInCourse) {
-            throw new CommandException(MESSAGE_INVALID_STUDENT_ID);
+            throw new CommandException(Messages.MESSAGE_INVALID_STUDENT_ID);
         }
 
         List<Assessment> courseAssessments = model.getAssessmentList().stream()
@@ -75,23 +70,23 @@ public class AddGradeCommand extends Command {
                 .collect(Collectors.toList());
 
         if (assessmentIndex.getZeroBased() >= courseAssessments.size()) {
-            throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX);
         }
 
         Assessment assessment = courseAssessments.get(assessmentIndex.getZeroBased());
 
         if (score.toDouble() > assessment.getMaxScore().toDouble()) {
-            throw new CommandException("Score cannot be more than the assessment max score.");
+            throw new CommandException(Messages.MESSAGE_SCORE_EXCEEDS_MAX);
         }
 
         Grade toAdd = new Grade(courseCode, new StudentId(studentId), assessment.getAssessmentName(), score);
 
         if (model.hasGrade(toAdd)) {
-            throw new CommandException(MESSAGE_DUPLICATE_GRADE);
+            throw new CommandException(Messages.MESSAGE_DUPLICATE_GRADE);
         }
 
         model.addGrade(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        return new CommandResult(String.format(Messages.MESSAGE_ADD_GRADE_SUCCESS, toAdd));
     }
 
     @Override

@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -71,7 +72,7 @@ public class RemoveGradeCommandTest {
 
         CommandResult result = command.execute(modelStub);
 
-        assertEquals(String.format(RemoveGradeCommand.MESSAGE_SUCCESS,
+        assertEquals(String.format(Messages.MESSAGE_REMOVE_GRADE_SUCCESS,
                 "A1234567X", "Quiz 1", "CS2103T"), result.getFeedbackToUser());
         assertEquals(existingGrade, modelStub.removedGrade);
     }
@@ -95,7 +96,7 @@ public class RemoveGradeCommandTest {
                 "A2345678Y", Index.fromOneBased(1));
 
         assertThrows(CommandException.class,
-                RemoveGradeCommand.MESSAGE_INVALID_STUDENT_ID, (
+                String.format(Messages.MESSAGE_INVALID_STUDENT_ID, "A2345678Y"), (
                     ) -> command.execute(modelStub));
     }
 
@@ -118,7 +119,7 @@ public class RemoveGradeCommandTest {
                 "A1234567X", Index.fromOneBased(1));
 
         assertThrows(CommandException.class,
-                RemoveGradeCommand.MESSAGE_INVALID_COURSE_CODE, (
+                String.format(Messages.MESSAGE_INVALID_COURSE_CODE, "CS9999"), (
                     ) -> command.execute(modelStub));
     }
 
@@ -141,7 +142,7 @@ public class RemoveGradeCommandTest {
                 "A1234567X", Index.fromOneBased(2));
 
         assertThrows(CommandException.class,
-                RemoveGradeCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
+                String.format(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX, 2), (
                     ) -> command.execute(modelStub));
     }
 
@@ -159,7 +160,7 @@ public class RemoveGradeCommandTest {
                 "A1234567X", Index.fromOneBased(1));
 
         assertThrows(CommandException.class,
-                RemoveGradeCommand.MESSAGE_GRADE_NOT_FOUND, (
+                String.format(Messages.MESSAGE_GRADE_NOT_FOUND), (
                     ) -> command.execute(modelStub));
     }
 

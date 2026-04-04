@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -79,7 +80,7 @@ public class AddGradeCommandTest {
         Grade expectedGrade = new Grade("CS2103T", new StudentId("A1234567X"),
                 new AssessmentName("Quiz 1"), new Score("9"));
 
-        assertEquals(String.format(AddGradeCommand.MESSAGE_SUCCESS, expectedGrade),
+        assertEquals(String.format(Messages.MESSAGE_ADD_GRADE_SUCCESS, expectedGrade),
                 commandResult.getFeedbackToUser());
         assertEquals(1, modelStub.gradesAdded.size());
         assertEquals(expectedGrade, modelStub.gradesAdded.get(0));
@@ -91,7 +92,7 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS9999",
                 "A1234567X", Index.fromOneBased(1), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_COURSE_CODE, (
+        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_COURSE_CODE, (
             ) -> command.execute(modelStub));
     }
 
@@ -108,7 +109,7 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS2103T",
                 "A2345678Y", Index.fromOneBased(1), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_STUDENT_ID, (
+        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_STUDENT_ID, (
             ) -> command.execute(modelStub));
     }
 
@@ -126,7 +127,7 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS2103T",
                 "A1234567X", Index.fromOneBased(2), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
+        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_ASSESSMENT_INDEX, (
             ) -> command.execute(modelStub));
     }
 
@@ -143,7 +144,7 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS2103T",
                 "A1234567X", Index.fromOneBased(1), new Score("11"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_SCORE_EXCEEDS_MAX, (
+        assertThrows(CommandException.class, Messages.MESSAGE_SCORE_EXCEEDS_MAX, (
             ) -> command.execute(modelStub));
     }
 
@@ -165,7 +166,7 @@ public class AddGradeCommandTest {
         AddGradeCommand command = new AddGradeCommand("CS2103T",
                 "A1234567X", Index.fromOneBased(1), new Score("9"));
 
-        assertThrows(CommandException.class, AddGradeCommand.MESSAGE_DUPLICATE_GRADE, (
+        assertThrows(CommandException.class, Messages.MESSAGE_DUPLICATE_GRADE, (
             ) -> command.execute(modelStub));
     }
 

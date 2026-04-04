@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -50,7 +51,7 @@ public class ListGradesCommandTest {
         ListGradesCommand command = new ListGradesCommand("student", "A1234567X", null);
         CommandResult result = command.execute(modelStub);
 
-        assertEquals(ListGradesCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_LIST_GRADES_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.GRADES, modelStub.getDisplayMode());
         assertEquals(expectedGrades, modelStub.getFilteredGradeList());
     }
@@ -73,7 +74,7 @@ public class ListGradesCommandTest {
                 "CS2103T", Index.fromOneBased(2));
         CommandResult result = command.execute(modelStub);
 
-        assertEquals(ListGradesCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_LIST_GRADES_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.GRADES, modelStub.getDisplayMode());
         assertEquals(expectedGrades, modelStub.getFilteredGradeList());
     }
@@ -86,7 +87,7 @@ public class ListGradesCommandTest {
         ListGradesCommand command = new ListGradesCommand("course", "CS2103T", null);
 
         assertThrows(CommandException.class,
-                String.format(ListGradesCommand.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), (
+                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), (
                     ) -> command.execute(modelStub));
     }
 
@@ -113,7 +114,7 @@ public class ListGradesCommandTest {
                 "CS2103T", Index.fromOneBased(2));
 
         assertThrows(CommandException.class,
-                ListGradesCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
+                String.format(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX, 2), (
                     ) -> command.execute(modelStub));
     }
 

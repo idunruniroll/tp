@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -36,10 +37,6 @@ public class ListGradesCommand extends Command {
         + "  " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T\n"
         + "  " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T " + PREFIX_ASSESSMENT + "1\n"
         + "  " + COMMAND_WORD + " " + PREFIX_STUDENT_ID + "A0123456X";
-
-    public static final String MESSAGE_SUCCESS = "Displayed grades.";
-    public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
-    public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
 
     private final String filterType;
     private final String filterValue1;
@@ -70,7 +67,7 @@ public class ListGradesCommand extends Command {
         if ((filterType.equalsIgnoreCase("course")
                 || filterType.equalsIgnoreCase("courseassessment"))
                 && !model.hasCourse(filterValue1)) {
-            throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, filterValue1));
+            throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, filterValue1));
         }
 
         ObservableList<Grade> grades = getFilteredGrades(model);
@@ -87,7 +84,7 @@ public class ListGradesCommand extends Command {
         model.setCurrentCourseForDisplay(java.util.Optional.empty());
         model.setDisplayMode(DisplayMode.GRADES);
 
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new CommandResult(Messages.MESSAGE_LIST_GRADES_SUCCESS);
     }
 
     private ObservableList<Grade> getFilteredGrades(Model model) throws CommandException {
@@ -106,7 +103,7 @@ public class ListGradesCommand extends Command {
             if (courseAssessments.isEmpty()
                     || assessmentIndex == null
                     || assessmentIndex.getZeroBased() >= courseAssessments.size()) {
-                throw new CommandException(MESSAGE_INVALID_ASSESSMENT_INDEX);
+                throw new CommandException(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX);
             }
 
             Assessment selectedAssessment = courseAssessments.get(assessmentIndex.getZeroBased());
