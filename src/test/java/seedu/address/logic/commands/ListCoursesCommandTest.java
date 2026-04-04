@@ -33,7 +33,7 @@ public class ListCoursesCommandTest {
         ModelStubWithNoCourses modelStub = new ModelStubWithNoCourses();
         CommandResult result = new ListCoursesCommand().execute(modelStub);
 
-        assertEquals("", result.getFeedbackToUser());
+        assertEquals("No courses added", result.getFeedbackToUser());
     }
 
     @Test
