@@ -1,8 +1,7 @@
 package seedu.address.model.assessment;
 
 import static java.util.Objects.requireNonNull;
-
-import seedu.address.commons.util.AppUtil;
+import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
  * Represents an assessment's name.
@@ -17,10 +16,58 @@ public class AssessmentName {
      *
      * @param value the assessment name value
      */
-    public AssessmentName(String value) {
-        requireNonNull(value);
-        AppUtil.checkArgument(!value.trim().isEmpty(), MESSAGE_CONSTRAINTS);
-        this.value = value.trim();
+    public AssessmentName(String assessmentName) {
+        requireNonNull(assessmentName);
+        String normalizedAssessmentName = normalizeAssessmentName(assessmentName);
+        checkArgument(isValidAssessmentName(normalizedAssessmentName), MESSAGE_CONSTRAINTS);
+        value = normalizedAssessmentName;
+    }
+
+    private static String normalizeAssessmentName(String assessmentName) {
+        String trimmedName = assessmentName.trim().replaceAll("\\s+", " ");
+        String[] words = trimmedName.split(" ");
+        StringBuilder formattedName = new StringBuilder();
+
+        for (int i = 0; i < words.length; i++) {
+            String word = words[i];
+
+            if (!word.isEmpty()) {
+                formattedName.append(formatWord(word));
+            }
+
+            if (i < words.length - 1) {
+                formattedName.append(" ");
+            }
+        }
+
+        return formattedName.toString();
+    }
+
+    public String getNormalizedName() {
+        return value.toLowerCase();
+    }
+
+    private static String formatWord(String word) {
+        if (shouldPreserveUppercase(word)) {
+            return word.toUpperCase();
+        }
+
+        if (Character.isLetter(word.charAt(0))) {
+            return Character.toUpperCase(word.charAt(0))
+                    + word.substring(1).toLowerCase();
+        }
+
+        return word.toLowerCase();
+    }
+
+    private static boolean shouldPreserveUppercase(String word) {
+        return word.matches("[A-Za-z]*\\d+[A-Za-z\\d]*")
+                || (word.length() > 1 && word.matches("[A-Z]+"))
+                || (word.length() > 1 && word.matches("[a-zA-Z]+") && word.equals(word.toUpperCase()));
+    }
+
+    public static boolean isValidAssessmentName(String test) {
+        return test != null && !normalizeAssessmentName(test).isEmpty();
     }
 
     @Override
