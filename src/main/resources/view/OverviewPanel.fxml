@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="14.0"
+      xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1"
+      style="-fx-background-color: #4a4a4a; -fx-border-color: #5fa8d3; -fx-border-width: 1; -fx-padding: 18;">
+
+    <padding>
+        <Insets top="18" right="18" bottom="18" left="18"/>
+    </padding>
+
+    <children>
+        <Label text="Overview Summary"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;" />
+
+        <Label fx:id="assessmentCountLabel"
+               text="Assessments: 0"
+               style="-fx-font-size: 17px; -fx-text-fill: white;" />
+
+        <Label fx:id="gradeCountLabel"
+               text="Grades: 0"
+               style="-fx-font-size: 17px; -fx-text-fill: white;" />
+
+        <Label fx:id="gradesPerAssessmentLabel"
+               text="Grades per assessment:&#10;- None"
+               style="-fx-font-size: 17px; -fx-text-fill: white;" />
+    </children>
+</VBox>

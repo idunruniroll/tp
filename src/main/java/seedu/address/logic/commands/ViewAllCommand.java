@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
@@ -28,27 +29,7 @@ public class ViewAllCommand extends Command {
         requireNonNull(model);
         logger.info("Executing viewall command");
 
-        int assessmentCount = model.getAddressBook().getAssessmentList().size();
-        int gradeCount = model.getAddressBook().getGradeList().size();
-
-        Map<String, Integer> gradesPerAssessment = new LinkedHashMap<>();
-        for (Assessment a : model.getAddressBook().getAssessmentList()) {
-            gradesPerAssessment.put(a.getAssessmentName().toString(), 0);
-        }
-        for (Grade g : model.getAddressBook().getGradeList()) {
-            String key = g.getAssessmentName().toString();
-            gradesPerAssessment.put(key, gradesPerAssessment.getOrDefault(key, 0) + 1);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("Overview\n");
-        sb.append("Assessments: ").append(assessmentCount).append("\n");
-        sb.append("Grades: ").append(gradeCount).append("\n");
-        sb.append("Grades per assessment:\n");
-        for (Map.Entry<String, Integer> e : gradesPerAssessment.entrySet()) {
-            sb.append("- ").append(e.getKey()).append(": ").append(e.getValue()).append("\n");
-        }
-
-        return new CommandResult(sb.toString().trim());
+        model.setDisplayMode(DisplayMode.OVERVIEW);
+        return new CommandResult("Displaying overview summary.");
     }
 }

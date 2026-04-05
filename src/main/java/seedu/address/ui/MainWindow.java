@@ -40,6 +40,7 @@ public class MainWindow extends UiPart<Stage> {
     private HelpWindow helpWindow;
     private AssessmentListPanel assessmentListPanel;
     private GradeListPanel gradeListPanel;
+    private OverviewPanel overviewPanel;
 
     @FXML
     private StackPane commandBoxPlaceholder;
@@ -62,13 +63,10 @@ public class MainWindow extends UiPart<Stage> {
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
 
-        // Set dependencies
         this.primaryStage = primaryStage;
         this.logic = logic;
 
-        // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
-
         setAccelerators();
 
         helpWindow = new HelpWindow();
@@ -84,6 +82,7 @@ public class MainWindow extends UiPart<Stage> {
 
     /**
      * Sets the accelerator of a MenuItem.
+     *
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -118,8 +117,9 @@ public class MainWindow extends UiPart<Stage> {
     void fillInnerParts() {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         studentListPanel = new StudentListPanel(logic.getFilteredStudentList());
-        courseListPanel = new CourseListPanel(logic.getFilteredCourseList(),
-                                logic.getAddressBook().getAssessmentList());
+        courseListPanel = new CourseListPanel(
+                logic.getFilteredCourseList(),
+                logic.getAddressBook().getAssessmentList());
         courseDetailListPanel = new CourseDetailListPanel(
                 logic.getDetailedCourseList(),
                 logic.getAddressBook().getAssessmentList());
@@ -128,6 +128,7 @@ public class MainWindow extends UiPart<Stage> {
                 logic.getFilteredGradeList(),
                 logic.getAddressBook().getAssessmentList(),
                 logic.getAddressBook().getCourseList());
+        overviewPanel = new OverviewPanel(logic);
 
         personListPanelPlaceholder.getChildren().setAll(
                 personListPanel.getRoot(),
@@ -135,7 +136,8 @@ public class MainWindow extends UiPart<Stage> {
                 courseListPanel.getRoot(),
                 courseDetailListPanel.getRoot(),
                 assessmentListPanel.getRoot(),
-                gradeListPanel.getRoot());
+                gradeListPanel.getRoot(),
+                overviewPanel.getRoot());
 
         personListPanel.getRoot().setVisible(true);
         personListPanel.getRoot().setManaged(true);
@@ -154,6 +156,9 @@ public class MainWindow extends UiPart<Stage> {
 
         courseDetailListPanel.getRoot().setVisible(false);
         courseDetailListPanel.getRoot().setManaged(false);
+
+        overviewPanel.getRoot().setVisible(false);
+        overviewPanel.getRoot().setManaged(false);
 
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
@@ -176,6 +181,7 @@ public class MainWindow extends UiPart<Stage> {
         boolean showCourseDetails = displayMode == DisplayMode.COURSE_DETAILS;
         boolean showAssessments = displayMode == DisplayMode.ASSESSMENTS;
         boolean showGrades = displayMode == DisplayMode.GRADES;
+        boolean showOverview = displayMode == DisplayMode.OVERVIEW;
 
         personListPanel.getRoot().setVisible(showPersons);
         personListPanel.getRoot().setManaged(showPersons);
@@ -194,6 +200,9 @@ public class MainWindow extends UiPart<Stage> {
 
         gradeListPanel.getRoot().setVisible(showGrades);
         gradeListPanel.getRoot().setManaged(showGrades);
+
+        overviewPanel.getRoot().setVisible(showOverview);
+        overviewPanel.getRoot().setManaged(showOverview);
     }
 
     /**
@@ -250,6 +259,10 @@ public class MainWindow extends UiPart<Stage> {
             CommandResult commandResult = logic.execute(commandText);
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
+
+            overviewPanel = new OverviewPanel(logic);
+            int overviewIndex = personListPanelPlaceholder.getChildren().size() - 1;
+            personListPanelPlaceholder.getChildren().set(overviewIndex, overviewPanel.getRoot());
 
             updateListVisibility();
 
