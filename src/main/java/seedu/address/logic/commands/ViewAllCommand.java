@@ -2,15 +2,11 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
-import seedu.address.model.assessment.Assessment;
-import seedu.address.model.grade.Grade;
 
 /**
  * Shows an overview summary of the current data (assessments and grades).
