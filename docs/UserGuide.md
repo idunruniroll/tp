@@ -250,6 +250,11 @@ Returns the app to the default overall view.
 
 Format: `viewall`
 
+Note:
+* `viewall` currently displays a text summary in the result box.
+* It is useful for checking the current number of assessments and grades quickly.
+* The command also shows how many grades are recorded for each assessment.
+
 ### Exiting the program: `exit`
 
 Exits the application.
