@@ -3,7 +3,6 @@ package seedu.address.model.grade;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.util.Locale;
 import java.util.Objects;
 
 /**
