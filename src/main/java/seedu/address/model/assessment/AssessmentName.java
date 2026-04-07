@@ -7,7 +7,9 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Represents an assessment's name.
  */
 public class AssessmentName {
-    public static final String MESSAGE_CONSTRAINTS = "Assessment names should not be blank.";
+    public static final int MAX_LENGTH = 50;
+    public static final String MESSAGE_CONSTRAINTS = "Assessment names should not be blank and should be at most "
+            + MAX_LENGTH + " characters long.";
 
     public final String value;
 
@@ -19,7 +21,8 @@ public class AssessmentName {
     public AssessmentName(String assessmentName) {
         requireNonNull(assessmentName);
         String normalizedAssessmentName = normalizeAssessmentName(assessmentName);
-        checkArgument(isValidAssessmentName(normalizedAssessmentName), MESSAGE_CONSTRAINTS);
+        checkArgument(!normalizedAssessmentName.isEmpty()
+                && normalizedAssessmentName.length() <= MAX_LENGTH, MESSAGE_CONSTRAINTS);
         value = normalizedAssessmentName;
     }
 
@@ -67,7 +70,12 @@ public class AssessmentName {
     }
 
     public static boolean isValidAssessmentName(String test) {
-        return test != null && !normalizeAssessmentName(test).isEmpty();
+        if (test == null) {
+            return false;
+        }
+
+        String normalizedName = normalizeAssessmentName(test);
+        return !normalizedName.isEmpty() && normalizedName.length() <= MAX_LENGTH;
     }
 
     @Override

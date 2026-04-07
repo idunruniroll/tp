@@ -129,4 +129,14 @@ public class AddAssessmentCommandParserTest {
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAX_SCORE));
     }
+
+    @Test
+    public void parse_assessmentNameTooLong_failure() {
+            String longName = "A".repeat(51);
+            String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
+                            + PREFIX_ASSESSMENT_NAME + longName + " "
+                            + PREFIX_MAX_SCORE + "100";
+
+            assertParseFailure(parser, userInput, AssessmentName.MESSAGE_CONSTRAINTS);
+    }
 }

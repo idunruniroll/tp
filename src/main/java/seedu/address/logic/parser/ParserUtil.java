@@ -146,10 +146,12 @@ public class ParserUtil {
     public static AssessmentName parseAssessmentName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-        if (trimmedName.isEmpty()) {
+
+        try {
+            return new AssessmentName(trimmedName);
+        } catch (IllegalArgumentException e) {
             throw new ParseException(AssessmentName.MESSAGE_CONSTRAINTS);
         }
-        return new AssessmentName(trimmedName);
     }
 
     /**
