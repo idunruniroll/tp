@@ -78,7 +78,7 @@ public class AddAssessmentCommandParserTest {
         String userInput = " " + PREFIX_COURSE_CODE + "CS 2103T "
                 + PREFIX_ASSESSMENT_NAME + "Midterm " + PREFIX_MAX_SCORE + "100";
 
-        assertParseFailure(parser, userInput, "❌ Invalid course code. Example: CS2103T");
+        assertParseFailure(parser, userInput, "❌ Invalid course code. Example: c/CS2103T");
     }
 
     @Test

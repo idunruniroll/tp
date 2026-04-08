@@ -214,7 +214,7 @@ public class ParserUtil {
     public static String parseStudentId(String value) throws ParseException {
         requireNonNull(value);
         String trimmed = value.trim().toUpperCase();
-        if (!trimmed.matches("[A-Za-z0-9]{6,12}")) {
+        if (!trimmed.matches("[A-Z0-9]{6,12}")) {
             throw new ParseException("\u274C Invalid student ID. Example: id/A0123456X");
         }
         return trimmed;

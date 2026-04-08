@@ -15,7 +15,7 @@ public class StudentId {
      */
     public StudentId(String value) {
         requireNonNull(value);
-        this.value = value.trim();
+        this.value = value.trim().toUpperCase();
     }
 
     @Override

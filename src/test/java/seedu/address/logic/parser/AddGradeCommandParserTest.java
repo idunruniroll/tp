@@ -99,7 +99,7 @@ public class AddGradeCommandParserTest {
                 + PREFIX_ASSESSMENT + "1 "
                 + PREFIX_GRADE + "9";
 
-        assertParseFailure(parser, userInput, "❌ Invalid course code. Example: CS2103T");
+        assertParseFailure(parser, userInput, "❌ Invalid course code. Example: c/CS2103T");
     }
 
     @Test
