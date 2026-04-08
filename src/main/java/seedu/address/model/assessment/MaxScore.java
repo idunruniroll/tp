@@ -9,17 +9,16 @@ import java.util.Objects;
  * Represents an Assessment's maximum score.
  */
 public class MaxScore {
-
-    public static final String MESSAGE_CONSTRAINTS =
-        "Max score must be a number greater than 0, with at most 1 decimal place.";
-
-    private static final String MAX_SCORE_VALIDATION_REGEX = "^\\d+(\\.\\d)?$";
+    public static final String MESSAGE_CONSTRAINTS = "Max score must be greater than 0 and at most 999, "
+            + "with at most 1 decimal place.";
+    private static final String MAX_SCORE_VALIDATION_REGEX = "^\\d{1,3}(\\.\\d)?$";
+    private static final double MAX_ALLOWED_SCORE = 999.0;
 
     public final String value;
 
     /**
      * Constructs a MaxScore.
-     * @param value the maximum score value as a string
+     * @param maxScore the maximum score value as a string
      */
     public MaxScore(String maxScore) {
         requireNonNull(maxScore);
@@ -28,8 +27,8 @@ public class MaxScore {
     }
 
     /**
-    * Returns true if a given string is a valid max score.
-    */
+     * Returns true if a given string is a valid max score.
+     */
     public static boolean isValidMaxScore(String test) {
         if (test == null) {
             return false;
@@ -40,7 +39,8 @@ public class MaxScore {
         }
 
         try {
-            return Double.parseDouble(test) > 0;
+            double parsedValue = Double.parseDouble(test);
+            return parsedValue > 0 && parsedValue <= MAX_ALLOWED_SCORE;
         } catch (NumberFormatException e) {
             return false;
         }

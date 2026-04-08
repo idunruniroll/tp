@@ -16,6 +16,7 @@ public class Score {
     // Accepts: 0, 5, 5.0, 5.5, 10.0
     // Rejects: -1, 5.55, abc, empty
     private static final String SCORE_VALIDATION_REGEX = "^\\d+(\\.\\d)?$";
+    private static final double MAX_ALLOWED_SCORE = 999.0;
 
     public final String value;
 
@@ -43,7 +44,8 @@ public class Score {
         }
 
         try {
-            return Double.parseDouble(test) >= 0;
+            double parsedValue = Double.parseDouble(test);
+            return parsedValue >= 0 && parsedValue <= MAX_ALLOWED_SCORE;
         } catch (NumberFormatException e) {
             return false;
         }
