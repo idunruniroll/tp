@@ -2,8 +2,11 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -205,6 +208,33 @@ public class ParserUtil {
         }
 
         return trimmed;
+    }
+
+    /**
+     * Parses a comma-separated list of course codes.
+     *
+     * @param rawCourseCodes raw course code list from a prefixed argument
+     * @return normalized course codes
+     * @throws ParseException if no values are provided or any course code is invalid
+     */
+    public static List<String> parseCourseCodes(String rawCourseCodes) throws ParseException {
+        requireNonNull(rawCourseCodes);
+
+        List<String> rawCodes = Arrays.stream(rawCourseCodes.split(","))
+                .map(String::trim)
+                .filter(code -> !code.isEmpty())
+                .toList();
+
+        if (rawCodes.isEmpty()) {
+            throw new ParseException(Course.MESSAGE_CONSTRAINTS);
+        }
+
+        List<String> courseCodes = new ArrayList<>();
+        for (String rawCode : rawCodes) {
+            courseCodes.add(parseCourseCode(rawCode));
+        }
+
+        return courseCodes;
     }
 
     /**

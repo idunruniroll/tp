@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -23,8 +24,6 @@ public class ListDetailsCommand extends Command {
             + "Parameters: c/COURSE_CODE[,COURSE_CODE,...]\n"
             + "Example: " + COMMAND_WORD + " c/CS2103T";
 
-    public static final String MESSAGE_COURSE_NOT_FOUND = "\u274C Course %s not found.";
-
     private final List<String> courseCodes;
 
     /**
@@ -41,22 +40,12 @@ public class ListDetailsCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (courseCodes.isEmpty()) {
-            throw new CommandException("\u274C No course codes provided.");
-        }
-
         List<Course> coursesToDisplay = new ArrayList<>();
 
-        for (String rawCourseCode : courseCodes) {
-            String courseCode = rawCourseCode.trim().toUpperCase();
-
-            if (!model.hasCourse(courseCode)) {
-                throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
-            }
-
+        for (String courseCode : courseCodes) {
             Optional<Course> courseOptional = model.getCourse(courseCode);
             if (courseOptional.isEmpty()) {
-                throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
+                throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, courseCode));
             }
 
             coursesToDisplay.add(courseOptional.get());

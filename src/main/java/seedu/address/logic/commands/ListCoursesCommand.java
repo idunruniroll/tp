@@ -30,7 +30,6 @@ public class ListCoursesCommand extends Command {
         requireNonNull(model);
 
         ObservableList<Course> courses = model.getCourseList();
-        courses.forEach(course -> course.setAssessmentSource(model.getAssessmentList()));
         model.setCurrentCourseForDisplay(Optional.empty());
         model.setDetailedCoursesForDisplay(List.of());
         model.setDisplayMode(DisplayMode.COURSES);
