@@ -78,7 +78,6 @@ public class UiManager implements Ui {
     /**
      * Shows a warning alert dialog with {@code title} and error message,
      * {@code contentText}.
-     * 
      * @param contentText
      */
     public void showStartupWarning(String contentText) {
