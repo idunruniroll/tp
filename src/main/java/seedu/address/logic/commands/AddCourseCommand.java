@@ -2,8 +2,10 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
@@ -24,6 +26,8 @@ public class AddCourseCommand extends Command {
     public static final String MESSAGE_FORMAT = "\u274C Format: " + COMMAND_WORD + " c/COURSE_CODE[,COURSE_CODE]...";
 
     public static final String MESSAGE_SUCCESS = "\u2705 Course added: %s.";
+    public static final String MESSAGE_DUPLICATE_COURSE_INPUT =
+            "\u274C Duplicate course codes in the same command are not allowed: %s.";
     public static final String MESSAGE_DUPLICATE_COURSE = "\u274C Course %s already exists.";
 
     private final List<String> courseCodes;
@@ -41,9 +45,13 @@ public class AddCourseCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
+        Set<String> seenCourseCodes = new HashSet<>();
 
-        // Check for duplicates first
         for (String courseCode : courseCodes) {
+            String normalizedCourseCode = courseCode.trim().toUpperCase();
+            if (!seenCourseCodes.add(normalizedCourseCode)) {
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE_INPUT, normalizedCourseCode));
+            }
             if (model.hasCourse(courseCode)) {
                 throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE, courseCode));
             }

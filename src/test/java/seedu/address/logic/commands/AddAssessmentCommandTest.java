@@ -16,6 +16,7 @@ import org.junit.jupiter.api.Test;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -55,7 +56,7 @@ public class AddAssessmentCommandTest {
                 new seedu.address.model.assessment.AssessmentName("Midterm"),
                 new seedu.address.model.assessment.MaxScore("100"));
 
-        assertEquals(String.format(AddAssessmentCommand.MESSAGE_SUCCESS, expectedAssessment),
+        assertEquals(String.format(Messages.MESSAGE_ADD_ASSESSMENT_SUCCESS, expectedAssessment),
                 commandResult.getFeedbackToUser());
         assertEquals(1, modelStub.assessmentsAdded.size());
         assertEquals(expectedAssessment, modelStub.assessmentsAdded.get(0));
@@ -67,7 +68,7 @@ public class AddAssessmentCommandTest {
         ModelStub modelStub = new ModelStubWithoutCourse();
 
         assertThrows(CommandException.class,
-                String.format(AddAssessmentCommand.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), (
+                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), (
                 ) -> command.execute(modelStub));
     }
 
@@ -80,7 +81,7 @@ public class AddAssessmentCommandTest {
         ModelStub modelStub = new ModelStubWithAssessment(assessment);
 
         assertThrows(CommandException.class,
-                AddAssessmentCommand.MESSAGE_DUPLICATE_ASSESSMENT, (
+                String.format(Messages.MESSAGE_DUPLICATE_ASSESSMENT, assessment), (
                 ) -> command.execute(modelStub));
     }
 
@@ -321,6 +322,12 @@ public class AddAssessmentCommandTest {
             requireNonNull(courseCode);
             return Optional.empty();
         }
+
+        @Override
+        public boolean hasCourse(String courseCode) {
+            requireNonNull(courseCode);
+            return false;
+        }
     }
 
     /**
@@ -343,6 +350,12 @@ public class AddAssessmentCommandTest {
         public boolean hasAssessment(Assessment assessment) {
             requireNonNull(assessment);
             return this.assessment.isSameAssessment(assessment);
+        }
+
+        @Override
+        public boolean hasCourse(String courseCode) {
+            requireNonNull(courseCode);
+            return true;
         }
     }
 
@@ -368,6 +381,12 @@ public class AddAssessmentCommandTest {
         public void addAssessment(Assessment assessment) {
             requireNonNull(assessment);
             assessmentsAdded.add(assessment);
+        }
+
+        @Override
+        public boolean hasCourse(String courseCode) {
+            requireNonNull(courseCode);
+            return true;
         }
     }
 }

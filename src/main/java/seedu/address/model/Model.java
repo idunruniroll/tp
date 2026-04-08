@@ -104,6 +104,17 @@ public interface Model {
 
     ObservableList<Assessment> getAssessmentList();
 
+    /**
+     * Returns the assessments for the given course in the same order as shown in
+     * the assessment list UI.
+     */
+    default ObservableList<Assessment> getAssessmentsForCourseInDisplayOrder(String courseCode) {
+        return FXCollections.observableArrayList(
+                getAssessmentList().stream()
+                        .filter(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode))
+                        .toList());
+    }
+
     void updateFilteredAssessmentList(Predicate<Assessment> predicate);
 
     boolean hasGrade(Grade grade);

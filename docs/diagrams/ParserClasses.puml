@@ -5,16 +5,12 @@ skinparam arrowColor LOGIC_COLOR_T4
 skinparam classBackgroundColor LOGIC_COLOR
 
 Class "{abstract}\nCommand" as Command
-Class AddGradeCommand
-Class AddStudentCommand
-Class ListStudentsCommand
+Class XYZCommand
 
 package "Parser classes"{
 Class "<<interface>>\nParser" as Parser
 Class AddressBookParser
-Class AddGradeCommandParser
-Class AddStudentCommandParser
-Class ListStudentsCommandParser
+Class XYZCommandParser
 Class CliSyntax
 Class ParserUtil
 Class ArgumentMultimap
@@ -25,44 +21,18 @@ Class Prefix
 Class HiddenOutside #FFFFFF
 HiddenOutside ..> AddressBookParser
 
-AddressBookParser .down.> AddGradeCommandParser: <<create>>
-AddressBookParser .down.> AddStudentCommandParser: <<create>>
-AddressBookParser .down.> ListStudentsCommandParser: <<create>>
+AddressBookParser .down.> XYZCommandParser: <<create>>
 
-AddGradeCommandParser ..> AddGradeCommand : <<create>>
-AddStudentCommandParser ..> AddStudentCommand : <<create>>
-ListStudentsCommandParser ..> ListStudentsCommand : <<create>>
-
+XYZCommandParser ..> XYZCommand : <<create>>
 AddressBookParser ..> Command : <<use>>
-
-AddGradeCommandParser .up.|> Parser
-AddStudentCommandParser .up.|> Parser
-ListStudentsCommandParser .up.|> Parser
-
-AddGradeCommandParser ..> ArgumentMultimap
-AddStudentCommandParser ..> ArgumentMultimap
-ListStudentsCommandParser ..> ArgumentMultimap
-
+XYZCommandParser .up.|> Parser
+XYZCommandParser ..> ArgumentMultimap
+XYZCommandParser ..> ArgumentTokenizer
 ArgumentTokenizer .left.> ArgumentMultimap
-
-AddGradeCommandParser ..> ArgumentTokenizer
-AddStudentCommandParser ..> ArgumentTokenizer
-ListStudentsCommandParser ..> ArgumentTokenizer
-
-AddGradeCommandParser ..> CliSyntax
-AddStudentCommandParser ..> CliSyntax
-ListStudentsCommandParser ..> CliSyntax
-
+XYZCommandParser ..> CliSyntax
 CliSyntax ..> Prefix
-
-AddGradeCommandParser ..> ParserUtil
-AddStudentCommandParser ..> ParserUtil
-ListStudentsCommandParser ..> ParserUtil
-
+XYZCommandParser ..> ParserUtil
 ParserUtil .down.> Prefix
 ArgumentTokenizer .down.> Prefix
-
-AddGradeCommand -up-|> Command
-AddStudentCommand -up-|> Command
-ListStudentsCommand -up-|> Command
+XYZCommand -up-|> Command
 @enduml

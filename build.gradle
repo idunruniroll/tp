@@ -16,6 +16,10 @@ repositories {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
+run {
+    enableAssertions = true
+}
+
 checkstyle {
     toolVersion = '11.0.0'
 }
@@ -44,13 +48,21 @@ dependencies {
     String jUnitVersion = '5.4.0'
     String javaFxVersion = '17.0.7'
 
-    def os = org.gradle.internal.os.OperatingSystem.current()
-    def javafxClassifier = os.isWindows() ? 'win' : (os.isMacOsX() ? 'mac-aarch64' : 'linux')
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: 'linux'
 
-    implementation group: 'org.openjfx', name: 'javafx-base', version: javaFxVersion, classifier: javafxClassifier
-    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: javafxClassifier
-    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: javafxClassifier
-    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: javafxClassifier
+    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-controls', version: javaFxVersion, classifier: 'linux'
+
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-fxml', version: javaFxVersion, classifier: 'linux'
+
+    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
+    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
+    implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.7.0'
     implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.7.4'
@@ -68,4 +80,3 @@ defaultTasks 'clean', 'test'
 run {
     enableAssertions = true
 }
-

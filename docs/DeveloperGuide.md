@@ -54,9 +54,11 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The _Sequence Diagram_ below shows how the components interact with each other for the scenario where the user issues the command `addgrade c/CS2103T id/A0123456B a/Assignment1 s/95` to record a student's grade for an assessment.
+The _Sequence Diagram_ below shows how the main components interact when the user executes the command `delete 1`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
+
+This diagram stays at the component level. The parser and command objects involved in the deletion flow are intentionally abstracted away here and are described in the `Logic` section below.
 
 Each of the four main components (also shown in the diagram above),
 
@@ -94,19 +96,17 @@ Here's a (partial) class diagram of the `Logic` component:
 
 <img src="images/LogicClassDiagram.png" width="550"/>
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("addgrade c/CS2103T id/A0123456B as/Assignment1 g/95")` API call as an example.
+The diagram focuses on the core collaborators in `Logic` together with a representative subset of concrete commands. Additional command classes follow the same `Command` inheritance structure and are omitted to keep the diagram readable.
 
-![Interactions Inside the Logic Component for the `addgrade` Command](images/DeleteSequenceDiagram.png)
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` as an example.
 
-<div markdown="span" class="alert alert-info">:information_source: **Note:** The lifeline for `AddGradeCommandParser` should end at the destroy marker (X) but due to a limitation of PlantUML, the lifeline continues till the end of diagram.
-</div>
+![Interactions Inside the Logic Component for the `delete` Command](images/DeleteSequenceDiagram.png)
 
 How the `Logic` component works:
 
-1. When `Logic` is called upon to execute a command, it is passed to an `AddressBookParser` object which in turn creates a parser that matches the command (e.g., `AddGradeCommandParser`) and uses it to parse the command.
-1. This results in a `Command` object (more precisely, an object of one of its subclasses e.g., `AddGradeCommand`) which is executed by the `LogicManager`.
-1. The command can communicate with the `Model` when it is executed (e.g. to add a grade for a student in a course).<br>
-   Note that although this is shown as a single step in the diagram above (for simplicity), in the code it can take several interactions (between the command object and the `Model`) to achieve.
+1. When `Logic` is called upon to execute a command, `LogicManager` delegates parsing to `AddressBookParser`, which selects the parser matching the command word (for example, `DeleteCommandParser`).
+1. The parser returns a `Command` object. For `delete 1`, this is a `DeleteCommand`.
+1. The command is then executed with the `Model`. In the `delete` flow, the command retrieves the currently displayed person list, validates the requested index, and deletes the selected `Person` when the index is valid.
 1. The result of the command execution is encapsulated as a `CommandResult` object which is returned back from `Logic`.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
@@ -115,8 +115,10 @@ Here are the other classes in `Logic` (omitted from the class diagram above) tha
 
 How the parsing works:
 
-- When called upon to parse a user command, the `AddressBookParser` class creates an `XYZCommandParser` (`XYZ` is a placeholder for the specific command name e.g., `AddGradeCommandParser`) which uses the other classes shown above to parse the user command and create a `XYZCommand` object (e.g., `AddGradeCommand`) which the `AddressBookParser` returns back as a `Command` object.
-- All `XYZCommandParser` classes (e.g., `AddGradeCommandParser`, `AddStudentCommandParser`, `ListStudentsCommandParser`, ...) inherit from the `Parser` interface so that they can be treated similarly where possible e.g, during testing.
+- `AddressBookParser` acts as the entry point for parsing. It inspects the command word and delegates to a concrete parser such as `DeleteCommandParser`, `AddCourseCommandParser`, `AddAssessmentCommandParser`, or `ExportCourseCommandParser`.
+- Concrete parser classes implement the common `Parser<T>` interface and each creates exactly one matching `Command` subtype.
+- Many parsers reuse shared helpers such as `ArgumentTokenizer`, `ArgumentMultimap`, `ParserUtil`, `CliSyntax`, and `Prefix` to tokenize prefixed arguments, validate them, and construct the target command object.
+- Some simple commands, such as `clear`, `list`, `help`, `exit`, and `viewall`, are instantiated directly by `AddressBookParser` and therefore do not appear in the parser class diagram.
 
 ### Model component
 
@@ -501,37 +503,73 @@ testers are expected to do more *exploratory* testing.
 ### Launch and shutdown
 
 1. Initial launch
-   1. Download the jar file and copy into an empty folder
+   1. Download the jar file and copy it into an empty folder.
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   1. Open a terminal in that folder and run `java -jar "GradeBookPlus.jar"`.<br>
+      Expected: Shows the GradeBookPlus GUI. The app may initialize sample data depending on the current release.
 
 1. Saving window preferences
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   1. Re-launch the app.<br>
       Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+### Adding a course
 
-### Deleting a person
+1. Adding a course
+   1. Test case: `addcourse c/CS2103T`<br>
+      Expected: The course is added successfully and a success message is shown.
 
-1. Deleting a person while all persons are being shown
-   1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
+   1. Test case: `addcourse c/CS2103T` again<br>
+      Expected: The app rejects the duplicate course and shows an error message.
 
-   1. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+### Adding a student
 
-   1. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+1. Adding a student to an existing course
+   1. Prerequisite: A course such as `CS2103T` already exists.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
-      Expected: Similar to previous.
+   1. Test case: `addstudent c/CS2103T id/A0123456X n/Alex Yeoh`<br>
+      Expected: The student is added successfully.
 
-1. _{ more test cases …​ }_
+   1. Test case: `addstudent c/FAKE1234 id/A0123456X n/Alex Yeoh`<br>
+      Expected: The app rejects the command because the course does not exist.
+
+### Adding an assessment
+
+1. Adding an assessment to an existing course
+   1. Prerequisite: A course such as `CS2103T` already exists.
+
+   1. Test case: `addassessment c/CS2103T an/Midterm m/100`<br>
+      Expected: The assessment is added successfully.
+
+   1. Test case: `addassessment c/CS2103T an/Midterm m/100` again<br>
+      Expected: The app rejects the duplicate assessment and shows an error message.
+
+### Adding a grade
+
+1. Adding a grade for a student
+   1. Prerequisites:
+      - A course such as `CS2103T` already exists.
+      - A student has already been added to the course.
+      - At least one assessment exists for the course.
+
+   1. Test case: `addgrade c/CS2103T id/A0123456X as/1 g/85`<br>
+      Expected: The grade is added successfully.
+
+   1. Test case: `addgrade c/CS2103T id/A0123456X as/99 g/85`<br>
+      Expected: The app rejects the invalid assessment index and shows an error message.
+
+### Viewing the overall summary
+
+1. Viewing summary information
+   1. Test case: `viewall`<br>
+      Expected: Displays a summary showing the total number of assessments, the total number of grades, and the number of grades recorded for each assessment.
 
 ### Saving data
 
 1. Dealing with missing/corrupted data files
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Start the app in a fresh folder without existing data files.<br>
+      Expected: The app creates the required files automatically.
 
-1. _{ more test cases …​ }_
+   1. Modify or remove the data file manually and relaunch the app.<br>
+      Expected: The app handles the situation gracefully and informs the user if recovery is not possible.

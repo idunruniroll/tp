@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.RemoveGradeCommand;
@@ -20,23 +20,22 @@ public class RemoveGradeCommandParser implements Parser<RemoveGradeCommand> {
         requireNonNull(args);
 
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(
-                args, PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE);
-        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE);
+            args, PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE);
 
         if (!ParserUtil.arePrefixesPresent(argMultimap,
-                PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE)
-                || !argMultimap.getPreamble().isEmpty()) {
+            PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE)
+            || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    RemoveGradeCommand.MESSAGE_USAGE));
+                RemoveGradeCommand.MESSAGE_USAGE));
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(
-                PREFIX_STUDENT, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE);
+            PREFIX_STUDENT_ID, PREFIX_ASSESSMENT, PREFIX_COURSE_CODE);
 
-        Index studentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_STUDENT).get());
+        String studentId = ParserUtil.parseStudentId(argMultimap.getValue(PREFIX_STUDENT_ID).get());
         Index assessmentIndex = ParserUtil.parseIndex(argMultimap.getValue(PREFIX_ASSESSMENT).get());
         String courseCode = ParserUtil.parseCourseCode(argMultimap.getValue(PREFIX_COURSE_CODE).get());
 
-        return new RemoveGradeCommand(courseCode, studentIndex, assessmentIndex);
+        return new RemoveGradeCommand(courseCode, studentId, assessmentIndex);
     }
 }

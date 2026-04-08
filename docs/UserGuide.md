@@ -270,12 +270,14 @@ Example:
 
 **Purpose:** Use this command to view a course’s detailed information, including its students and assessments, in one place.
 
-Displays detailed information for a course.
+Displays assessments and students information for a course.
 
 Format: `listdetails c/COURSE_CODE`
 
 Example:
 * `listdetails c/CS2103T`
+
+![Example of ListDetails](images/CourseCommands/ListDetails.png)
 
 ### Exporting a course: `exportcourse`
 
@@ -295,6 +297,11 @@ Example:
 Returns the app to the default overall view.
 
 Format: `viewall`
+
+Note:
+* `viewall` currently displays a text summary in the result box.
+* It is useful for checking the current number of assessments and grades quickly.
+* The command also shows how many grades are recorded for each assessment.
 
 ### Exiting the program: `exit`
 

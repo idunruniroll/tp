@@ -70,6 +70,17 @@ public class RemoveCourseCommandTest {
     }
 
     @Test
+    public void execute_duplicateCourseCodeInputsIgnoringCase_throwsCommandException() {
+        RemoveCourseCommand removeCourseCommand =
+                new RemoveCourseCommand(Arrays.asList("CS1231S", "cs1231S", "cS1231s"));
+        ModelStub modelStub = new ModelStubWithCourses("CS1231S");
+
+        assertThrows(CommandException.class,
+                String.format(RemoveCourseCommand.MESSAGE_DUPLICATE_COURSE_INPUT, "CS1231S"), ()
+                                -> removeCourseCommand.execute(modelStub));
+    }
+
+    @Test
     public void equals() {
         String courseCodeA = "CS2103T";
         String courseCodeB = "CS2101";

@@ -9,5 +9,6 @@ public enum DisplayMode {
     COURSES,
     COURSE_DETAILS,
     ASSESSMENTS,
-    GRADES
+    GRADES,
+    OVERVIEW
 }

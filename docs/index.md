@@ -1,19 +1,35 @@
 ---
 layout: page
-title: AddressBook Level-3
+title: GradeBookPlus
 ---
 
-[![CI Status](https://github.com/se-edu/addressbook-level3/workflows/Java%20CI/badge.svg)](https://github.com/se-edu/addressbook-level3/actions)
-[![codecov](https://codecov.io/gh/se-edu/addressbook-level3/branch/master/graph/badge.svg)](https://codecov.io/gh/se-edu/addressbook-level3)
+[![Java CI](https://github.com/AY2526S2-CS2103T-F12-3/tp/actions/workflows/gradle.yml/badge.svg)](https://github.com/AY2526S2-CS2103T-F12-3/tp/actions/workflows/gradle.yml)
 
 ![Ui](images/Ui.png)
 
-**AddressBook is a desktop application for managing your contact details.** While it has a GUI, most of the user interactions happen using a CLI (Command Line Interface).
+**GradeBookPlus is a desktop application designed for managing courses, students, assessments, and grades efficiently.** While it provides a graphical user interface (GUI), most user interactions are performed via a Command Line Interface (CLI), making it fast and flexible for power users.
 
-* If you are interested in using AddressBook, head over to the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start).
-* If you are interested about developing AddressBook, the [**Developer Guide**](DeveloperGuide.html) is a good place to start.
+---
 
+### 🚀 Getting Started
+* New here? Check out the [_Quick Start_ section of the **User Guide**](UserGuide.html#quick-start) to begin using GradeBookPlus.
 
-**Acknowledgements**
+### 🛠 Developer Resources
+* Interested in contributing or understanding the system design? Refer to the [**Developer Guide**](DeveloperGuide.html).
 
-* Libraries used: [JavaFX](https://openjfx.io/), [Jackson](https://github.com/FasterXML/jackson), [JUnit5](https://github.com/junit-team/junit5)
+---
+
+### ✨ Key Features
+* Manage multiple courses and students
+* Create and organize assessments
+* Record and track grades
+* View structured course and grade information
+* Export data for external use
+
+---
+
+### 🙏 Acknowledgements
+* Built using:
+  * [JavaFX](https://openjfx.io/)
+  * [Jackson](https://github.com/FasterXML/jackson)
+  * [JUnit 5](https://github.com/junit-team/junit5)

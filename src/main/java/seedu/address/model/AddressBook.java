@@ -257,7 +257,8 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(courseCode);
         requireNonNull(studentId);
         getCourse(courseCode).ifPresent(c -> c.removeStudent(studentId));
-        grades.removeIf(g -> g.getStudentId().value.equalsIgnoreCase(studentId));
+        grades.removeIf(g -> g.getStudentId().value.equalsIgnoreCase(studentId)
+                && g.getCourseCode().equalsIgnoreCase(courseCode));
     }
 
     @Override

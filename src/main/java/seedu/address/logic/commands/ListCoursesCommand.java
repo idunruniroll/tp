@@ -16,6 +16,8 @@ import seedu.address.model.course.Course;
 public class ListCoursesCommand extends Command {
 
     public static final String COMMAND_WORD = "listcourses";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all courses in the system.\n"
+            + "Example: " + COMMAND_WORD;
 
     /**
      * Executes the list courses command.
@@ -28,12 +30,13 @@ public class ListCoursesCommand extends Command {
         requireNonNull(model);
 
         ObservableList<Course> courses = model.getCourseList();
+        courses.forEach(course -> course.setAssessmentSource(model.getAssessmentList()));
         model.setCurrentCourseForDisplay(Optional.empty());
         model.setDetailedCoursesForDisplay(List.of());
         model.setDisplayMode(DisplayMode.COURSES);
 
         if (courses.isEmpty()) {
-            return new CommandResult("");
+            return new CommandResult("No courses added");
         }
         return new CommandResult("");
     }

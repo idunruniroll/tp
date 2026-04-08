@@ -18,30 +18,29 @@ public class GradeCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label id;
-    @FXML
     private Label assessmentName;
     @FXML
     private Label courseCode;
     @FXML
-    private Label studentId;
+    private Label studentEntry;
     @FXML
     private Label score;
 
     /**
      * Creates a {@code GradeCard} for the given {@code Grade} and displays it
      * using the given displayed index.
+     *
      * @param grade          The grade to display.
      * @param displayedIndex The index shown for this grade in the list.
+     * @param maxScoreText   The maximum score of the assessment.
      */
     public GradeCard(Grade grade, int displayedIndex, String maxScoreText) {
         super(FXML);
         this.grade = grade;
 
-        id.setText(displayedIndex + ". ");
-        assessmentName.setText(grade.getAssessmentName().toString());
+        assessmentName.setText(grade.getAssessmentName() + " (Max: " + maxScoreText + ")");
         courseCode.setText(grade.getCourseCode());
-        studentId.setText("Student ID: " + grade.getStudentId());
-        score.setText("Grade: " + grade.getScore() + " / " + maxScoreText);
+        studentEntry.setText(displayedIndex + ".  " + grade.getStudentId());
+        score.setText(grade.getScore() + "/" + maxScoreText);
     }
 }

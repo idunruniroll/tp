@@ -16,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -55,7 +56,7 @@ public class RemoveAssessmentCommandTest {
 
         CommandResult commandResult = command.execute(modelStub);
 
-        assertEquals(String.format(RemoveAssessmentCommand.MESSAGE_DELETE_ASSESSMENT_SUCCESS, finals),
+        assertEquals(String.format(Messages.MESSAGE_REMOVE_ASSESSMENT_SUCCESS, finals),
                 commandResult.getFeedbackToUser());
         assertEquals(finals, modelStub.removedAssessment);
         assertEquals(2, modelStub.assessments.size());
@@ -70,7 +71,7 @@ public class RemoveAssessmentCommandTest {
         ModelStub modelStub = new ModelStub(assessments);
         RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS9999", Index.fromOneBased(1));
 
-        assertThrows(CommandException.class, RemoveAssessmentCommand.MESSAGE_INVALID_COURSE, (
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_INVALID_COURSE, "CS9999"), (
             ) -> command.execute(modelStub));
     }
 
@@ -82,7 +83,7 @@ public class RemoveAssessmentCommandTest {
         ModelStub modelStub = new ModelStub(assessments);
         RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS2103T", Index.fromOneBased(2));
 
-        assertThrows(CommandException.class, RemoveAssessmentCommand.MESSAGE_INVALID_ASSESSMENT_INDEX, (
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX, 2), (
             ) -> command.execute(modelStub));
     }
 

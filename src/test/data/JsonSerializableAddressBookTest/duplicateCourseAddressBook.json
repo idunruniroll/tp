@@ -1,0 +1,21 @@
+{
+  "_comment": "AddressBook save file which contains duplicate course codes. The later duplicate should be ignored on load.",
+  "courses" : [ {
+    "courseCode" : "CS2103T",
+    "students" : [ {
+      "studentId" : "A1234567A",
+      "studentName" : "Alice Tan",
+      "email" : "alice@u.nus.edu"
+    } ]
+  }, {
+    "courseCode" : "cs2103t",
+    "students" : [ {
+      "studentId" : "A7654321B",
+      "studentName" : "Bob Lee",
+      "email" : "bob@u.nus.edu"
+    } ]
+  }, {
+    "courseCode" : "CS2101",
+    "students" : [ ]
+  } ]
+}

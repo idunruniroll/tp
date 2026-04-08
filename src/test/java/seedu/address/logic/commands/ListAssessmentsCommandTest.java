@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.logic.Messages;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -26,10 +27,10 @@ import seedu.address.model.student.Student;
 
 public class ListAssessmentsCommandTest {
 
-    public static final String MESSAGE_SUCCESS = "Listed all assessments";
+    public static final String MESSAGE_SUCCESS = Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS;
 
     @Test
-    public void execute_noAssessments_returnsNoAssessmentsMessage() {
+    public void execute_noAssessments_returnsNoAssessmentsMessage() throws Exception {
         ModelStub modelStub = new ModelStub(FXCollections.observableArrayList());
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
@@ -38,7 +39,7 @@ public class ListAssessmentsCommandTest {
     }
 
     @Test
-    public void execute_singleCourseMultipleAssessments_listsAssessmentsWithIndexes() {
+    public void execute_singleCourseMultipleAssessments_listsAssessmentsWithIndexes() throws Exception {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList(
                 new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
                 new Assessment("CS2103T", new AssessmentName("Finals"), new MaxScore("100")));
@@ -46,14 +47,14 @@ public class ListAssessmentsCommandTest {
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-        assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
         assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
         assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));
     }
 
     @Test
-    public void execute_multipleCourses_outputContainsAllCourseSections() {
+    public void execute_multipleCourses_outputContainsAllCourseSections() throws Exception {
         ObservableList<Assessment> assessments = FXCollections.observableArrayList(
                 new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")),
                 new Assessment("CS2101", new AssessmentName("OPM"), new MaxScore("20")));
@@ -61,7 +62,7 @@ public class ListAssessmentsCommandTest {
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-        assertEquals(ListAssessmentsCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_LIST_ASSESSMENTS_SUCCESS, result.getFeedbackToUser());
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
         assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
         assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));

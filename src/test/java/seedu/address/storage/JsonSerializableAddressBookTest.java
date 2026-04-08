@@ -19,6 +19,7 @@ public class JsonSerializableAddressBookTest {
     private static final Path TYPICAL_PERSONS_FILE = TEST_DATA_FOLDER.resolve("typicalPersonsAddressBook.json");
     private static final Path INVALID_PERSON_FILE = TEST_DATA_FOLDER.resolve("invalidPersonAddressBook.json");
     private static final Path DUPLICATE_PERSON_FILE = TEST_DATA_FOLDER.resolve("duplicatePersonAddressBook.json");
+    private static final Path DUPLICATE_COURSE_FILE = TEST_DATA_FOLDER.resolve("duplicateCourseAddressBook.json");
 
     @Test
     public void toModelType_typicalPersonsFile_success() throws Exception {
@@ -42,6 +43,19 @@ public class JsonSerializableAddressBookTest {
                 JsonSerializableAddressBook.class).get();
         assertThrows(IllegalValueException.class, JsonSerializableAddressBook.MESSAGE_DUPLICATE_PERSON,
                 dataFromFile::toModelType);
+    }
+
+    @Test
+    public void toModelType_duplicateCourses_keepsFirstOccurrence() throws Exception {
+        JsonSerializableAddressBook dataFromFile = JsonUtil.readJsonFile(DUPLICATE_COURSE_FILE,
+                JsonSerializableAddressBook.class).get();
+        AddressBook addressBookFromFile = dataFromFile.toModelType();
+
+        assertEquals(2, addressBookFromFile.getCourseList().size());
+        assertEquals("CS2103T", addressBookFromFile.getCourseList().get(0).getCourseCode());
+        assertEquals(1, addressBookFromFile.getCourseList().get(0).getStudents().size());
+        assertEquals("A1234567A", addressBookFromFile.getCourseList().get(0).getStudents().get(0).getStudentId());
+        assertEquals("CS2101", addressBookFromFile.getCourseList().get(1).getCourseCode());
     }
 
 }

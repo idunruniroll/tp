@@ -47,16 +47,18 @@ public class Assessment {
     /**
      * Returns true if the given assessment has the same identity as this
      * assessment.
-     * @param otherAssessment the other assessment to compare
+     * @param other the other assessment to compare with
      * @return true if same assessment, false otherwise
      */
-    public boolean isSameAssessment(Assessment otherAssessment) {
-        if (otherAssessment == this) {
+    public boolean isSameAssessment(Assessment other) {
+        if (other == this) {
             return true;
         }
-        return otherAssessment != null
-                && courseCode.equalsIgnoreCase(otherAssessment.courseCode)
-                && assessmentName.equals(otherAssessment.assessmentName);
+
+        return other != null
+                && courseCode.equalsIgnoreCase(other.courseCode)
+                && assessmentName.getNormalizedName()
+                        .equals(other.assessmentName.getNormalizedName());
     }
 
     @Override
