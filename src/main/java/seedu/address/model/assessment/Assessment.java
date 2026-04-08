@@ -1,6 +1,8 @@
 package seedu.address.model.assessment;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
+import seedu.address.model.course.Course;
 
 import java.util.Objects;
 
@@ -23,6 +25,8 @@ public class Assessment {
         requireNonNull(courseCode);
         requireNonNull(assessmentName);
         requireNonNull(maxScore);
+        checkArgument(Course.isValidCourseCode(courseCode), Course.MESSAGE_CONSTRAINTS);
+
         this.courseCode = courseCode.trim().toUpperCase();
         this.assessmentName = assessmentName;
         this.maxScore = maxScore;

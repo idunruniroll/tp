@@ -59,6 +59,13 @@ public class UiManager implements Ui {
         showAlertDialogAndWait(mainWindow.getPrimaryStage(), type, title, headerText, contentText);
     }
 
+    public void showStartupWarning(String contentText) {
+        showAlertDialogAndWait(AlertType.WARNING,
+                "Data File Problem",
+                "Could not load saved data",
+                contentText);
+    }
+
     /**
      * Shows an alert dialog on {@code owner} with the given parameters.
      * This method only returns after the user has closed the alert dialog.
