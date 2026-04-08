@@ -60,17 +60,6 @@ public class UiManager implements Ui {
     }
 
     /**
-     * Shows a warning alert dialog with {@code title} and error message, {@code contentText}.
-     * @param contentText
-     */
-    public void showStartupWarning(String contentText) {
-        showAlertDialogAndWait(AlertType.WARNING,
-                "Data File Problem",
-                "Could not load saved data",
-                contentText);
-    }
-
-    /**
      * Shows an alert dialog on {@code owner} with the given parameters.
      * This method only returns after the user has closed the alert dialog.
      */
@@ -84,6 +73,19 @@ public class UiManager implements Ui {
         alert.setContentText(contentText);
         alert.getDialogPane().setId(ALERT_DIALOG_PANE_FIELD_ID);
         alert.showAndWait();
+    }
+
+    /**
+     * Shows a warning alert dialog with {@code title} and error message,
+     * {@code contentText}.
+     * 
+     * @param contentText
+     */
+    public void showStartupWarning(String contentText) {
+        showAlertDialogAndWait(AlertType.WARNING,
+                "Data File Problem",
+                "Could not load saved data",
+                contentText);
     }
 
     /**
