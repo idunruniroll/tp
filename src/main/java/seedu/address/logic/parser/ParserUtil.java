@@ -31,6 +31,12 @@ public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
+    private static final int MIN_COURSE_CODE_LENGTH = 2;
+    private static final int MAX_COURSE_CODE_LENGTH = 10;
+    private static final String COURSE_CODE_PATTERN =
+            "[A-Z0-9]{" + MIN_COURSE_CODE_LENGTH + "," + MAX_COURSE_CODE_LENGTH + "}";
+
+
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading
      * and trailing whitespaces will be
@@ -201,13 +207,13 @@ public class ParserUtil {
      */
     public static String parseCourseCode(String courseCode) throws ParseException {
         requireNonNull(courseCode);
-        String trimmed = courseCode.trim().toUpperCase();
+        String normalizedCourseCode = courseCode.trim().toUpperCase();
 
-        if (!trimmed.matches("[A-Z0-9]{2,10}")) {
+        if (!normalizedCourseCode.matches(COURSE_CODE_PATTERN)) {
             throw new ParseException(Course.MESSAGE_CONSTRAINTS);
         }
 
-        return trimmed;
+        return normalizedCourseCode;
     }
 
     /**
@@ -220,21 +226,21 @@ public class ParserUtil {
     public static List<String> parseCourseCodes(String rawCourseCodes) throws ParseException {
         requireNonNull(rawCourseCodes);
 
-        List<String> rawCodes = Arrays.stream(rawCourseCodes.split(","))
+        List<String> splitCourseCodes = Arrays.stream(rawCourseCodes.split(","))
                 .map(String::trim)
                 .filter(code -> !code.isEmpty())
                 .toList();
 
-        if (rawCodes.isEmpty()) {
+        if (splitCourseCodes.isEmpty()) {
             throw new ParseException(Course.MESSAGE_CONSTRAINTS);
         }
 
-        List<String> courseCodes = new ArrayList<>();
-        for (String rawCode : rawCodes) {
-            courseCodes.add(parseCourseCode(rawCode));
+        List<String> parsedCourseCodes = new ArrayList<>();
+        for (String splitCourseCode : splitCourseCodes) {
+            parsedCourseCodes.add(parseCourseCode(splitCourseCode));
         }
 
-        return courseCodes;
+        return parsedCourseCodes;
     }
 
     /**

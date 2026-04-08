@@ -30,7 +30,11 @@ public class RemoveCourseCommand extends Command {
             "\u274C Duplicate course codes in the same command are not allowed: %s.";
     public static final String MESSAGE_COURSE_NOT_FOUND = "\u274C Course %s not found.";
 
+    private static final String COURSE_DELIMITER = ", ";
+
     private final List<String> courseCodes;
+
+
 
     /**
      * Constructs a RemoveCourseCommand with the specified course codes.
@@ -45,26 +49,13 @@ public class RemoveCourseCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        Set<String> seenCourseCodes = new HashSet<>();
 
-        for (String courseCode : courseCodes) {
-            String normalizedCourseCode = courseCode.trim().toUpperCase();
-            if (!seenCourseCodes.add(normalizedCourseCode)) {
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE_INPUT, normalizedCourseCode));
-            }
-            if (!model.hasCourse(courseCode)) {
-                throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
-            }
-        }
+        validateCourseCodes(model);
+        removeCourses(model);
+        resetCourseDisplay(model);
 
-        for (String courseCode : courseCodes) {
-            model.removeCourse(new Course(courseCode));
-        }
-
-        model.setCurrentCourseForDisplay(Optional.empty());
-        model.setDetailedCoursesForDisplay(List.of());
-        model.setDisplayMode(DisplayMode.COURSES);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, String.join(", ", courseCodes)));
+        String removedCourses = String.join(COURSE_DELIMITER, courseCodes);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, removedCourses));
     }
 
     @Override
@@ -72,5 +63,33 @@ public class RemoveCourseCommand extends Command {
         return other == this
                 || (other instanceof RemoveCourseCommand
                         && courseCodes.equals(((RemoveCourseCommand) other).courseCodes));
+    }
+
+    private void validateCourseCodes(Model model) throws CommandException {
+        Set<String> seenCourseCodes = new HashSet<>();
+
+        for (String courseCode : courseCodes) {
+            String normalizedCourseCode = courseCode.trim().toUpperCase();
+
+            if (!seenCourseCodes.add(normalizedCourseCode)) {
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE_INPUT, normalizedCourseCode));
+            }
+
+            if (!model.hasCourse(courseCode)) {
+                throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
+            }
+        }
+    }
+
+    private void removeCourses(Model model) {
+        for (String courseCode : courseCodes) {
+            model.removeCourse(new Course(courseCode));
+        }
+    }
+
+    private void resetCourseDisplay(Model model) {
+        model.setCurrentCourseForDisplay(Optional.empty());
+        model.setDetailedCoursesForDisplay(List.of());
+        model.setDisplayMode(DisplayMode.COURSES);
     }
 }
