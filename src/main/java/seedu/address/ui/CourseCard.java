@@ -39,6 +39,6 @@ public class CourseCard extends UiPart<Region> {
         id.setText(displayedIndex + ". ");
         courseCode.setText(course.getCourseCode());
         assessmentCount.textProperty().bind(Bindings.size(course.getAssessments()).asString("Assessments: %d"));
-        studentCount.setText("Students: " + course.getStudents().size());
+        studentCount.textProperty().bind(Bindings.size(course.getStudents()).asString("Students: %d"));
     }
 }

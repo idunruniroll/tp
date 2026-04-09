@@ -21,28 +21,22 @@ import seedu.address.model.grade.Grade;
 @JsonRootName(value = "addressbook")
 class JsonSerializableAddressBook {
 
-    public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
     public static final String MESSAGE_DUPLICATE_ASSESSMENT = "Assessments list contains duplicate assessment(s).";
     public static final String MESSAGE_DUPLICATE_GRADE = "Grades list contains duplicate grade(s).";
     public static final String MESSAGE_DUPLICATE_COURSE = "Courses list contains duplicate course(s).";
 
-    private final List<JsonAdaptedPerson> persons = new ArrayList<>();
     private final List<JsonAdaptedAssessment> assessments = new ArrayList<>();
     private final List<JsonAdaptedGrade> grades = new ArrayList<>();
     private final List<JsonAdaptedCourse> courses = new ArrayList<>();
 
     /**
-     * Constructs a {@code JsonSerializableAddressBook} with the given persons.
+     * Constructs a {@code JsonSerializableAddressBook} with the given data.
      */
     @JsonCreator
     public JsonSerializableAddressBook(
-            @JsonProperty("persons") List<JsonAdaptedPerson> persons,
             @JsonProperty("assessments") List<JsonAdaptedAssessment> assessments,
             @JsonProperty("grades") List<JsonAdaptedGrade> grades,
             @JsonProperty("courses") List<JsonAdaptedCourse> courses) {
-        if (persons != null) {
-            this.persons.addAll(persons);
-        }
         if (assessments != null) {
             this.assessments.addAll(assessments);
         }
@@ -56,14 +50,8 @@ class JsonSerializableAddressBook {
 
     /**
      * Converts a given {@code ReadOnlyAddressBook} into this class for Jackson use.
-     *
-     * @param source future changes to this will not affect the created
-     *               {@code JsonSerializableAddressBook}.
      */
     public JsonSerializableAddressBook(ReadOnlyAddressBook source) {
-        persons.addAll(source.getPersonList().stream()
-                .map(JsonAdaptedPerson::new)
-                .collect(Collectors.toList()));
         assessments.addAll(source.getAssessmentList().stream()
                 .map(JsonAdaptedAssessment::new)
                 .collect(Collectors.toList()));
@@ -82,14 +70,6 @@ class JsonSerializableAddressBook {
      */
     public AddressBook toModelType() throws IllegalValueException {
         AddressBook addressBook = new AddressBook();
-
-        for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-            var person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
-            }
-            addressBook.addPerson(person);
-        }
 
         for (JsonAdaptedAssessment jsonAdaptedAssessment : assessments) {
             Assessment assessment = jsonAdaptedAssessment.toModelType();

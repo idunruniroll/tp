@@ -7,7 +7,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 
 import seedu.address.logic.commands.AddStudentCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Email;
 import seedu.address.model.student.Student;
 
 /**
@@ -34,8 +33,8 @@ public class AddStudentCommandParser implements Parser<AddStudentCommand> {
         Student student;
         if (argMultimap.getValue(PREFIX_EMAIL).isPresent()) {
             try {
-                Email email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
-                student = new Student(studentId, name, email.value);
+                String email = ParserUtil.parseEmail(argMultimap.getValue(PREFIX_EMAIL).get());
+                student = new Student(studentId, name, email);
             } catch (ParseException e) {
                 throw new ParseException("\u274C Invalid email address. Example: e/john@u.nus.edu");
             }

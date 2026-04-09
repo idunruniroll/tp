@@ -14,23 +14,18 @@ import seedu.address.model.course.Course;
 import seedu.address.model.course.UniqueCourseList;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.grade.UniqueGradeList;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.UniquePersonList;
 import seedu.address.model.student.Student;
 
 /**
- * Wraps all data at the address-book level
- * Duplicates are not allowed (by .isSamePerson comparison)
+ * Wraps all data at the address-book level.
  */
 public class AddressBook implements ReadOnlyAddressBook {
 
-    private final UniquePersonList persons;
     private final UniqueAssessmentList assessments;
     private final UniqueGradeList grades;
     private final UniqueCourseList courses;
 
     {
-        persons = new UniquePersonList();
         assessments = new UniqueAssessmentList();
         grades = new UniqueGradeList();
         courses = new UniqueCourseList();
@@ -40,21 +35,21 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Creates an AddressBook using the Persons in the {@code toBeCopied}
+     * Creates an AddressBook using the data in the {@code toBeCopied}.
      */
     public AddressBook(ReadOnlyAddressBook toBeCopied) {
         this();
         resetData(toBeCopied);
     }
 
-    //// list overwrite operations
-
     /**
-     * Replaces the contents of the person list with {@code persons}.
-     * {@code persons} must not contain duplicate persons.
+     * Resets the existing data of this {@code AddressBook} with {@code newData}.
      */
-    public void setPersons(List<Person> persons) {
-        this.persons.setPersons(persons);
+    public void resetData(ReadOnlyAddressBook newData) {
+        requireNonNull(newData);
+        setAssessments(newData.getAssessmentList());
+        setGrades(newData.getGradeList());
+        setCourses(newData.getCourseList());
     }
 
     public void setAssessments(List<Assessment> assessments) {
@@ -70,58 +65,6 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(courseList);
         this.courses.setCourses(courseList);
         bindCoursesToAssessmentList();
-    }
-
-    /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
-     */
-    public void resetData(ReadOnlyAddressBook newData) {
-        requireNonNull(newData);
-
-        setPersons(newData.getPersonList());
-        setAssessments(newData.getAssessmentList());
-        setGrades(newData.getGradeList());
-        setCourses(newData.getCourseList());
-    }
-
-    //// person-level operations
-
-    /**
-     * Returns true if a person with the same identity as {@code person} exists in
-     * the address book.
-     */
-    public boolean hasPerson(Person person) {
-        requireNonNull(person);
-        return persons.contains(person);
-    }
-
-    /**
-     * Adds a person to the address book.
-     * The person must not already exist in the address book.
-     */
-    public void addPerson(Person p) {
-        persons.add(p);
-    }
-
-    /**
-     * Replaces the given person {@code target} in the list with
-     * {@code editedPerson}.
-     * {@code target} must exist in the address book.
-     * The person identity of {@code editedPerson} must not be the same as another
-     * existing person in the address book.
-     */
-    public void setPerson(Person target, Person editedPerson) {
-        requireNonNull(editedPerson);
-
-        persons.setPerson(target, editedPerson);
-    }
-
-    /**
-     * Removes {@code key} from this {@code AddressBook}.
-     * {@code key} must exist in the address book.
-     */
-    public void removePerson(Person key) {
-        persons.remove(key);
     }
 
     /**
@@ -157,6 +100,9 @@ public class AddressBook implements ReadOnlyAddressBook {
         return grades.contains(grade);
     }
 
+    /**
+     * Adds a grade to the address book.
+     */
     public void addGrade(Grade grade) {
         grades.add(grade);
     }
@@ -179,12 +125,10 @@ public class AddressBook implements ReadOnlyAddressBook {
         return grades.asUnmodifiableObservableList();
     }
 
-    //////////////////////////////// course-level operations
+    //// course-level operations
 
     /**
-     * Checks if course exists
-     * @param courseCode
-     * @return boolean flag
+     * Returns true if an equivalent course exists in the address book.
      */
     public boolean hasCourse(Course courseCode) {
         requireNonNull(courseCode);
@@ -208,33 +152,30 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(course);
         String courseCode = course.getCourseCode();
 
-        // Find the course in the system
         Optional<Course> courseToRemove = getCourse(courseCode);
 
         if (courseToRemove.isPresent()) {
             Course foundCourse = courseToRemove.get();
 
-            // Unenroll all students from this course (student records remain general)
-            ArrayList<Student> studentsToRemove = new ArrayList<>(foundCourse.getStudents());
+            List<Student> studentsToRemove = new java.util.ArrayList<>(foundCourse.getStudents());
             for (Student student : studentsToRemove) {
                 foundCourse.removeStudent(student.getStudentId());
             }
 
-            // Remove all grades for this course
             grades.removeIf(grade -> grade.getCourseCode().equalsIgnoreCase(courseCode));
 
-            // Remove all assessments for this course
             ArrayList<Assessment> assessmentsToRemove = new ArrayList<>(foundCourse.getAssessments());
             for (Assessment assessment : assessmentsToRemove) {
                 assessments.remove(assessment);
             }
         }
 
-        // Remove the course object from course list
         courses.remove(course);
     }
 
-    /** Gets a list of courses with partial matches to the given course code */
+    /**
+     * Gets the course with the given course code, if it exists.
+     */
     public Optional<Course> getCourse(String courseCode) {
         requireNonNull(courseCode);
         return courses.asUnmodifiableObservableList().stream()
@@ -242,7 +183,9 @@ public class AddressBook implements ReadOnlyAddressBook {
                 .findFirst();
     }
 
-    /** Adds a student to the specified course. Course must exist. */
+    /**
+     * Adds a student to the specified course.
+     */
     public void addStudentToCourse(String courseCode, Student student) {
         requireNonNull(courseCode);
         requireNonNull(student);
@@ -250,8 +193,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     }
 
     /**
-     * Removes a student from the specified course and deletes all their grade records.
-     * Course and student must exist.
+     * Removes a student from the specified course and deletes all their grade records for that course.
      */
     public void removeStudentFromCourse(String courseCode, String studentId) {
         requireNonNull(courseCode);
@@ -275,16 +217,11 @@ public class AddressBook implements ReadOnlyAddressBook {
 
     @Override
     public String toString() {
-        return AddressBook.class.getCanonicalName() + "{persons=" + getPersonList()
-                + ", assessments=" + getAssessmentList()
+        return AddressBook.class.getCanonicalName()
+                + "{assessments=" + getAssessmentList()
                 + ", grades=" + getGradeList()
                 + ", courses=" + getCourseList()
                 + "}";
-    }
-
-    @Override
-    public ObservableList<Person> getPersonList() {
-        return persons.asUnmodifiableObservableList();
     }
 
     @Override
@@ -298,14 +235,13 @@ public class AddressBook implements ReadOnlyAddressBook {
         }
 
         AddressBook otherAddressBook = (AddressBook) other;
-        return persons.equals(otherAddressBook.persons)
-                && assessments.equals(otherAddressBook.assessments)
+        return assessments.equals(otherAddressBook.assessments)
                 && grades.equals(otherAddressBook.grades)
                 && courses.equals(otherAddressBook.courses);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(persons, assessments, grades, courses);
+        return Objects.hash(assessments, grades, courses);
     }
 }

@@ -13,7 +13,6 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
-import seedu.address.model.person.Person;
 import seedu.address.model.student.Student;
 
 /**
@@ -35,9 +34,6 @@ public interface Logic {
      * @see seedu.address.model.Model#getAddressBook()
      */
     ReadOnlyAddressBook getAddressBook();
-
-    /** Returns an unmodifiable view of the filtered list of persons */
-    ObservableList<Person> getFilteredPersonList();
 
     /**
      * Returns the user prefs' address book file path.
@@ -64,8 +60,7 @@ public interface Logic {
 
     Optional<String> getCurrentCourseForDisplay();
 
-    // =========== Assessment / Grade GUI display state
-    // ========================================
+    // =========== Assessment / Grade GUI display state ========================================
 
     ObservableList<Assessment> getFilteredAssessmentList();
 

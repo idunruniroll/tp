@@ -32,7 +32,6 @@ public class MainWindow extends UiPart<Stage> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private PersonListPanel personListPanel;
     private StudentListPanel studentListPanel;
     private CourseListPanel courseListPanel;
     private CourseDetailListPanel courseDetailListPanel;
@@ -72,6 +71,9 @@ public class MainWindow extends UiPart<Stage> {
         helpWindow = new HelpWindow();
     }
 
+    /**
+     * Returns the primary stage.
+     */
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -115,7 +117,6 @@ public class MainWindow extends UiPart<Stage> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         studentListPanel = new StudentListPanel(logic.getFilteredStudentList());
         courseListPanel = new CourseListPanel(
                 logic.getFilteredCourseList(),
@@ -131,16 +132,12 @@ public class MainWindow extends UiPart<Stage> {
         overviewPanel = new OverviewPanel(logic);
 
         personListPanelPlaceholder.getChildren().setAll(
-                personListPanel.getRoot(),
                 studentListPanel.getRoot(),
                 courseListPanel.getRoot(),
                 courseDetailListPanel.getRoot(),
                 assessmentListPanel.getRoot(),
                 gradeListPanel.getRoot(),
                 overviewPanel.getRoot());
-
-        personListPanel.getRoot().setVisible(true);
-        personListPanel.getRoot().setManaged(true);
 
         studentListPanel.getRoot().setVisible(false);
         studentListPanel.getRoot().setManaged(false);
@@ -151,8 +148,8 @@ public class MainWindow extends UiPart<Stage> {
         gradeListPanel.getRoot().setVisible(false);
         gradeListPanel.getRoot().setManaged(false);
 
-        courseListPanel.getRoot().setVisible(false);
-        courseListPanel.getRoot().setManaged(false);
+        courseListPanel.getRoot().setVisible(true);
+        courseListPanel.getRoot().setManaged(true);
 
         courseDetailListPanel.getRoot().setVisible(false);
         courseDetailListPanel.getRoot().setManaged(false);
@@ -175,16 +172,12 @@ public class MainWindow extends UiPart<Stage> {
     private void updateListVisibility() {
         DisplayMode displayMode = logic.getDisplayMode();
 
-        boolean showPersons = displayMode == DisplayMode.PERSONS;
         boolean showStudents = displayMode == DisplayMode.STUDENTS;
         boolean showCourses = displayMode == DisplayMode.COURSES;
         boolean showCourseDetails = displayMode == DisplayMode.COURSE_DETAILS;
         boolean showAssessments = displayMode == DisplayMode.ASSESSMENTS;
         boolean showGrades = displayMode == DisplayMode.GRADES;
         boolean showOverview = displayMode == DisplayMode.OVERVIEW;
-
-        personListPanel.getRoot().setVisible(showPersons);
-        personListPanel.getRoot().setManaged(showPersons);
 
         studentListPanel.getRoot().setVisible(showStudents);
         studentListPanel.getRoot().setManaged(showStudents);
@@ -229,6 +222,9 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Shows the primary stage.
+     */
     void show() {
         primaryStage.show();
     }
@@ -243,10 +239,6 @@ public class MainWindow extends UiPart<Stage> {
         logic.setGuiSettings(guiSettings);
         helpWindow.hide();
         primaryStage.hide();
-    }
-
-    public PersonListPanel getPersonListPanel() {
-        return personListPanel;
     }
 
     /**
@@ -282,6 +274,9 @@ public class MainWindow extends UiPart<Stage> {
         }
     }
 
+    /**
+     * Centers the window on the screen.
+     */
     public void centerWindowOnScreen() {
         primaryStage.centerOnScreen();
     }

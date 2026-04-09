@@ -4,10 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
@@ -18,27 +15,29 @@ import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.assessment.MaxScore;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Score;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
-import seedu.address.model.tag.Tag;
 
 /**
- * Contains utility methods used for parsing strings in the various *Parser
- * classes.
+ * Contains utility methods used for parsing strings in the various *Parser classes.
  */
 public class ParserUtil {
 
     public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
+    private static final String SPECIAL_CHARACTERS = "+_.-";
+    private static final String ALPHANUMERIC_NO_UNDERSCORE = "[^\\W_]+";
+    private static final String LOCAL_PART_REGEX = "^" + ALPHANUMERIC_NO_UNDERSCORE
+            + "([" + SPECIAL_CHARACTERS + "]" + ALPHANUMERIC_NO_UNDERSCORE + ")*";
+    private static final String DOMAIN_PART_REGEX = ALPHANUMERIC_NO_UNDERSCORE
+            + "(-" + ALPHANUMERIC_NO_UNDERSCORE + ")*";
+    private static final String DOMAIN_LAST_PART_REGEX = "(" + DOMAIN_PART_REGEX + "){2,}$";
+    private static final String DOMAIN_REGEX = "(" + DOMAIN_PART_REGEX + "\\.)*" + DOMAIN_LAST_PART_REGEX;
+    private static final String EMAIL_VALIDATION_REGEX = LOCAL_PART_REGEX + "@" + DOMAIN_REGEX;
+
     /**
-     * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading
-     * and trailing whitespaces will be
-     * trimmed.
+     * Parses {@code oneBasedIndex} into an {@code Index} and returns it.
+     * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the specified index is invalid (not non-zero
-     *                        unsigned integer).
+     * @throws ParseException if the specified index is invalid (not non-zero unsigned integer).
      */
     public static Index parseIndex(String oneBasedIndex) throws ParseException {
         String trimmedIndex = oneBasedIndex.trim();
@@ -49,108 +48,36 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String name} into a {@code Name}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code name} is invalid.
+     * Returns true if all the given prefixes are present in the argument multimap.
      */
-    public static Name parseName(String name) throws ParseException {
-        requireNonNull(name);
-        String trimmedName = name.trim();
-        if (!Name.isValidName(trimmedName)) {
-            throw new ParseException(Name.MESSAGE_CONSTRAINTS);
-        }
-        return new Name(trimmedName);
-    }
-
     public static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
         return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
     /**
-     * Parses a {@code String phone} into a {@code Phone}.
+     * Parses a {@code String email} into a validated email string.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @throws ParseException if the given {@code phone} is invalid.
+     * @throws ParseException if the given {@code email} is not a valid email address.
      */
-    public static Phone parsePhone(String phone) throws ParseException {
-        requireNonNull(phone);
-        String trimmedPhone = phone.trim();
-        if (!Phone.isValidPhone(trimmedPhone)) {
-            throw new ParseException(Phone.MESSAGE_CONSTRAINTS);
-        }
-        return new Phone(trimmedPhone);
-    }
-
-    /**
-     * Parses a {@code String address} into an {@code Address}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code address} is invalid.
-     */
-    public static Address parseAddress(String address) throws ParseException {
-        requireNonNull(address);
-        String trimmedAddress = address.trim();
-        if (!Address.isValidAddress(trimmedAddress)) {
-            throw new ParseException(Address.MESSAGE_CONSTRAINTS);
-        }
-        return new Address(trimmedAddress);
-    }
-
-    /**
-     * Parses a {@code String email} into an {@code Email}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code email} is invalid.
-     */
-    public static Email parseEmail(String email) throws ParseException {
+    public static String parseEmail(String email) throws ParseException {
         requireNonNull(email);
         String trimmedEmail = email.trim();
-        if (!Email.isValidEmail(trimmedEmail)) {
-            throw new ParseException(Email.MESSAGE_CONSTRAINTS);
+        if (!trimmedEmail.matches(EMAIL_VALIDATION_REGEX)) {
+            throw new ParseException("Invalid email address.");
         }
-        return new Email(trimmedEmail);
-    }
-
-    /**
-     * Parses a {@code String tag} into a {@code Tag}.
-     * Leading and trailing whitespaces will be trimmed.
-     *
-     * @throws ParseException if the given {@code tag} is invalid.
-     */
-    public static Tag parseTag(String tag) throws ParseException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
-        if (!Tag.isValidTagName(trimmedTag)) {
-            throw new ParseException(Tag.MESSAGE_CONSTRAINTS);
-        }
-        return new Tag(trimmedTag);
-    }
-
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
-     */
-    public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
-        requireNonNull(tags);
-        final Set<Tag> tagSet = new HashSet<>();
-        for (String tagName : tags) {
-            tagSet.add(parseTag(tagName));
-        }
-        return tagSet;
+        return trimmedEmail;
     }
 
     /**
      * Parses a {@code String name} into an {@code AssessmentName}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @param name the name string to parse
-     * @return an AssessmentName object
      * @throws ParseException if the given {@code name} is invalid
      */
     public static AssessmentName parseAssessmentName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-
         try {
             return new AssessmentName(trimmedName);
         } catch (IllegalArgumentException e) {
@@ -162,8 +89,6 @@ public class ParserUtil {
      * Parses a {@code String value} into a {@code MaxScore}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @param value the max score string to parse
-     * @return a MaxScore object
      * @throws ParseException if the given {@code value} is invalid
      */
     public static MaxScore parseMaxScore(String value) throws ParseException {
@@ -179,8 +104,6 @@ public class ParserUtil {
      * Parses a {@code String value} into a {@code Score}.
      * Leading and trailing whitespaces will be trimmed.
      *
-     * @param value the score string to parse
-     * @return a Score object
      * @throws ParseException if the given {@code value} is invalid
      */
     public static Score parseScore(String value) throws ParseException {
@@ -193,29 +116,23 @@ public class ParserUtil {
     }
 
     /**
-     * Parses a {@code String courseCode} into a valid course code.
+     * Parses a {@code String courseCode} into a valid course code string.
      * The course code will be converted to uppercase.
      *
-     * @param courseCode the course code string to parse
-     * @return a valid course code string
      * @throws ParseException if the given {@code courseCode} is invalid
      */
     public static String parseCourseCode(String courseCode) throws ParseException {
         requireNonNull(courseCode);
         String trimmedCourseCode = courseCode.trim().toUpperCase();
-
         if (!Course.isValidCourseCode(trimmedCourseCode)) {
             throw new ParseException(Course.MESSAGE_CONSTRAINTS);
         }
-
         return trimmedCourseCode;
     }
 
     /**
      * Parses a comma-separated list of course codes.
      *
-     * @param rawCourseCodes raw course code list from a prefixed argument
-     * @return normalized course codes
      * @throws ParseException if no values are provided or any course code is invalid
      */
     public static List<String> parseCourseCodes(String rawCourseCodes) throws ParseException {
@@ -257,7 +174,7 @@ public class ParserUtil {
      * Parses a student name string.
      * Leading/trailing spaces are trimmed; multiple internal whitespace is collapsed to single spaces.
      *
-     * Acceptable values: 1-60 chars, letters/spaces and common punctuation.
+     * @throws ParseException if invalid
      */
     public static String parseStudentName(String value) throws ParseException {
         requireNonNull(value);

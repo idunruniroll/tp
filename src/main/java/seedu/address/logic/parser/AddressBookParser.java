@@ -7,20 +7,14 @@ import java.util.regex.Pattern;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddAssessmentCommand;
-import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AddCourseCommand;
 import seedu.address.logic.commands.AddGradeCommand;
 import seedu.address.logic.commands.AddStudentCommand;
-import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportCourseCommand;
-import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.ListAssessmentsCommand;
-import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.ListCoursesCommand;
 import seedu.address.logic.commands.ListDetailsCommand;
 import seedu.address.logic.commands.ListGradesCommand;
@@ -57,24 +51,6 @@ public class AddressBookParser {
 
         switch (commandWord) {
 
-        case AddCommand.COMMAND_WORD:
-            return new AddCommandParser().parse(arguments);
-
-        case EditCommand.COMMAND_WORD:
-            return new EditCommandParser().parse(arguments);
-
-        case DeleteCommand.COMMAND_WORD:
-            return new DeleteCommandParser().parse(arguments);
-
-        case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
-
-        case FindCommand.COMMAND_WORD:
-            return new FindCommandParser().parse(arguments);
-
-        case ListCommand.COMMAND_WORD:
-            return new ListCommand();
-
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
 
@@ -107,6 +83,7 @@ public class AddressBookParser {
 
         case ExportCourseCommand.COMMAND_WORD:
             return new ExportCourseCommandParser().parse(arguments);
+
         case ListDetailsCommand.COMMAND_WORD:
             return new ListDetailsCommandParser().parse(arguments);
 

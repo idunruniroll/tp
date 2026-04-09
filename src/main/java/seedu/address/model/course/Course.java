@@ -8,7 +8,6 @@ package seedu.address.model.course;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
-import java.util.ArrayList;
 import java.util.Objects;
 
 import javafx.collections.FXCollections;
@@ -27,7 +26,7 @@ public class Course {
     public static final String VALIDATION_REGEX = "[A-Z0-9]{2,10}";
 
     private final String courseCode;
-    private final ArrayList<Student> students;
+    private final ObservableList<Student> students;
     private ObservableList<Assessment> assessmentSource;
 
     /**
@@ -41,7 +40,7 @@ public class Course {
         checkArgument(isValidCourseCode(normalizedCourseCode), MESSAGE_CONSTRAINTS);
 
         this.courseCode = normalizedCourseCode;
-        this.students = new ArrayList<Student>();
+        this.students = FXCollections.observableArrayList();
         this.assessmentSource = FXCollections.emptyObservableList();
     }
 
@@ -57,11 +56,11 @@ public class Course {
     }
 
     /**
-     * Returns all students enrolled in this course.
+     * Returns all students enrolled in this course as a live observable list.
      *
-     * @return ArrayList of students
+     * @return ObservableList of students
      */
-    public ArrayList<Student> getStudents() {
+    public ObservableList<Student> getStudents() {
         return students;
     }
 
