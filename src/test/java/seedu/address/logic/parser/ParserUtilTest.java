@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.course.Course;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -226,11 +227,6 @@ public class ParserUtilTest {
     }
 
     @Test
-    public void parseCourseCode_invalid_throwsParseException() {
-        assertThrows(ParseException.class, () -> ParserUtil.parseCourseCode("CS 2103T"));
-    }
-
-    @Test
     public void parseCourseCode_valid_success() throws Exception {
         assertEquals("CS2103T", ParserUtil.parseCourseCode("cs2103t"));
     }
@@ -257,4 +253,17 @@ public class ParserUtilTest {
                 ParserUtil.parseStudentName("1234"));
     }
 
+    public void parseCourseCode_null_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> ParserUtil.parseCourseCode(null));
+    }
+
+    @Test
+    public void parseCourseCode_invalidValue_throwsParseException() {
+        assertThrows(ParseException.class, Course.MESSAGE_CONSTRAINTS, () -> ParserUtil.parseCourseCode("CS 2103T"));
+    }
+
+    @Test
+    public void parseCourseCode_validValueWithWhitespace_returnsUppercaseTrimmedCode() throws Exception {
+        assertEquals("CS2103T", ParserUtil.parseCourseCode(WHITESPACE + "cs2103t" + WHITESPACE));
+    }
 }

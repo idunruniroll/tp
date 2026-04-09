@@ -334,6 +334,7 @@ public class ListCoursesCommandTest {
             requireNonNull(courseList);
             this.courses = FXCollections.observableArrayList(courseList);
             this.assessmentList = assessmentList;
+            this.courses.forEach(course -> course.setAssessmentSource(this.assessmentList));
         }
 
         @Override

@@ -5,6 +5,9 @@
  */
 package seedu.address.model.course;
 
+import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.util.AppUtil.checkArgument;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -21,6 +24,7 @@ import seedu.address.model.student.Student;
 public class Course {
 
     public static final String MESSAGE_CONSTRAINTS = "\u274C Invalid course code. Example: c/CS2103T";
+    public static final String VALIDATION_REGEX = "[A-Z0-9]{2,10}";
 
     private final String courseCode;
     private final ArrayList<Student> students;
@@ -32,9 +36,20 @@ public class Course {
      * @param courseCode the course code
      */
     public Course(String courseCode) {
-        this.courseCode = courseCode.trim().toUpperCase();
+        requireNonNull(courseCode);
+        String normalizedCourseCode = courseCode.trim().toUpperCase();
+        checkArgument(isValidCourseCode(normalizedCourseCode), MESSAGE_CONSTRAINTS);
+
+        this.courseCode = normalizedCourseCode;
         this.students = new ArrayList<Student>();
         this.assessmentSource = FXCollections.emptyObservableList();
+    }
+
+    /**
+     * Returns true if a given string is a valid course code.
+     */
+    public static boolean isValidCourseCode(String test) {
+        return test != null && test.trim().toUpperCase().matches(VALIDATION_REGEX);
     }
 
     public String getCourseCode() {
