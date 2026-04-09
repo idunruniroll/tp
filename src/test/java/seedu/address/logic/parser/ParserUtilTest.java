@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.course.Course;
 
@@ -54,6 +55,62 @@ public class ParserUtilTest {
     }
 
     @Test
+    public void parseAssessmentName_invalid_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseAssessmentName(" "));
+    }
+
+    @Test
+    public void parseAssessmentName_valid_success() throws Exception {
+        assertEquals("Quiz 1", ParserUtil.parseAssessmentName("  quiz   1 ").toString());
+    }
+
+    @Test
+    public void parseMaxScore_invalid_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseMaxScore("0"));
+    }
+
+    @Test
+    public void parseMaxScore_valid_success() throws Exception {
+        assertEquals("100.0", ParserUtil.parseMaxScore("100").toString());
+    }
+
+    @Test
+    public void parseScore_invalid_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseScore("-1"));
+    }
+
+    @Test
+    public void parseScore_valid_success() throws Exception {
+        assertEquals("9.0", ParserUtil.parseScore("9").toString());
+    }
+
+    @Test
+    public void parseCourseCode_valid_success() throws Exception {
+        assertEquals("CS2103T", ParserUtil.parseCourseCode("cs2103t"));
+    }
+
+    @Test
+    public void parseStudentId_invalid_throwsParseException() {
+        assertThrows(ParseException.class, () -> ParserUtil.parseStudentId("A1"));
+    }
+
+    @Test
+    public void parseStudentId_invalidMessage_throwsParseExceptionWithCentralizedMessage() {
+        assertThrows(ParseException.class, Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT, () ->
+                ParserUtil.parseStudentId("A1"));
+    }
+
+    @Test
+    public void parseStudentId_valid_success() throws Exception {
+        assertEquals("A0123456X", ParserUtil.parseStudentId("a0123456x"));
+    }
+
+    @Test
+    public void parseStudentName_invalid_throwsParseExceptionWithCentralizedMessage() {
+        assertThrows(ParseException.class, Messages.MESSAGE_INVALID_STUDENT_NAME_FORMAT, () ->
+                ParserUtil.parseStudentName("1234"));
+    }
+
     public void parseCourseCode_null_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> ParserUtil.parseCourseCode(null));
     }

@@ -8,6 +8,7 @@ import java.util.function.Predicate;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
@@ -151,4 +152,10 @@ public interface Model {
 
     /** Returns which main list should currently be shown in the GUI. */
     DisplayMode getDisplayMode();
+
+    /** Returns true if the student is enrolled in the specified course. */
+    boolean isStudentEnrolled(String courseCode, String studentId);
+
+    /** Returns the assessment at the given display index for the specified course, if present. */
+    Optional<Assessment> getAssessmentForCourseByIndex(String courseCode, Index assessmentIndex);
 }

@@ -40,11 +40,13 @@ public class MainApp extends Application {
 
     private static final Logger logger = LogsCenter.getLogger(MainApp.class);
 
-    protected Ui ui;
-    protected Logic logic;
-    protected Storage storage;
-    protected Model model;
     protected Config config;
+    protected Logic logic;
+    protected Model model;
+    protected Storage storage;
+    protected Ui ui;
+
+    private String startupWarningMessage;
 
     @Override
     public void init() throws Exception {
@@ -87,6 +89,13 @@ public class MainApp extends Application {
         } catch (DataLoadingException e) {
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
                     + " Will be starting with an empty AddressBook.");
+
+            startupWarningMessage = "Could not load saved data from:\n"
+                    + storage.getAddressBookFilePath()
+                    + "\n\nReason:\n"
+                    + e.getMessage()
+                    + "\n\nThe app will start with an empty address book.";
+
             initialData = new AddressBook();
         }
 
@@ -172,6 +181,11 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         logger.info("Starting AddressBook " + MainApp.VERSION);
         ui.start(primaryStage);
+
+        if (startupWarningMessage != null && ui instanceof UiManager) {
+            UiManager uiManager = (UiManager) ui;
+            uiManager.showStartupWarning(startupWarningMessage);
+        }
     }
 
     @Override

@@ -70,8 +70,8 @@ public class RemoveAssessmentCommandTest {
         ModelStub modelStub = new ModelStub(assessments);
         RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS9999", Index.fromOneBased(1));
 
-        assertThrows(CommandException.class, String.format(Messages.MESSAGE_INVALID_COURSE, "CS9999"), (
-            ) -> command.execute(modelStub));
+        assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS9999"), () -> command.execute(modelStub));
     }
 
     @Test
@@ -202,7 +202,8 @@ public class RemoveAssessmentCommandTest {
 
         @Override
         public boolean hasCourse(String courseCode) {
-            throw new AssertionError("This method should not be called.");
+            requireNonNull(courseCode);
+            return assessments.stream().anyMatch(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode));
         }
 
         @Override
@@ -287,6 +288,17 @@ public class RemoveAssessmentCommandTest {
 
         @Override
         public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
+                String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
             throw new AssertionError("This method should not be called.");
         }
     }

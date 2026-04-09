@@ -92,7 +92,7 @@ public class RemoveGradeCommandParserTest {
             + PREFIX_ASSESSMENT + "1";
 
         assertParseFailure(parser, userInput,
-                "❌ Invalid student ID. Example: id/A0123456X");
+                Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT);
     }
 
     @Test

@@ -1,0 +1,51 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor MODEL_COLOR
+skinparam classBackgroundColor MODEL_COLOR
+
+package Model as ModelPackage <<Rectangle>> {
+    class AddressBook
+
+    class UniqueCourseList
+    class UniqueAssessmentList
+    class UniqueGradeList
+
+    class Course
+    class Student
+    class StudentId
+
+    class Assessment
+    class AssessmentName
+    class MaxScore
+
+    class Grade
+    class Score
+}
+
+AddressBook *--> "1" UniqueCourseList
+AddressBook *--> "1" UniqueAssessmentList
+AddressBook *--> "1" UniqueGradeList
+
+UniqueCourseList *--> "*" Course
+UniqueAssessmentList *--> "*" Assessment
+UniqueGradeList *--> "*" Grade
+
+Course *--> "*" Student
+Student *--> "1" StudentId
+
+Assessment *--> "1" AssessmentName
+Assessment *--> "1" MaxScore
+
+Grade *--> "1" StudentId
+Grade *--> "1" AssessmentName
+Grade *--> "1" Score
+
+note right of Course
+Stores enrolled students.
+Also exposes a filtered view of assessments
+from the global assessment list.
+That filtered view is omitted here
+to keep the diagram clean.
+end note
+@enduml

@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static seedu.address.testutil.Assert.assertThrows;
 
 import java.nio.file.Path;
 import java.util.function.Predicate;
@@ -13,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
@@ -34,7 +36,7 @@ public class ListAssessmentsCommandTest {
 
         CommandResult result = new ListAssessmentsCommand().execute(modelStub);
 
-        assertEquals("No assessments found.", result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_NO_ASSESSMENTS, result.getFeedbackToUser());
     }
 
     @Test
@@ -65,6 +67,17 @@ public class ListAssessmentsCommandTest {
         assertEquals(DisplayMode.ASSESSMENTS, modelStub.getDisplayMode());
         assertEquals(assessments.size(), modelStub.getFilteredAssessmentList().size());
         assertTrue(modelStub.getFilteredAssessmentList().containsAll(assessments));
+    }
+
+    @Test
+    public void execute_filteredCourseNotFound_throwsCommandException() {
+        ObservableList<Assessment> assessments = FXCollections.observableArrayList(
+                new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")));
+        ModelStub modelStub = new ModelStub(assessments);
+
+        ListAssessmentsCommand command = new ListAssessmentsCommand("CS9999");
+        assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS9999"), () -> command.execute(modelStub));
     }
 
     /**
@@ -194,7 +207,7 @@ public class ListAssessmentsCommandTest {
 
         @Override
         public boolean hasCourse(String courseCode) {
-            throw new AssertionError("This method should not be called.");
+            return assessments.stream().anyMatch(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode));
         }
 
         @Override
@@ -255,6 +268,17 @@ public class ListAssessmentsCommandTest {
         @Override
         public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
             filteredAssessments.setPredicate(predicate);
+        }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
+                String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
+            throw new AssertionError("This method should not be called.");
         }
     }
 }

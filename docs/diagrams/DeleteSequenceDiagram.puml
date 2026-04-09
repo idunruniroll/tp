@@ -5,47 +5,72 @@ skinparam ArrowFontStyle plain
 box Logic LOGIC_COLOR_T1
 participant ":LogicManager" as LogicManager LOGIC_COLOR
 participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
-participant ":RemoveXYZCommandParser" as RemoveXYZCommandParser LOGIC_COLOR
-participant "removeXYZCommand:RemoveXYZCommand" as RemoveXYZCommand LOGIC_COLOR
+participant ":RemoveAssessmentCommandParser" as RemoveAssessmentCommandParser LOGIC_COLOR
+participant "cmd:RemoveAssessmentCommand" as RemoveAssessmentCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
 end box
 
 box Model MODEL_COLOR_T1
-participant "model:Model" as Model MODEL_COLOR
+participant "m:Model" as Model MODEL_COLOR
 end box
 
-[-> LogicManager : execute("removeXYZ c/CS2103...")
+[-> LogicManager : execute("removeassessment c/CS2103T as/1")
 activate LogicManager
 
-LogicManager -> AddressBookParser : parseCommand("removeXYZ c/CS2103...")
+LogicManager -> AddressBookParser : parseCommand("removeassessment c/CS2103T as/1")
 activate AddressBookParser
 
-AddressBookParser -> RemoveXYZCommandParser : parse("CS2103...")
-activate RemoveXYZCommandParser
-RemoveXYZCommandParser --> AddressBookParser : removeXYZCommandParser
-deactivate RemoveXYZCommandParser
+create RemoveAssessmentCommandParser
+AddressBookParser -> RemoveAssessmentCommandParser
+activate RemoveAssessmentCommandParser
 
-AddressBookParser --> LogicManager : removeXYZCommandParser
+RemoveAssessmentCommandParser --> AddressBookParser
+deactivate RemoveAssessmentCommandParser
+
+AddressBookParser -> RemoveAssessmentCommandParser : parse("c/CS2103T as/1")
+activate RemoveAssessmentCommandParser
+
+create RemoveAssessmentCommand
+RemoveAssessmentCommandParser -> RemoveAssessmentCommand
+activate RemoveAssessmentCommand
+
+RemoveAssessmentCommand --> RemoveAssessmentCommandParser
+deactivate RemoveAssessmentCommand
+
+RemoveAssessmentCommandParser --> AddressBookParser : cmd
+deactivate RemoveAssessmentCommandParser
+
+AddressBookParser --> LogicManager : cmd
 deactivate AddressBookParser
 
-LogicManager -> RemoveXYZCommandParser : execute(model)
-activate RemoveXYZCommandParser
+LogicManager -> RemoveAssessmentCommand : execute(m)
+activate RemoveAssessmentCommand
 
-RemoveXYZCommandParser -> Model : getXYZList()
+RemoveAssessmentCommand -> Model : getAssessmentsForCourseInDisplayOrder(courseCode)
 activate Model
-Model --> RemoveXYZCommandParser : lastShownList
+Model --> RemoveAssessmentCommand : filteredAssessments
 deactivate Model
 
-alt index is valid
-    RemoveXYZCommandParser -> Model : removeXYZ(objectToDelete)
+alt filteredAssessments is empty
+    RemoveAssessmentCommand --> LogicManager : throws CommandException
+else assessment index is invalid
+    RemoveAssessmentCommand --> LogicManager : throws CommandException
+else assessment can be removed
+    RemoveAssessmentCommand -> Model : removeAssessment(assessmentToRemove)
     activate Model
-    Model --> RemoveXYZCommand
+    Model --> RemoveAssessmentCommand
     deactivate Model
-    RemoveXYZCommand --> LogicManager : CommandResult
-else index is invalid
-    RemoveXYZCommand --> LogicManager : throws CommandException
+
+    create CommandResult
+    RemoveAssessmentCommand -> CommandResult
+    activate CommandResult
+    CommandResult --> RemoveAssessmentCommand
+    deactivate CommandResult
+
+    RemoveAssessmentCommand --> LogicManager : r
 end
 
-deactivate RemoveXYZCommand
+deactivate RemoveAssessmentCommand
 [<-- LogicManager
 deactivate LogicManager
 @enduml

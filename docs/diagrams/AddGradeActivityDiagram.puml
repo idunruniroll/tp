@@ -1,0 +1,59 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+'Since the beta syntax does not support placing the condition outside the
+'diamond we place it as the true branch instead.
+
+start
+:parse command arguments;
+
+if () then ([missing required parameters?])
+    :return format error message;
+    stop
+else ([else])
+endif
+
+if () then ([course code not found?])
+    :return "Course <code> not found";
+    stop
+else ([else])
+endif
+
+if () then ([student not in course?])
+    :return "Invalid student ID";
+    stop
+else ([else])
+endif
+
+if () then ([assessment index invalid?])
+    :return "Invalid assessment index";
+    stop
+else ([else])
+endif
+
+if () then ([score exceeds max score?])
+    :return "Score exceeds max score";
+    stop
+else ([else])
+endif
+
+if () then ([duplicate grade exists?])
+    :return "Duplicate grade";
+    stop
+else ([else])
+endif
+
+:add grade;
+:save changes in storage;
+
+if () then ([save failed?])
+    :return "Unable to save changes";
+    stop
+else ([else])
+endif
+
+:update grade list view;
+stop
+@enduml

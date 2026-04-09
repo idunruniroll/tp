@@ -4,57 +4,107 @@ skinparam arrowThickness 1.1
 skinparam arrowColor UI_COLOR_T4
 skinparam classBackgroundColor UI_COLOR
 
-package UI <<Rectangle>>{
-Class "<<interface>>\nUi" as Ui
-Class "{abstract}\nUiPart" as UiPart
-Class UiManager
-Class MainWindow
-Class HelpWindow
-Class ResultDisplay
-Class PersonListPanel
-Class PersonCard
-Class StatusBarFooter
-Class CommandBox
+package UI <<Rectangle>> {
+    class "<<interface>>\nUi" as Ui
+    class "{abstract}\nUiPart" as UiPart
+
+    class UiManager
+    class MainWindow
+    class HelpWindow
+    class ResultDisplay
+    class CommandBox
+    class StatusBarFooter
+    class OverviewPanel
+
+    class StudentListPanel
+    class StudentCard
+
+    class CourseListPanel
+    class CourseCard
+
+    class CourseDetailListPanel
+    class CourseDetailCard
+
+    class AssessmentListPanel
+    class AssessmentGroupCard
+
+    class GradeListPanel
+    class GradeGroupCard
 }
 
 package Model <<Rectangle>> {
-Class HiddenModel #FFFFFF
+    class HiddenModel #FFFFFF
 }
 
 package Logic <<Rectangle>> {
-Class HiddenLogic #FFFFFF
+    class HiddenLogic #FFFFFF
 }
 
-Class HiddenOutside #FFFFFF
+class HiddenOutside #FFFFFF
 HiddenOutside ..> Ui
 
 UiManager .left.|> Ui
 UiManager -down-> "1" MainWindow
-MainWindow *-down->  "1" CommandBox
-MainWindow *-down-> "1" ResultDisplay
-MainWindow *-down-> "1" PersonListPanel
-MainWindow *-down-> "1" StatusBarFooter
+UiManager -right-> Logic
+
+MainWindow -left-> Logic
 MainWindow --> "0..1" HelpWindow
 
-PersonListPanel -down-> "*" PersonCard
+MainWindow *-down-> "1" CommandBox
+MainWindow *-down-> "1" ResultDisplay
+MainWindow *-down-> "1" StatusBarFooter
+MainWindow *-down-> "1" OverviewPanel
+MainWindow *-down-> "1" StudentListPanel
+MainWindow *-down-> "1" CourseListPanel
+MainWindow *-down-> "1" CourseDetailListPanel
+MainWindow *-down-> "1" AssessmentListPanel
+MainWindow *-down-> "1" GradeListPanel
+
+StudentListPanel -down-> "*" StudentCard
+CourseListPanel -down-> "*" CourseCard
+CourseDetailListPanel -down-> "*" CourseDetailCard
+AssessmentListPanel -down-> "*" AssessmentGroupCard
+GradeListPanel -down-> "*" GradeGroupCard
 
 MainWindow -left-|> UiPart
-
+HelpWindow --|> UiPart
 ResultDisplay --|> UiPart
 CommandBox --|> UiPart
-PersonListPanel --|> UiPart
-PersonCard --|> UiPart
 StatusBarFooter --|> UiPart
-HelpWindow --|> UiPart
+OverviewPanel --|> UiPart
+StudentListPanel --|> UiPart
+StudentCard --|> UiPart
+CourseListPanel --|> UiPart
+CourseCard --|> UiPart
+CourseDetailListPanel --|> UiPart
+CourseDetailCard --|> UiPart
+AssessmentListPanel --|> UiPart
+AssessmentGroupCard --|> UiPart
+GradeListPanel --|> UiPart
+GradeGroupCard --|> UiPart
 
-PersonCard ..> Model
-UiManager -right-> Logic
-MainWindow -left-> Logic
+OverviewPanel ..> Logic
 
-PersonListPanel -[hidden]left- HelpWindow
+StudentCard ..> Model
+CourseCard ..> Model
+CourseDetailCard ..> Model
+AssessmentGroupCard ..> Model
+GradeGroupCard ..> Model
+
+StudentListPanel -[hidden]left- HelpWindow
 HelpWindow -[hidden]left- CommandBox
 CommandBox -[hidden]left- ResultDisplay
 ResultDisplay -[hidden]left- StatusBarFooter
+
+CourseListPanel -[hidden]left- StudentListPanel
+CourseDetailListPanel -[hidden]left- CourseListPanel
+AssessmentListPanel -[hidden]left- CourseDetailListPanel
+GradeListPanel -[hidden]left- AssessmentListPanel
+
+StudentCard -[hidden]left- CourseCard
+CourseCard -[hidden]left- CourseDetailCard
+CourseDetailCard -[hidden]left- AssessmentGroupCard
+AssessmentGroupCard -[hidden]left- GradeGroupCard
 
 MainWindow -[hidden]-|> UiPart
 @enduml
