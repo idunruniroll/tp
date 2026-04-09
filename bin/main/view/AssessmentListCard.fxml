@@ -12,14 +12,7 @@
             <Insets top="8" right="8" bottom="8" left="15" />
         </padding>
 
-        <HBox spacing="4">
-            <Label fx:id="id" styleClass="cell_big_label">
-                <minWidth>
-                    <Region fx:constant="USE_PREF_SIZE" />
-                </minWidth>
-            </Label>
-            <Label fx:id="assessmentName" styleClass="cell_big_label" />
-        </HBox>
+        <Label fx:id="assessmentName" styleClass="grade-title-label" />
 
         <HBox spacing="6">
             <Label fx:id="courseCode" styleClass="tag-label" />

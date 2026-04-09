@@ -16,7 +16,6 @@ import seedu.address.model.course.Course;
  * Adds one or more new courses to the address book.
  */
 public class AddCourseCommand extends Command {
-
     public static final String COMMAND_WORD = "addcourse";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds one or more new courses.\n"
@@ -30,7 +29,10 @@ public class AddCourseCommand extends Command {
             "\u274C Duplicate course codes in the same command are not allowed: %s.";
     public static final String MESSAGE_DUPLICATE_COURSE = "\u274C Course %s already exists.";
 
+    private static final String COURSE_DELIMITER = ", ";
+
     private final List<String> courseCodes;
+
 
     /**
      * Constructs an AddCourseCommand with the specified course codes.
@@ -45,28 +47,12 @@ public class AddCourseCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-        Set<String> seenCourseCodes = new HashSet<>();
 
-        for (String courseCode : courseCodes) {
-            String normalizedCourseCode = courseCode.trim().toUpperCase();
-            if (!seenCourseCodes.add(normalizedCourseCode)) {
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE_INPUT, normalizedCourseCode));
-            }
-            if (model.hasCourse(courseCode)) {
-                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE, courseCode));
-            }
-        }
+        validateCourseCodes(model);
+        addCourses(model);
+        resetCourseDisplay(model);
 
-        // Add all courses
-        for (String courseCode : courseCodes) {
-            Course courseToAdd = new Course(courseCode);
-            model.addCourse(courseToAdd);
-        }
-
-        String addedCourses = String.join(", ", courseCodes);
-        model.setCurrentCourseForDisplay(Optional.empty());
-        model.setDetailedCoursesForDisplay(List.of());
-        model.setDisplayMode(DisplayMode.COURSES);
+        String addedCourses = String.join(COURSE_DELIMITER, courseCodes);
         return new CommandResult(String.format(MESSAGE_SUCCESS, addedCourses));
     }
 
@@ -75,5 +61,33 @@ public class AddCourseCommand extends Command {
         return other == this
                 || (other instanceof AddCourseCommand
                         && courseCodes.equals(((AddCourseCommand) other).courseCodes));
+    }
+
+    private void validateCourseCodes(Model model) throws CommandException {
+        Set<String> seenCourseCodes = new HashSet<>();
+
+        for (String courseCode : courseCodes) {
+            String normalizedCourseCode = courseCode.trim().toUpperCase();
+
+            if (!seenCourseCodes.add(normalizedCourseCode)) {
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE_INPUT, normalizedCourseCode));
+            }
+
+            if (model.hasCourse(courseCode)) {
+                throw new CommandException(String.format(MESSAGE_DUPLICATE_COURSE, courseCode));
+            }
+        }
+    }
+
+    private void addCourses(Model model) {
+        for (String courseCode : courseCodes) {
+            model.addCourse(new Course(courseCode));
+        }
+    }
+
+    private void resetCourseDisplay(Model model) {
+        model.setCurrentCourseForDisplay(Optional.empty());
+        model.setDetailedCoursesForDisplay(List.of());
+        model.setDisplayMode(DisplayMode.COURSES);
     }
 }

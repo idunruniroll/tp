@@ -1,12 +1,10 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import seedu.address.logic.commands.ListDetailsCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -15,35 +13,40 @@ import seedu.address.logic.parser.exceptions.ParseException;
  * Parses input arguments and creates a new ListCommandDetailsCommand object.
  */
 public class ListDetailsCommandParser implements Parser<ListDetailsCommand> {
+    private static final String INVALID_COMMAND_FORMAT_MESSAGE =
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListDetailsCommand.MESSAGE_USAGE);
 
     @Override
     public ListDetailsCommand parse(String args) throws ParseException {
-        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_COURSE_CODE);
+        requireNonNull(args);
+        ArgumentMultimap argMultimap = tokenize(args);
+        validateCommandFormat(argMultimap);
 
-        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_COURSE_CODE)
-                || !argMultimap.getPreamble().isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListDetailsCommand.MESSAGE_USAGE));
+        String rawCourseCodes = getRawCourseCodes(argMultimap);
+        List<String> courseCodes = ParserUtil.parseCourseCodes(rawCourseCodes);
+        return new ListDetailsCommand(courseCodes);
+    }
+
+    private ArgumentMultimap tokenize(String args) {
+        return ArgumentTokenizer.tokenize(args, PREFIX_COURSE_CODE);
+    }
+
+    private void validateCommandFormat(ArgumentMultimap argMultimap) throws ParseException {
+        boolean hasCoursePrefix = ParserUtil.arePrefixesPresent(argMultimap, PREFIX_COURSE_CODE);
+        boolean hasPreamble = !argMultimap.getPreamble().isEmpty();
+
+        if (!hasCoursePrefix || hasPreamble) {
+            throw new ParseException(INVALID_COMMAND_FORMAT_MESSAGE);
         }
 
         argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COURSE_CODE);
+    }
 
+    private String getRawCourseCodes(ArgumentMultimap argMultimap) throws ParseException {
         String rawCourseCodes = argMultimap.getValue(PREFIX_COURSE_CODE).orElse("").trim();
-        List<String> rawCodes = Arrays.stream(rawCourseCodes.split(","))
-                .map(String::trim)
-                .filter(code -> !code.isEmpty())
-                .collect(Collectors.toList());
-
-        if (rawCodes.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    ListDetailsCommand.MESSAGE_USAGE));
+        if (rawCourseCodes.isEmpty()) {
+            throw new ParseException(INVALID_COMMAND_FORMAT_MESSAGE);
         }
-
-        List<String> courseCodes = new ArrayList<>();
-        for (String rawCode : rawCodes) {
-            courseCodes.add(ParserUtil.parseCourseCode(rawCode));
-        }
-
-        return new ListDetailsCommand(courseCodes);
+        return rawCourseCodes;
     }
 }

@@ -2,8 +2,11 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -198,13 +201,40 @@ public class ParserUtil {
      */
     public static String parseCourseCode(String courseCode) throws ParseException {
         requireNonNull(courseCode);
-        String trimmed = courseCode.trim().toUpperCase();
+        String trimmedCourseCode = courseCode.trim().toUpperCase();
 
-        if (!trimmed.matches("[A-Z0-9]{2,10}")) {
+        if (!Course.isValidCourseCode(trimmedCourseCode)) {
             throw new ParseException(Course.MESSAGE_CONSTRAINTS);
         }
 
-        return trimmed;
+        return trimmedCourseCode;
+    }
+
+    /**
+     * Parses a comma-separated list of course codes.
+     *
+     * @param rawCourseCodes raw course code list from a prefixed argument
+     * @return normalized course codes
+     * @throws ParseException if no values are provided or any course code is invalid
+     */
+    public static List<String> parseCourseCodes(String rawCourseCodes) throws ParseException {
+        requireNonNull(rawCourseCodes);
+
+        List<String> splitCourseCodes = Arrays.stream(rawCourseCodes.split(","))
+                .map(String::trim)
+                .filter(code -> !code.isEmpty())
+                .toList();
+
+        if (splitCourseCodes.isEmpty()) {
+            throw new ParseException(Course.MESSAGE_CONSTRAINTS);
+        }
+
+        List<String> parsedCourseCodes = new ArrayList<>();
+        for (String splitCourseCode : splitCourseCodes) {
+            parsedCourseCodes.add(parseCourseCode(splitCourseCode));
+        }
+
+        return parsedCourseCodes;
     }
 
     /**
