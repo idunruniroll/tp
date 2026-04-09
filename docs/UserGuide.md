@@ -181,6 +181,7 @@ Format: `addassessment c/COURSE_CODE an/ASSESSMENT_NAME m/MAX_SCORE`
 Examples:
 * `addassessment c/CS2103T an/Quiz 1 m/10`
 * `addassessment c/CS2103T an/Final Exam m/100`
+
 ![Example of AddAssessment](images/AssessmentCommands/addassessmentCommand.png)
 
 ### Listing assessments: `listassessments`
@@ -196,7 +197,9 @@ Format:
 Examples:
 * `listassessments`
 * `listassessments c/CS2103T`
+
 ![Example of ListAssessments](images/AssessmentCommands/listassessmentsCommand.png)
+
 ![Example of ListAssessmentsCourseFilter](images/AssessmentCommands/listassessmentsfiltercourseCommand.png)
 
 ### Removing an assessment: `removeassessment`
@@ -211,7 +214,8 @@ Example:
 * `removeassessment c/CS2103T as/1`
 
 > Removing an assessment also removes all grades associated with that assessment.
-![Example of ListAssessment](images/AssessmentCommands/removeassessmentsCommand.png)
+
+![Example of ListAssessment](images/AssessmentCommands/removeassessmentCommand.png)
 
 ---
 
@@ -231,6 +235,7 @@ Examples:
 
 > The student must already be enrolled in the course.<br>
 > The score cannot exceed the assessment’s max score.
+
 ![Example of AddGrade](images/GradeCommands/addgradeCommand.png)
 
 ### Listing grades: `listgrades`
@@ -248,6 +253,7 @@ Examples:
 * `listgrades c/CS2103T`
 * `listgrades c/CS2103T as/1`
 * `listgrades id/A0123456X`
+
 ![Example of ListGrades](images/GradeCommands/listgradesCommand.png)
 
 ### Removing a grade: `removegrade`
@@ -260,6 +266,7 @@ Format: `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
 
 Example:
 * `removegrade c/CS2103T id/A0123456X as/1`
+
 ![Example of RemoveGrades](images/GradeCommands/removegradeCommand.png)
 
 ---
@@ -320,6 +327,33 @@ Format: `exit`
 
 **Q:** Where is my data stored?<br>
 **A:** Data is stored automatically in the app’s data folder as a JSON file.
+
+**Q:** Why does `removeassessment` or `removegrade` say the assessment index is invalid?<br>
+**A:** Assessment indexes are based on the currently displayed assessment list for the specified course. Run `listassessments c/COURSE_CODE` first, then use the index shown there.
+
+**Q:** Why can’t I add a grade for a student?<br>
+**A:** The student must already be enrolled in that course, the assessment index must exist for that course, and the score must not exceed the assessment max score.
+
+**Q:** Can the same student be in multiple courses?<br>
+**A:** Yes. Students are enrolled per course, so the same student ID can appear in different course rosters.
+
+**Q:** What happens if I remove a course?<br>
+**A:** Removing a course also removes all assessments and grades associated with that course.
+
+**Q:** What happens if I remove an assessment?<br>
+**A:** Removing an assessment also removes all grades tied to that assessment in the same course.
+
+**Q:** Why do I see "Course ... not found" even though my command format is correct?<br>
+**A:** Format checks and data checks are different. A command can be syntactically valid but still fail if the referenced course does not exist in your current data.
+
+**Q:** Are command keywords and course codes case-sensitive?<br>
+**A:** Command keywords should be typed as documented. Course codes are case-insensitive (for example, `cs2103t` and `CS2103T` refer to the same course).
+
+**Q:** What does "No grades found" or "No assessments found" mean?<br>
+**A:** The command ran successfully, but there are no matching records for the filter you requested.
+
+**Q:** Why does adding an assessment sometimes fail with a "similar assessment" message?<br>
+**A:** GradeBookPlus rejects likely typo-duplicates (for example, very similar names in the same course) to prevent accidental duplicate assessment creation.
 
 --------------------------------------------------------------------------------------------------------------------
 
