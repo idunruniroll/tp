@@ -15,8 +15,10 @@ title: Developer Guide
   - [Storage component](#storage-component)
   - [Common classes](#common-classes)
 - [Implementation](#implementation)
-  - [[Proposed] Undo/redo feature](#proposed-undoredo-feature)
-  - [[Proposed] Data archiving](#proposed-data-archiving)
+  - [Assessment management](#assessment-management)
+  - [Grade management](#grade-management)
+  - [Display mode driven UI switching](#display-mode-driven-ui-switching)
+  - [Persistence after successful commands](#persistence-after-successful-commands)
 - [Documentation, logging, testing, configuration, dev-ops](#documentation-logging-testing-configuration-dev-ops)
 - [Appendix: Requirements](#appendix-requirements)
   - [Product scope](#product-scope)
@@ -65,7 +67,7 @@ Given below is a quick overview of main components and how they interact with ea
 
 **Main components of the architecture**
 
-**`Main`** (consisting of classes [`Main`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
+**`Main`** (consisting of classes [`Main`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/java/seedu/address/Main.java) and [`MainApp`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/java/seedu/address/MainApp.java)) is in charge of the app launch and shut down.
 
 - At app launch, it initializes the other components in the correct sequence, and connects them up with each other.
 - At shut down, it shuts down the other components and invokes cleanup methods where necessary.
@@ -100,13 +102,13 @@ The sections below give more details of each component.
 
 ### UI component
 
-The **API** of this component is specified in [`Ui.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/Ui.java)
+The **API** of this component is specified in [`Ui.java`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/java/seedu/address/ui/Ui.java)
 
 ![Structure of the UI Component](images/UiClassDiagram.png)
 
 The UI consists of a `MainWindow` and several panel components, including `StudentListPanel`, `CourseListPanel`, `CourseDetailListPanel`, `AssessmentListPanel`, `GradeListPanel`, `OverviewPanel`, `CommandBox`, `ResultDisplay`, and `StatusBarFooter`. All these, including `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/resources/view/MainWindow.fxml)
 
 `MainWindow` keeps these list panels in a shared placeholder and toggles visibility/management based on `DisplayMode` (`STUDENTS`, `COURSES`, `COURSE_DETAILS`, `ASSESSMENTS`, `GRADES`, `OVERVIEW`).
 
@@ -119,7 +121,7 @@ The `UI` component,
 
 ### Logic component
 
-**API** : [`Logic.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/logic/Logic.java)
+**API** : [`Logic.java`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/java/seedu/address/logic/Logic.java)
 
 Here's a (partial) class diagram of the `Logic` component:
 
@@ -154,12 +156,12 @@ How the parsing works:
 - `AddressBookParser` acts as the entry point for parsing. It inspects the command word and delegates to a concrete parser such as `RemoveAssessmentCommandParser`, `AddCourseCommandParser`, `AddAssessmentCommandParser`, or `ExportCourseCommandParser`.
 - Concrete parser classes implement the common `Parser<T>` interface and each creates exactly one matching `Command` subtype.
 - Many parsers reuse shared helpers such as `ArgumentTokenizer`, `ArgumentMultimap`, `ParserUtil`, `CliSyntax`, and `Prefix` to tokenize prefixed arguments, validate them, and construct the target command object.
-- Some simple commands, such as `clear`, `help`, `exit`, and `viewall`, are instantiated directly by `AddressBookParser` and therefore do not appear in the parser class diagram.
+- Some simple commands, such as `help`, `exit`, and `viewall`, are instantiated directly by `AddressBookParser` and therefore do not appear in the parser class diagram.
 - If command execution succeeds but persistence fails, `LogicManager` converts storage-layer exceptions into `CommandException` with user-facing file operation messages.
 
 ### Model component
 
-**API** : [`Model.java`](https://github.com/se-edu/addressbook-level3/tree/master/src/main/java/seedu/address/model/Model.java)
+**API** : [`Model.java`](https://github.com/AY2526S2-CS2103T-F12-3/tp/tree/master/src/main/java/seedu/address/model/Model.java)
 
 The Model component is documented using two complementary diagrams:
 
@@ -175,7 +177,7 @@ The `Model` component,
 
 - stores the application data, including courses, students, assessments, and grades.
 - stores filtered observable lists used by the UI (for example filtered course, assessment, and grade lists) so the UI can react to model updates.
-- stores a `UserPref` object that represents the user’s preferences. This is exposed to the outside as a `ReadOnlyUserPref` objects.
+- stores a `UserPrefs` object that represents the user's preferences. This is exposed to other components as a read-only `ReadOnlyUserPrefs` view.
 - does not depend on any of the other three components (as the `Model` represents data entities of the domain, they should make sense on their own without depending on other components)
 
 ### Storage component
@@ -188,7 +190,7 @@ The `Storage` component,
 
 - persists both GradeBookPlus data and user preferences to disk in JSON format, and loads them back at startup.
 - is orchestrated by `StorageManager`, which implements the `Storage` interface and delegates to:
-  - `JsonAddressBookStorage` for application data (courses, students, assessments, grades, and any legacy person records present in stored files).
+  - `JsonAddressBookStorage` for application data (courses, students, assessments, and grades).
   - `JsonUserPrefsStorage` for GUI and file-path preferences.
 - uses `JsonSerializableAddressBook` and `JsonAdapted*` classes as the JSON-to-model mapping layer.
 - is invoked by `LogicManager` after successful command execution via `storage.saveAddressBook(model.getAddressBook())`.
@@ -417,7 +419,7 @@ The following activity diagram summarizes what happens when a user executes the 
 **MSS**
 
 1. User requests to add an assessment to an existing course, including the course code and the assessment name in the
-command command.
+command.
 2. GradeBookPlus adds an assessment to the selected course.
 
 **Extensions**

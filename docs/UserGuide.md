@@ -24,7 +24,7 @@ If you prefer typing commands quickly, GradeBookPlus helps you manage class reco
 
 4. Open a terminal in that folder and run:
 
-   `java -jar gradebookplus.jar`
+   `java -jar GradeBookPlus.jar`
 
 5. Wait a few seconds for the application window to appear.
 
