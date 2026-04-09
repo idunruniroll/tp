@@ -297,18 +297,29 @@ Format: `exportcourse c/COURSE_CODE`
 Example:
 * `exportcourse c/CS2103T`
 
-### Viewing all main lists: `viewall`
+### Viewing overall summary: `viewall`
 
-**Purpose:** Use this command to return to the default overall view and get a quick summary of the stored data.
-
-Returns the app to the default overall view.
+Displays an overview summary of the current assessment and grade data.
 
 Format: `viewall`
 
-Note:
-* `viewall` currently displays a text summary in the result box.
-* It is useful for checking the current number of assessments and grades quickly.
-* The command also shows how many grades are recorded for each assessment.
+Example:
+* `viewall`
+
+Expected outcome:
+* Displays the total number of assessments currently stored in the app.
+* Displays the total number of grades currently stored in the app.
+* Displays the number of grades recorded for each assessment.
+
+Typical usage:
+* Use `viewall` after adding or removing assessments to confirm that the assessment count has updated as expected.
+* Use `viewall` after adding or removing grades to quickly verify that the overall grade count has changed.
+* Use `viewall` when you want a quick summary without manually switching through multiple list commands.
+
+Notes:
+* `viewall` is intended as a lightweight overview command rather than a full detailed report.
+* The command is useful for quickly checking whether recent updates to assessment and grade records have been reflected in the system.
+* In an empty state, `viewall` still provides a quick way to confirm that there are currently no assessments or grades recorded.
 
 ### Exiting the program: `exit`
 
@@ -354,6 +365,9 @@ Format: `exit`
 
 **Q:** Why does adding an assessment sometimes fail with a "similar assessment" message?<br>
 **A:** GradeBookPlus rejects likely typo-duplicates (for example, very similar names in the same course) to prevent accidental duplicate assessment creation.
+
+**Q:** When should I use `viewall` instead of the other list commands?<br>
+**A:** Use `viewall` when you want a quick summary of overall assessment and grade data. Use commands such as `liststudents`, `listassessments`, and `listgrades` when you need more detailed records.
 
 --------------------------------------------------------------------------------------------------------------------
 
