@@ -43,7 +43,7 @@ public class RemoveAssessmentCommand extends Command {
         requireNonNull(model);
 
         if (!model.hasCourse(courseCode)) {
-            throw new CommandException(Messages.MESSAGE_INVALID_COURSE_CODE);
+            throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
         ObservableList<Assessment> filteredAssessments = model.getAssessmentsForCourseInDisplayOrder(courseCode);

@@ -61,7 +61,7 @@ public class AddAssessmentCommand extends Command {
         requireNonNull(assessmentName);
         requireNonNull(maxScore);
 
-        this.courseCode = courseCode;
+        this.courseCode = courseCode.trim().toUpperCase();
         this.assessmentName = assessmentName;
         this.maxScore = maxScore;
     }
@@ -95,41 +95,6 @@ public class AddAssessmentCommand extends Command {
         }
         model.addAssessment(toAdd);
         return new CommandResult(String.format(Messages.MESSAGE_ADD_ASSESSMENT_SUCCESS, toAdd));
-    }
-
-    /**
-     * Returns the minimum number of single-character edits needed
-     * to change firstString into secondString.
-     */
-    private int getEditDistance(String firstString, String secondString) {
-        int firstLength = firstString.length();
-        int secondLength = secondString.length();
-
-        int[][] distanceTable = new int[firstLength + 1][secondLength + 1];
-
-        for (int i = 0; i <= firstLength; i++) {
-            for (int j = 0; j <= secondLength; j++) {
-                if (i == 0) {
-                    distanceTable[i][j] = j;
-                } else if (j == 0) {
-                    distanceTable[i][j] = i;
-                } else {
-                    int deleteCost = distanceTable[i - 1][j] + 1;
-                    int insertCost = distanceTable[i][j - 1] + 1;
-
-                    int replaceCost = distanceTable[i - 1][j - 1];
-                    if (firstString.charAt(i - 1) != secondString.charAt(j - 1)) {
-                        replaceCost += 1;
-                    }
-
-                    distanceTable[i][j] = Math.min(
-                            Math.min(deleteCost, insertCost),
-                            replaceCost);
-                }
-            }
-        }
-
-        return distanceTable[firstLength][secondLength];
     }
 
     @Override

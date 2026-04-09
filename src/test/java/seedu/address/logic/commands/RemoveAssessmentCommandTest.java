@@ -71,8 +71,8 @@ public class RemoveAssessmentCommandTest {
         ModelStub modelStub = new ModelStub(assessments);
         RemoveAssessmentCommand command = new RemoveAssessmentCommand("CS9999", Index.fromOneBased(1));
 
-        assertThrows(CommandException.class, Messages.MESSAGE_INVALID_COURSE_CODE, (
-            ) -> command.execute(modelStub));
+        assertThrows(CommandException.class,
+                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS9999"), () -> command.execute(modelStub));
     }
 
     @Test
