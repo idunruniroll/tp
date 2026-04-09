@@ -1,0 +1,74 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+participant ":LogicManager" as LogicManager LOGIC_COLOR
+participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+participant ":AddCourseCommandParser" as AddCourseCommandParser LOGIC_COLOR
+participant "cmd:AddCourseCommand" as AddCourseCommand LOGIC_COLOR
+participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+participant "m:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("addcourse c/CS2103T")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("addcourse c/CS2103T")
+activate AddressBookParser
+
+create AddCourseCommandParser
+AddressBookParser -> AddCourseCommandParser
+activate AddCourseCommandParser
+
+AddCourseCommandParser --> AddressBookParser
+deactivate AddCourseCommandParser
+
+AddressBookParser -> AddCourseCommandParser : parse(" c/CS2103T")
+activate AddCourseCommandParser
+
+create AddCourseCommand
+AddCourseCommandParser -> AddCourseCommand
+activate AddCourseCommand
+
+AddCourseCommand --> AddCourseCommandParser
+deactivate AddCourseCommand
+
+AddCourseCommandParser --> AddressBookParser : cmd
+deactivate AddCourseCommandParser
+
+AddressBookParser --> LogicManager : cmd
+deactivate AddressBookParser
+
+LogicManager -> AddCourseCommand : execute(m)
+activate AddCourseCommand
+
+AddCourseCommand -> Model : hasCourse("CS2103T")
+activate Model
+Model --> AddCourseCommand : false
+deactivate Model
+
+alt course already exists
+    AddCourseCommand --> LogicManager : throws CommandException
+else valid new course code(s)
+    AddCourseCommand -> Model : addCourse(new Course("CS2103T"))
+    activate Model
+    Model --> AddCourseCommand
+    deactivate Model
+
+    create CommandResult
+    AddCourseCommand -> CommandResult : CommandResult(successMessage)
+    activate CommandResult
+    CommandResult --> AddCourseCommand
+    deactivate CommandResult
+
+    AddCourseCommand --> LogicManager : r
+end
+
+deactivate AddCourseCommand
+[<-- LogicManager
+deactivate LogicManager
+@enduml

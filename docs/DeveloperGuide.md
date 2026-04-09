@@ -132,18 +132,18 @@ The diagram focuses on the core collaborators in `Logic`:
 - `Command` subclasses that execute business logic through the `Model`
 - `CommandResult` as the output contract back to UI
 
-The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("removeassessment c/CS2103T as/1")` as an example.
+The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("removecourse c/CS2103T")` as an example.
 
-![Interactions Inside the Logic Component for the `removeassessment` Command](images/DeleteSequenceDiagram.png)
+![Interactions Inside the Logic Component for the `removecourse` Command](images/DeleteSequenceDiagram.png)
 
 How the `Logic` component works:
 
 1. When `Logic#execute(commandText)` is called, `LogicManager` logs the command and delegates parsing to `AddressBookParser`.
-2. `AddressBookParser` identifies the command word and dispatches to the matching parser (for example, `RemoveAssessmentCommandParser`).
-3. The concrete parser validates and parses arguments, then returns a concrete `Command` object (for example, `RemoveAssessmentCommand`).
-4. `LogicManager` executes the command via `command.execute(model)`. The command applies validation and updates through the `Model`.
+2. `AddressBookParser` identifies the command word and dispatches to the matching parser (for example, `RemoveCourseCommandParser`).
+3. The concrete parser validates and parses arguments, then returns a concrete `Command` object (for example, `RemoveCourseCommand`).
+4. `LogicManager` executes the command via `command.execute(model)`. For `removecourse`, the command validates the target course through the `Model`, removes the course, and resets the course-related display state.
 5. After successful execution, `LogicManager` persists the updated state through `Storage#saveAddressBook(...)`.
-6. `LogicManager` returns a `CommandResult` to the UI. The result includes user feedback text and control flags such as `showHelp` and `exit`.
+6. `LogicManager` returns a `CommandResult` to the UI with the user-facing result message.
 
 Here are the other classes in `Logic` (omitted from the class diagram above) that are used for parsing a user command:
 
@@ -225,6 +225,31 @@ Design notes:
 ## **Implementation**
 
 This section describes key implementation details of GradeBookPlus features.
+
+### Course management
+
+Course commands are implemented through dedicated parser-command pairs:
+
+- `AddCourseCommandParser` -> `AddCourseCommand`
+- `RemoveCourseCommandParser` -> `RemoveCourseCommand`
+- `ListCoursesCommandParser` -> `ListCoursesCommand`
+
+Implementation behavior:
+
+- Parser layer validates command shape and required prefixes before constructing the command object.
+- `ParserUtil.parseCourseCodes` parses one or more comma-separated course codes into normalized command inputs.
+- `AddCourseCommand` rejects duplicate course codes within the same command and prevents adding courses that already exist in the model.
+- After successfully adding the requested courses, `AddCourseCommand` resets the course-related display state so the UI returns to the courses view.
+- `RemoveCourseCommand` performs the complementary validation and removal flow for existing courses.
+
+The sequence diagram below shows the high-level `addcourse` interaction through `Logic` and `Model`.
+
+![Interactions Inside the Logic Component for the `addcourse` Command](images/AddCourseSequenceDiagram.png)
+
+The activity diagram below summarizes the main validation and execution branches for `addcourse`.
+
+![Activity flow for the `addcourse` command](images/AddCourseActivityDiagram.png)
+
 
 ### Assessment management
 

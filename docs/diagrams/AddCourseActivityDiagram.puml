@@ -1,0 +1,48 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+'Since the beta syntax does not support placing the condition outside the
+'diamond we place it as the true branch instead.
+
+start
+:parse command arguments;
+
+if () then ([missing required prefix or invalid format?])
+    :return format error message;
+    stop
+else ([else])
+endif
+
+if () then ([invalid course code?])
+    :return "Invalid course code";
+    stop
+else ([else])
+endif
+
+if () then ([duplicate course code in same command?])
+    :return "Duplicate course code input";
+    stop
+else ([else])
+endif
+
+if () then ([course already exists?])
+    :return "Course already exists";
+    stop
+else ([else])
+endif
+
+:add course to model;
+:reset course-related display state;
+:save changes in storage;
+
+if () then ([save failed?])
+    :return "Unable to save changes";
+    stop
+else ([else])
+endif
+
+:show success message;
+stop
+@enduml
