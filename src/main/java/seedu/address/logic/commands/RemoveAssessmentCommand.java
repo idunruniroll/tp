@@ -34,7 +34,7 @@ public class RemoveAssessmentCommand extends Command {
         requireNonNull(courseCode);
         requireNonNull(assessmentIndex);
 
-        this.courseCode = courseCode;
+        this.courseCode = courseCode.trim().toUpperCase();
         this.assessmentIndex = assessmentIndex;
     }
 
@@ -42,12 +42,14 @@ public class RemoveAssessmentCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        // Get the list of assessments for the given course code
-        ObservableList<Assessment> filteredAssessments =
-            model.getAssessmentsForCourseInDisplayOrder(courseCode);
+        if (!model.hasCourse(courseCode)) {
+            throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, courseCode));
+        }
+
+        ObservableList<Assessment> filteredAssessments = model.getAssessmentsForCourseInDisplayOrder(courseCode);
 
         if (filteredAssessments.isEmpty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_COURSE);
+            throw new CommandException(String.format(Messages.MESSAGE_NO_ASSESSMENTS_FOR_COURSE, courseCode));
         }
 
         if (assessmentIndex.getZeroBased() >= filteredAssessments.size()) {

@@ -67,9 +67,8 @@ public class AddAssessmentCommandTest {
         AddAssessmentCommand command = new AddAssessmentCommand("CS2103T", "Midterm", "100");
         ModelStub modelStub = new ModelStubWithoutCourse();
 
-        assertThrows(CommandException.class,
-                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), (
-                ) -> command.execute(modelStub));
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), () ->
+                command.execute(modelStub));
     }
 
     @Test
@@ -80,9 +79,20 @@ public class AddAssessmentCommandTest {
         AddAssessmentCommand command = new AddAssessmentCommand("CS2103T", "Midterm", "100");
         ModelStub modelStub = new ModelStubWithAssessment(assessment);
 
-        assertThrows(CommandException.class,
-                String.format(Messages.MESSAGE_DUPLICATE_ASSESSMENT, assessment), (
-                ) -> command.execute(modelStub));
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_DUPLICATE_ASSESSMENT, assessment), () ->
+                command.execute(modelStub));
+    }
+
+    @Test
+    public void execute_similarAssessmentName_throwsCommandException() {
+        Assessment existingAssessment = new Assessment("CS2103T",
+                new seedu.address.model.assessment.AssessmentName("Midterm"),
+                new seedu.address.model.assessment.MaxScore("100"));
+        AddAssessmentCommand command = new AddAssessmentCommand("CS2103T", "Midtrm", "100");
+        ModelStub modelStub = new ModelStubWithSimilarAssessment(existingAssessment);
+
+        assertThrows(CommandException.class, String.format(Messages.MESSAGE_SIMILAR_ASSESSMENT,
+                existingAssessment.getAssessmentName()), () -> command.execute(modelStub));
     }
 
     @Test
@@ -311,6 +321,17 @@ public class AddAssessmentCommandTest {
         public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
+                String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
@@ -387,6 +408,34 @@ public class AddAssessmentCommandTest {
         public boolean hasCourse(String courseCode) {
             requireNonNull(courseCode);
             return true;
+        }
+    }
+
+    /**
+     * A model stub that contains a similar assessment in the same course.
+     */
+    private class ModelStubWithSimilarAssessment extends ModelStub {
+        private final Assessment existingAssessment;
+
+        ModelStubWithSimilarAssessment(Assessment existingAssessment) {
+            this.existingAssessment = existingAssessment;
+        }
+
+        @Override
+        public boolean hasCourse(String courseCode) {
+            requireNonNull(courseCode);
+            return true;
+        }
+
+        @Override
+        public boolean hasAssessment(Assessment assessment) {
+            requireNonNull(assessment);
+            return false;
+        }
+
+        @Override
+        public ObservableList<Assessment> getAssessmentList() {
+            return FXCollections.observableArrayList(existingAssessment);
         }
     }
 }

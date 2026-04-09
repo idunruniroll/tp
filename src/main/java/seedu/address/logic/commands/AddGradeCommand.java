@@ -2,7 +2,6 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 
-import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -51,32 +50,14 @@ public class AddGradeCommand extends Command {
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
 
-        if (model.getCourse(courseCode).isEmpty()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_COURSE_CODE);
-        }
-
-        boolean studentExistsInCourse = model.getCourse(courseCode).get().getStudents().stream()
-                .anyMatch(student -> student.getStudentId().equalsIgnoreCase(studentId));
-
-        if (!studentExistsInCourse) {
-            throw new CommandException(Messages.MESSAGE_INVALID_STUDENT_ID);
-        }
-
-        ObservableList<Assessment> courseAssessments =
-            model.getAssessmentsForCourseInDisplayOrder(courseCode);
-
-        if (assessmentIndex.getZeroBased() >= courseAssessments.size()) {
-            throw new CommandException(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX);
-        }
-
-        Assessment assessment = courseAssessments.get(assessmentIndex.getZeroBased());
+        Assessment assessment = GradeCommandValidator.validateAndGetAssessment(
+                model, courseCode, studentId, assessmentIndex);
 
         if (score.toDouble() > assessment.getMaxScore().toDouble()) {
             throw new CommandException(Messages.MESSAGE_SCORE_EXCEEDS_MAX);
         }
 
         Grade toAdd = new Grade(courseCode, new StudentId(studentId), assessment.getAssessmentName(), score);
-
         if (model.hasGrade(toAdd)) {
             throw new CommandException(Messages.MESSAGE_DUPLICATE_GRADE);
         }

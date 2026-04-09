@@ -12,6 +12,7 @@ import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.Messages;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.assessment.MaxScore;
@@ -247,7 +248,7 @@ public class ParserUtil {
         requireNonNull(value);
         String trimmed = value.trim().toUpperCase();
         if (!trimmed.matches("[A-Z0-9]{6,12}")) {
-            throw new ParseException("\u274C Invalid student ID. Example: id/A0123456X");
+            throw new ParseException(Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT);
         }
         return trimmed;
     }
@@ -264,7 +265,7 @@ public class ParserUtil {
         if (collapsed.isEmpty()
                 || collapsed.length() > 60
                 || !collapsed.matches("[\\p{L} .,'-]+")) {
-            throw new ParseException("\u274C Invalid name. Example: n/John Tan");
+            throw new ParseException(Messages.MESSAGE_INVALID_STUDENT_NAME_FORMAT);
         }
         return collapsed;
     }

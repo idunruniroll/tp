@@ -16,6 +16,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.index.Index;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
@@ -355,6 +356,28 @@ public class ModelManager implements Model {
         }
 
         filteredStudents.setAll(new ArrayList<>(course.get().getStudents()));
+    }
+
+    @Override
+    public boolean isStudentEnrolled(String courseCode, String studentId) {
+        requireAllNonNull(courseCode, studentId);
+
+        return getCourse(courseCode)
+                .map(course -> course.getStudents().stream()
+                        .anyMatch(student -> student.getStudentId().equalsIgnoreCase(studentId)))
+                .orElse(false);
+    }
+
+    @Override
+    public Optional<Assessment> getAssessmentForCourseByIndex(String courseCode, Index assessmentIndex) {
+        requireAllNonNull(courseCode, assessmentIndex);
+
+        ObservableList<Assessment> courseAssessments = getAssessmentsForCourseInDisplayOrder(courseCode);
+        if (assessmentIndex.getZeroBased() >= courseAssessments.size()) {
+            return Optional.empty();
+        }
+
+        return Optional.of(courseAssessments.get(assessmentIndex.getZeroBased()));
     }
 
     // =========== Filtered Person List Accessors

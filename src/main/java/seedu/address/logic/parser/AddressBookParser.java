@@ -5,6 +5,7 @@ import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.AddAssessmentCommand;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AddCourseCommand;
@@ -125,7 +126,7 @@ public class AddressBookParser {
             return new ListGradesCommandParser().parse(arguments);
 
         default:
-            throw new ParseException("Unknown command");
+            throw new ParseException(Messages.MESSAGE_UNKNOWN_COMMAND);
         }
     }
 }

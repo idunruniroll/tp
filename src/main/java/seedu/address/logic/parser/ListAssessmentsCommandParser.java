@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 
@@ -13,12 +14,15 @@ public class ListAssessmentsCommandParser implements Parser<ListAssessmentsComma
 
     @Override
     public ListAssessmentsCommand parse(String args) throws ParseException {
+        requireNonNull(args);
         ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_COURSE_CODE);
 
         if (!argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListAssessmentsCommand.MESSAGE_USAGE));
         }
+
+        argMultimap.verifyNoDuplicatePrefixesFor(PREFIX_COURSE_CODE);
 
         if (argMultimap.getValue(PREFIX_COURSE_CODE).isEmpty()) {
             return new ListAssessmentsCommand();

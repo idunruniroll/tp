@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.ListGradesCommand;
+import seedu.address.logic.commands.ListGradesCommand.FilterType;
 
 public class ListGradesCommandParserTest {
 
@@ -21,7 +22,7 @@ public class ListGradesCommandParserTest {
     public void parse_studentFilter_success() {
         String userInput = " " + PREFIX_STUDENT_ID + "a0123456x";
 
-        ListGradesCommand expectedCommand = new ListGradesCommand("student", "A0123456X", null);
+        ListGradesCommand expectedCommand = new ListGradesCommand(FilterType.STUDENT, "A0123456X", null);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -30,7 +31,7 @@ public class ListGradesCommandParserTest {
     public void parse_courseFilter_success() {
         String userInput = " " + PREFIX_COURSE_CODE + "cs2103t";
 
-        ListGradesCommand expectedCommand = new ListGradesCommand("course", "CS2103T", null);
+        ListGradesCommand expectedCommand = new ListGradesCommand(FilterType.COURSE, "CS2103T", null);
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -39,7 +40,8 @@ public class ListGradesCommandParserTest {
     public void parse_courseAssessmentFilter_success() {
         String userInput = " " + PREFIX_COURSE_CODE + "cs2103t " + PREFIX_ASSESSMENT + "2";
 
-        ListGradesCommand expectedCommand = new ListGradesCommand("courseassessment", "CS2103T", Index.fromOneBased(2));
+        ListGradesCommand expectedCommand =
+                new ListGradesCommand(FilterType.COURSE_ASSESSMENT, "CS2103T", Index.fromOneBased(2));
 
         assertParseSuccess(parser, userInput, expectedCommand);
     }
@@ -71,7 +73,7 @@ public class ListGradesCommandParserTest {
         String userInput = " " + PREFIX_STUDENT_ID + "A1";
 
         assertParseFailure(parser, userInput,
-                "❌ Invalid student ID. Example: id/A0123456X");
+                Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT);
     }
 
     @Test
