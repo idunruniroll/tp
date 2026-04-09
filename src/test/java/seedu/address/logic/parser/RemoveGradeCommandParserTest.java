@@ -82,7 +82,7 @@ public class RemoveGradeCommandParserTest {
             + PREFIX_ASSESSMENT + "1";
 
         assertParseFailure(parser, userInput,
-                "❌ Invalid course code. Example: CS2103T");
+                "❌ Invalid course code. Example: c/CS2103T");
     }
 
     @Test
@@ -92,7 +92,7 @@ public class RemoveGradeCommandParserTest {
             + PREFIX_ASSESSMENT + "1";
 
         assertParseFailure(parser, userInput,
-                "❌ Invalid student ID. Example: id/A0123456X");
+                Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT);
     }
 
     @Test

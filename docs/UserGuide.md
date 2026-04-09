@@ -63,15 +63,28 @@ Some example commands you can try:
 
 ### Viewing help: `help`
 
-Shows the help window.
+**Purpose:** Use this command to open the Help window for a quick reference to GradeBookPlus commands.
+
+Opens the Help window, which displays a summary of supported commands and their usage.
 
 Format: `help`
+
+Example:
+* `help`
+
+Expected outcome:
+* The Help window opens.
+* You can refer to the listed commands without leaving the app.
+
+![Example of Help](images/Help/helpCommand.png)
 
 ---
 
 ## Course management
 
 ### Adding a course: `addcourse`
+
+**Purpose:** Use this command to create one or more courses before adding students, assessments, or grades to them.
 
 Adds one or more courses to the database.
 
@@ -86,6 +99,8 @@ Examples:
 
 ### Listing all courses: `listcourses`
 
+**Purpose:** Use this command to view all courses currently stored in GradeBookPlus.
+
 Lists all existing courses.
 
 Format: `listcourses`
@@ -97,6 +112,8 @@ Examples:
 
 
 ### Removing a course: `removecourse`
+
+**Purpose:** Use this command to delete one or more courses that are no longer needed, together with their associated student and assessment records.
 
 Removes one or more courses using course code.
 
@@ -117,6 +134,8 @@ Example:
 
 ### Adding a student to a course: `addstudent`
 
+**Purpose:** Use this command to enroll a student into a specific course so that their grades can be recorded later.
+
 Adds a student to a course roster.
 
 Format: `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
@@ -127,6 +146,8 @@ Examples:
 
 ### Listing students in a course: `liststudents`
 
+**Purpose:** Use this command to see all students currently enrolled in a specific course.
+
 Lists all students enrolled in the specified course.
 
 Format: `liststudents c/COURSE_CODE`
@@ -135,6 +156,8 @@ Examples:
 * `liststudents c/CS2103T`
 
 ### Removing a student from a course: `removestudent`
+
+**Purpose:** Use this command to remove a student from a course roster when they are no longer taking that course.
 
 Removes a student from the specified course.
 
@@ -149,6 +172,8 @@ Examples:
 
 ### Adding an assessment: `addassessment`
 
+**Purpose:** Use this command to create an assessment for a course so that grades can be recorded against it.
+
 Adds an assessment to a course.
 
 Format: `addassessment c/COURSE_CODE an/ASSESSMENT_NAME m/MAX_SCORE`
@@ -157,7 +182,11 @@ Examples:
 * `addassessment c/CS2103T an/Quiz 1 m/10`
 * `addassessment c/CS2103T an/Final Exam m/100`
 
+![Example of AddAssessment](images/AssessmentCommands/addassessmentCommand.png)
+
 ### Listing assessments: `listassessments`
+
+**Purpose:** Use this command to view all assessments, either across all courses or within one specific course.
 
 Lists all assessments, optionally filtered by course.
 
@@ -169,7 +198,13 @@ Examples:
 * `listassessments`
 * `listassessments c/CS2103T`
 
+![Example of ListAssessments](images/AssessmentCommands/listassessmentsCommand.png)
+
+![Example of ListAssessmentsCourseFilter](images/AssessmentCommands/listassessmentsfiltercourseCommand.png)
+
 ### Removing an assessment: `removeassessment`
+
+**Purpose:** Use this command to delete an assessment from a course when it is no longer needed or was added by mistake.
 
 Removes an assessment from a course using its displayed index.
 
@@ -180,11 +215,15 @@ Example:
 
 > Removing an assessment also removes all grades associated with that assessment.
 
+![Example of ListAssessment](images/AssessmentCommands/removeassessmentCommand.png)
+
 ---
 
 ## Grade management
 
 ### Adding a grade: `addgrade`
+
+**Purpose:** Use this command to record a student’s score for a specific assessment in a course.
 
 Adds a grade for a student in a course assessment.
 
@@ -197,16 +236,11 @@ Examples:
 > The student must already be enrolled in the course.<br>
 > The score cannot exceed the assessment’s max score.
 
-### Removing a grade: `removegrade`
-
-Removes a grade for a student from a course assessment.
-
-Format: `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
-
-Example:
-* `removegrade c/CS2103T id/A0123456X as/1`
+![Example of AddGrade](images/GradeCommands/addgradeCommand.png)
 
 ### Listing grades: `listgrades`
+
+**Purpose:** Use this command to view recorded grades by course, by assessment, or by student.
 
 Lists grades by course, by assessment within a course, or by student ID.
 
@@ -220,11 +254,28 @@ Examples:
 * `listgrades c/CS2103T as/1`
 * `listgrades id/A0123456X`
 
+![Example of ListGrades](images/GradeCommands/listgradesCommand.png)
+
+### Removing a grade: `removegrade`
+
+**Purpose:** Use this command to delete an incorrect or outdated grade entry for a student’s assessment.
+
+Removes a grade for a student from a course assessment.
+
+Format: `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
+
+Example:
+* `removegrade c/CS2103T id/A0123456X as/1`
+
+![Example of RemoveGrades](images/GradeCommands/removegradeCommand.png)
+
 ---
 
 ## Other commands
 
 ### Viewing detailed course information: `listdetails`
+
+**Purpose:** Use this command to view a course’s detailed information, including its students and assessments, in one place.
 
 Displays assessments and students information for a course.
 
@@ -237,6 +288,8 @@ Example:
 
 ### Exporting a course: `exportcourse`
 
+**Purpose:** Use this command to export the records of a course for external viewing, sharing, or backup.
+
 Exports course-related information.
 
 Format: `exportcourse c/COURSE_CODE`
@@ -245,6 +298,8 @@ Example:
 * `exportcourse c/CS2103T`
 
 ### Viewing all main lists: `viewall`
+
+**Purpose:** Use this command to return to the default overall view and get a quick summary of the stored data.
 
 Returns the app to the default overall view.
 
@@ -256,6 +311,8 @@ Note:
 * The command also shows how many grades are recorded for each assessment.
 
 ### Exiting the program: `exit`
+
+**Purpose**: Use this command to close GradeBookPlus safely.
 
 Exits the application.
 
@@ -270,6 +327,33 @@ Format: `exit`
 
 **Q:** Where is my data stored?<br>
 **A:** Data is stored automatically in the app’s data folder as a JSON file.
+
+**Q:** Why does `removeassessment` or `removegrade` say the assessment index is invalid?<br>
+**A:** Assessment indexes are based on the currently displayed assessment list for the specified course. Run `listassessments c/COURSE_CODE` first, then use the index shown there.
+
+**Q:** Why can’t I add a grade for a student?<br>
+**A:** The student must already be enrolled in that course, the assessment index must exist for that course, and the score must not exceed the assessment max score.
+
+**Q:** Can the same student be in multiple courses?<br>
+**A:** Yes. Students are enrolled per course, so the same student ID can appear in different course rosters.
+
+**Q:** What happens if I remove a course?<br>
+**A:** Removing a course also removes all assessments and grades associated with that course.
+
+**Q:** What happens if I remove an assessment?<br>
+**A:** Removing an assessment also removes all grades tied to that assessment in the same course.
+
+**Q:** Why do I see "Course ... not found" even though my command format is correct?<br>
+**A:** Format checks and data checks are different. A command can be syntactically valid but still fail if the referenced course does not exist in your current data.
+
+**Q:** Are command keywords and course codes case-sensitive?<br>
+**A:** Command keywords should be typed as documented. Course codes are case-insensitive (for example, `cs2103t` and `CS2103T` refer to the same course).
+
+**Q:** What does "No grades found" or "No assessments found" mean?<br>
+**A:** The command ran successfully, but there are no matching records for the filter you requested.
+
+**Q:** Why does adding an assessment sometimes fail with a "similar assessment" message?<br>
+**A:** GradeBookPlus rejects likely typo-duplicates (for example, very similar names in the same course) to prevent accidental duplicate assessment creation.
 
 --------------------------------------------------------------------------------------------------------------------
 

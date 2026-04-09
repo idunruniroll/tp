@@ -38,11 +38,11 @@ public class AssessmentGroupCard extends UiPart<Region> {
 
     private HBox createAssessmentRow(int index, Assessment assessment) {
         Label indexLabel = new Label(index + ".");
-        indexLabel.getStyleClass().add("cell_small_label");
+        indexLabel.getStyleClass().add("grade-row-text");
 
         Label nameLabel = new Label(
                 assessment.getAssessmentName().toString() + " (Max: " + assessment.getMaxScore() + ")");
-        nameLabel.getStyleClass().add("cell_big_label");
+        nameLabel.getStyleClass().add("grade-row-text");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);

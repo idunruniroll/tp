@@ -49,6 +49,6 @@ public class AddAssessmentCommandParser implements Parser<AddAssessmentCommand> 
         MaxScore maxScore = ParserUtil.parseMaxScore(argMultimap.getValue(PREFIX_MAX_SCORE).get());
 
         // Return a new AddAssessmentCommand with the parsed parameters
-        return new AddAssessmentCommand(courseCode, assessmentName.toString(), maxScore.toString());
+        return new AddAssessmentCommand(courseCode, assessmentName, maxScore);
     }
 }

@@ -297,6 +297,17 @@ public class ListCoursesCommandTest {
         public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
+                String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     /**
@@ -323,6 +334,7 @@ public class ListCoursesCommandTest {
             requireNonNull(courseList);
             this.courses = FXCollections.observableArrayList(courseList);
             this.assessmentList = assessmentList;
+            this.courses.forEach(course -> course.setAssessmentSource(this.assessmentList));
         }
 
         @Override

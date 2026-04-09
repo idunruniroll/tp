@@ -78,7 +78,7 @@ public class AddAssessmentCommandParserTest {
         String userInput = " " + PREFIX_COURSE_CODE + "CS 2103T "
                 + PREFIX_ASSESSMENT_NAME + "Midterm " + PREFIX_MAX_SCORE + "100";
 
-        assertParseFailure(parser, userInput, "❌ Invalid course code. Example: CS2103T");
+        assertParseFailure(parser, userInput, "❌ Invalid course code. Example: c/CS2103T");
     }
 
     @Test
@@ -128,5 +128,15 @@ public class AddAssessmentCommandParserTest {
 
         assertParseFailure(parser, userInput,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_MAX_SCORE));
+    }
+
+    @Test
+    public void parse_assessmentNameTooLong_failure() {
+        String longName = "A".repeat(51);
+        String userInput = " " + PREFIX_COURSE_CODE + "CS2103T "
+                + PREFIX_ASSESSMENT_NAME + longName + " "
+                + PREFIX_MAX_SCORE + "100";
+
+        assertParseFailure(parser, userInput, AssessmentName.MESSAGE_CONSTRAINTS);
     }
 }

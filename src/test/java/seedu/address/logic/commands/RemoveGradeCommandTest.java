@@ -119,8 +119,7 @@ public class RemoveGradeCommandTest {
                 "A1234567X", Index.fromOneBased(1));
 
         assertThrows(CommandException.class,
-                String.format(Messages.MESSAGE_INVALID_COURSE_CODE, "CS9999"), (
-                    ) -> command.execute(modelStub));
+                String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS9999"), () -> command.execute(modelStub));
     }
 
     @Test
@@ -395,6 +394,17 @@ public class RemoveGradeCommandTest {
         public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
+                String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 
     private class ModelStubWithGrade extends ModelStub {
@@ -420,6 +430,24 @@ public class RemoveGradeCommandTest {
                 return Optional.of(course);
             }
             return Optional.empty();
+        }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            return course.getCourseCode().equalsIgnoreCase(courseCode)
+                    && course.getStudents().stream()
+                    .anyMatch(student -> student.getStudentId().equalsIgnoreCase(studentId));
+        }
+
+        @Override
+        public Optional<Assessment> getAssessmentForCourseByIndex(String courseCode, Index assessmentIndex) {
+            if (!course.getCourseCode().equalsIgnoreCase(courseCode)) {
+                return Optional.empty();
+            }
+            if (assessmentIndex.getZeroBased() >= assessments.size()) {
+                return Optional.empty();
+            }
+            return Optional.of(assessments.get(assessmentIndex.getZeroBased()));
         }
 
         @Override
@@ -460,6 +488,24 @@ public class RemoveGradeCommandTest {
                 return Optional.of(course);
             }
             return Optional.empty();
+        }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            return course.getCourseCode().equalsIgnoreCase(courseCode)
+                    && course.getStudents().stream()
+                    .anyMatch(student -> student.getStudentId().equalsIgnoreCase(studentId));
+        }
+
+        @Override
+        public Optional<Assessment> getAssessmentForCourseByIndex(String courseCode, Index assessmentIndex) {
+            if (!course.getCourseCode().equalsIgnoreCase(courseCode)) {
+                return Optional.empty();
+            }
+            if (assessmentIndex.getZeroBased() >= assessments.size()) {
+                return Optional.empty();
+            }
+            return Optional.of(assessments.get(assessmentIndex.getZeroBased()));
         }
 
         @Override

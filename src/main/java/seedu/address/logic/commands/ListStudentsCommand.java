@@ -22,6 +22,7 @@ public class ListStudentsCommand extends Command {
             + "Example: " + COMMAND_WORD + " " + PREFIX_COURSE_CODE + "CS2103T";
 
     public static final String MESSAGE_SUCCESS = "\u2705 Displaying students in %s.";
+    public static final String MESSAGE_NO_STUDENTS = "\u2139 No students enrolled in %s.";
     public static final String MESSAGE_COURSE_NOT_FOUND = "\u274C Course %s not found.";
     public static final String MESSAGE_FORMAT_ERROR = "\u274C Format: " + COMMAND_WORD
             + " " + PREFIX_COURSE_CODE + "COURSE_CODE";
@@ -52,8 +53,17 @@ public class ListStudentsCommand extends Command {
             throw new CommandException(String.format(MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
+        boolean hasStudents = model.getCourse(courseCode)
+                .map(c -> !c.getStudents().isEmpty())
+                .orElse(false);
+
         model.setCurrentCourseForDisplay(Optional.of(courseCode));
         model.setDisplayMode(DisplayMode.STUDENTS);
+
+        if (!hasStudents) {
+            return new CommandResult(String.format(MESSAGE_NO_STUDENTS, courseCode));
+        }
+
         return new CommandResult(String.format(MESSAGE_SUCCESS, courseCode));
     }
 

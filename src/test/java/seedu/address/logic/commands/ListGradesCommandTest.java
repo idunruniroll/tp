@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
+import seedu.address.logic.commands.ListGradesCommand.FilterType;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
@@ -48,7 +49,7 @@ public class ListGradesCommandTest {
         modelStub.gradesByStudentId = expectedGrades;
         modelStub.allGrades = FXCollections.observableArrayList(expectedGrades);
 
-        ListGradesCommand command = new ListGradesCommand("student", "A1234567X", null);
+        ListGradesCommand command = new ListGradesCommand(FilterType.STUDENT, "A1234567X", null);
         CommandResult result = command.execute(modelStub);
 
         assertEquals(Messages.MESSAGE_LIST_GRADES_SUCCESS, result.getFeedbackToUser());
@@ -70,7 +71,7 @@ public class ListGradesCommandTest {
         modelStub.gradesByCourseAndAssessment = expectedGrades;
         modelStub.allGrades = FXCollections.observableArrayList(expectedGrades);
 
-        ListGradesCommand command = new ListGradesCommand("courseassessment",
+        ListGradesCommand command = new ListGradesCommand(FilterType.COURSE_ASSESSMENT,
                 "CS2103T", Index.fromOneBased(2));
         CommandResult result = command.execute(modelStub);
 
@@ -84,7 +85,7 @@ public class ListGradesCommandTest {
         ModelStub modelStub = new ModelStub();
         modelStub.hasCourse = false;
 
-        ListGradesCommand command = new ListGradesCommand("course", "CS2103T", null);
+        ListGradesCommand command = new ListGradesCommand(FilterType.COURSE, "CS2103T", null);
 
         assertThrows(CommandException.class,
                 String.format(Messages.MESSAGE_COURSE_NOT_FOUND, "CS2103T"), (
@@ -97,10 +98,10 @@ public class ListGradesCommandTest {
         modelStub.hasCourse = true;
         modelStub.gradesByCourse = FXCollections.observableArrayList();
 
-        ListGradesCommand command = new ListGradesCommand("course", "CS2103T", null);
+        ListGradesCommand command = new ListGradesCommand(FilterType.COURSE, "CS2103T", null);
         CommandResult result = command.execute(modelStub);
 
-        assertEquals("No grades found.", result.getFeedbackToUser());
+        assertEquals(Messages.MESSAGE_NO_GRADES_FOUND, result.getFeedbackToUser());
     }
 
     @Test
@@ -110,7 +111,7 @@ public class ListGradesCommandTest {
         modelStub.assessments = FXCollections.observableArrayList(
                 new Assessment("CS2103T", new AssessmentName("Quiz 1"), new MaxScore("10")));
 
-        ListGradesCommand command = new ListGradesCommand("courseassessment",
+        ListGradesCommand command = new ListGradesCommand(FilterType.COURSE_ASSESSMENT,
                 "CS2103T", Index.fromOneBased(2));
 
         assertThrows(CommandException.class,
@@ -120,10 +121,11 @@ public class ListGradesCommandTest {
 
     @Test
     public void equals() {
-        ListGradesCommand firstCommand = new ListGradesCommand("course", "CS2103T", null);
-        ListGradesCommand firstCommandCopy = new ListGradesCommand("course", "CS2103T", null);
-        ListGradesCommand secondCommand = new ListGradesCommand("student", "A1234567X", null);
-        ListGradesCommand thirdCommand = new ListGradesCommand("courseassessment", "CS2103T", Index.fromOneBased(1));
+        ListGradesCommand firstCommand = new ListGradesCommand(FilterType.COURSE, "CS2103T", null);
+        ListGradesCommand firstCommandCopy = new ListGradesCommand(FilterType.COURSE, "CS2103T", null);
+        ListGradesCommand secondCommand = new ListGradesCommand(FilterType.STUDENT, "A1234567X", null);
+        ListGradesCommand thirdCommand =
+                new ListGradesCommand(FilterType.COURSE_ASSESSMENT, "CS2103T", Index.fromOneBased(1));
 
         assertTrue(firstCommand.equals(firstCommand));
         assertTrue(firstCommand.equals(firstCommandCopy));
@@ -357,6 +359,17 @@ public class ListGradesCommandTest {
 
         @Override
         public void updateFilteredAssessmentList(Predicate<Assessment> predicate) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public boolean isStudentEnrolled(String courseCode, String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
+                String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
             throw new AssertionError("This method should not be called.");
         }
     }

@@ -2,13 +2,17 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.Messages;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.assessment.AssessmentName;
 import seedu.address.model.assessment.MaxScore;
@@ -146,10 +150,12 @@ public class ParserUtil {
     public static AssessmentName parseAssessmentName(String name) throws ParseException {
         requireNonNull(name);
         String trimmedName = name.trim();
-        if (trimmedName.isEmpty()) {
+
+        try {
+            return new AssessmentName(trimmedName);
+        } catch (IllegalArgumentException e) {
             throw new ParseException(AssessmentName.MESSAGE_CONSTRAINTS);
         }
-        return new AssessmentName(trimmedName);
     }
 
     /**
@@ -196,13 +202,40 @@ public class ParserUtil {
      */
     public static String parseCourseCode(String courseCode) throws ParseException {
         requireNonNull(courseCode);
-        String trimmed = courseCode.trim().toUpperCase();
+        String trimmedCourseCode = courseCode.trim().toUpperCase();
 
-        if (!trimmed.matches("[A-Z0-9]{2,10}")) {
+        if (!Course.isValidCourseCode(trimmedCourseCode)) {
             throw new ParseException(Course.MESSAGE_CONSTRAINTS);
         }
 
-        return trimmed;
+        return trimmedCourseCode;
+    }
+
+    /**
+     * Parses a comma-separated list of course codes.
+     *
+     * @param rawCourseCodes raw course code list from a prefixed argument
+     * @return normalized course codes
+     * @throws ParseException if no values are provided or any course code is invalid
+     */
+    public static List<String> parseCourseCodes(String rawCourseCodes) throws ParseException {
+        requireNonNull(rawCourseCodes);
+
+        List<String> splitCourseCodes = Arrays.stream(rawCourseCodes.split(","))
+                .map(String::trim)
+                .filter(code -> !code.isEmpty())
+                .toList();
+
+        if (splitCourseCodes.isEmpty()) {
+            throw new ParseException(Course.MESSAGE_CONSTRAINTS);
+        }
+
+        List<String> parsedCourseCodes = new ArrayList<>();
+        for (String splitCourseCode : splitCourseCodes) {
+            parsedCourseCodes.add(parseCourseCode(splitCourseCode));
+        }
+
+        return parsedCourseCodes;
     }
 
     /**
@@ -214,8 +247,8 @@ public class ParserUtil {
     public static String parseStudentId(String value) throws ParseException {
         requireNonNull(value);
         String trimmed = value.trim().toUpperCase();
-        if (!trimmed.matches("[A-Za-z0-9]{6,12}")) {
-            throw new ParseException("\u274C Invalid student ID. Example: id/A0123456X");
+        if (!trimmed.matches("[A-Z0-9]{6,12}")) {
+            throw new ParseException(Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT);
         }
         return trimmed;
     }
@@ -232,7 +265,7 @@ public class ParserUtil {
         if (collapsed.isEmpty()
                 || collapsed.length() > 60
                 || !collapsed.matches("[\\p{L} .,'-]+")) {
-            throw new ParseException("\u274C Invalid name. Example: n/John Tan");
+            throw new ParseException(Messages.MESSAGE_INVALID_STUDENT_NAME_FORMAT);
         }
         return collapsed;
     }

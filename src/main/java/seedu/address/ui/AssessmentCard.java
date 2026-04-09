@@ -18,8 +18,6 @@ public class AssessmentCard extends UiPart<Region> {
     @FXML
     private HBox cardPane;
     @FXML
-    private Label id;
-    @FXML
     private Label assessmentName;
     @FXML
     private Label courseCode;
@@ -37,9 +35,7 @@ public class AssessmentCard extends UiPart<Region> {
         super(FXML);
         this.assessment = assessment;
 
-        id.setText(displayedIndex + ". ");
-        assessmentName.setText(assessment.getAssessmentName().toString());
-        courseCode.setText(assessment.getCourseCode());
-        maxScore.setText("Max Grade: " + assessment.getMaxScore());
+        assessmentName.setText(displayedIndex + ". "
+                + assessment.getAssessmentName() + " (Max: " + assessment.getMaxScore() + ")");
     }
 }

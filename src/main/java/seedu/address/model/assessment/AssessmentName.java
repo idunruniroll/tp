@@ -7,7 +7,9 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
  * Represents an assessment's name.
  */
 public class AssessmentName {
-    public static final String MESSAGE_CONSTRAINTS = "Assessment names should not be blank.";
+    public static final int MAX_LENGTH = 50;
+    public static final String MESSAGE_CONSTRAINTS = "Assessment names should not be blank and should be at most "
+            + MAX_LENGTH + " characters long.";
 
     public final String value;
 
@@ -19,10 +21,16 @@ public class AssessmentName {
     public AssessmentName(String assessmentName) {
         requireNonNull(assessmentName);
         String normalizedAssessmentName = normalizeAssessmentName(assessmentName);
-        checkArgument(isValidAssessmentName(normalizedAssessmentName), MESSAGE_CONSTRAINTS);
+        checkArgument(!normalizedAssessmentName.isEmpty()
+                && normalizedAssessmentName.length() <= MAX_LENGTH, MESSAGE_CONSTRAINTS);
         value = normalizedAssessmentName;
     }
 
+    /**
+     * Normalizes the assessment name by trimming whitespace, collapsing multiple spaces into one,
+     * @param assessmentName
+     * @return
+     */
     private static String normalizeAssessmentName(String assessmentName) {
         String trimmedName = assessmentName.trim().replaceAll("\\s+", " ");
         String[] words = trimmedName.split(" ");
@@ -60,14 +68,29 @@ public class AssessmentName {
         return word.toLowerCase();
     }
 
+    /**
+     * Determines if a word should have its case preserved.
+     * @param word the word to check
+     * @return true if the word should preserve its case, false otherwise
+     */
     private static boolean shouldPreserveUppercase(String word) {
         return word.matches("[A-Za-z]*\\d+[A-Za-z\\d]*")
                 || (word.length() > 1 && word.matches("[A-Z]+"))
                 || (word.length() > 1 && word.matches("[a-zA-Z]+") && word.equals(word.toUpperCase()));
     }
 
+    /**
+     * Returns true if a given string is a valid assessment name.
+     * @param test the string to test
+     * @return true if the string is a valid assessment name, false otherwise
+     */
     public static boolean isValidAssessmentName(String test) {
-        return test != null && !normalizeAssessmentName(test).isEmpty();
+        if (test == null) {
+            return false;
+        }
+
+        String normalizedName = normalizeAssessmentName(test);
+        return !normalizedName.isEmpty() && normalizedName.length() <= MAX_LENGTH;
     }
 
     @Override

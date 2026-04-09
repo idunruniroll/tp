@@ -16,7 +16,6 @@ import javafx.scene.layout.Region;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
-import seedu.address.model.student.Student;
 
 /**
  * Panel containing grouped grades to be displayed in the UI.
@@ -94,16 +93,6 @@ public class GradeListPanel extends UiPart<Region> {
                 .findFirst();
 
         return matchingAssessment.map(assessment -> assessment.getMaxScore().toString()).orElse("?");
-    }
-
-    private String findStudentName(String courseCode, String studentId) {
-        return courseList.stream()
-                .filter(course -> course.getCourseCode().equalsIgnoreCase(courseCode))
-                .flatMap(course -> course.getStudents().stream())
-                .filter(student -> student.getStudentId().equalsIgnoreCase(studentId))
-                .map(Student::getStudentName)
-                .findFirst()
-                .orElse(studentId);
     }
 
     /**

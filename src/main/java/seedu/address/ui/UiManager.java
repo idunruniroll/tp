@@ -76,6 +76,18 @@ public class UiManager implements Ui {
     }
 
     /**
+     * Shows a warning alert dialog with {@code title} and error message,
+     * {@code contentText}.
+     * @param contentText
+     */
+    public void showStartupWarning(String contentText) {
+        showAlertDialogAndWait(AlertType.WARNING,
+                "Data File Problem",
+                "Could not load saved data",
+                contentText);
+    }
+
+    /**
      * Shows an error alert dialog with {@code title} and error message, {@code e},
      * and exits the application after the user has closed the alert dialog.
      */

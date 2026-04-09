@@ -18,7 +18,6 @@ public class Messages {
     public static final String MESSAGE_PERSONS_LISTED_OVERVIEW = "%1$d persons listed!";
     public static final String MESSAGE_DUPLICATE_FIELDS =
                 "Multiple values specified for the following single-valued field(s): ";
-    public static final String MESSAGE_INVALID_COURSE_CODE = "Invalid course code.";
     public static final String MESSAGE_COURSE_NOT_FOUND = "Course %1$s not found.";
     public static final String MESSAGE_DUPLICATE_ASSESSMENT = "This assessment already exists.";
     public static final String MESSAGE_SIMILAR_ASSESSMENT = "A similar assessment already exists: %1$s";
@@ -26,6 +25,8 @@ public class Messages {
     public static final String MESSAGE_INVALID_MAX_SCORE = "Invalid max score.";
     public static final String MESSAGE_ADD_ASSESSMENT_SUCCESS = "New assessment added: %1$s";
     public static final String MESSAGE_INVALID_STUDENT_ID = "The student ID provided is not enrolled in this course.";
+    public static final String MESSAGE_INVALID_STUDENT_ID_FORMAT = "\u274C Invalid student ID. Example: id/A0123456X";
+    public static final String MESSAGE_INVALID_STUDENT_NAME_FORMAT = "\u274C Invalid name. Example: n/John Tan";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
 
     public static final String MESSAGE_ADD_GRADE_SUCCESS = "New grade added: %1$s";
@@ -37,7 +38,6 @@ public class Messages {
     public static final String MESSAGE_GRADE_NOT_FOUND = "Grade not found.";
 
     public static final String MESSAGE_REMOVE_ASSESSMENT_SUCCESS = "Removed assessment: %1$s";
-    public static final String MESSAGE_INVALID_COURSE = "The course code provided is invalid.";
 
     public static final String MESSAGE_LIST_GRADES_SUCCESS = "Displayed grades.";
     public static final String MESSAGE_NO_GRADES_FOUND = "No grades found.";
