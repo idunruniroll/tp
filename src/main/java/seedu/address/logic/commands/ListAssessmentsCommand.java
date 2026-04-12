@@ -36,7 +36,7 @@ public class ListAssessmentsCommand extends Command {
         requireNonNull(model);
 
         if (courseCode == null) {
-            model.updateFilteredAssessmentList(assessment -> true);
+            model.showAllAssessments();
             model.setDisplayMode(DisplayMode.ASSESSMENTS);
 
             if (model.getFilteredAssessmentList().isEmpty()) {
@@ -49,8 +49,7 @@ public class ListAssessmentsCommand extends Command {
             throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, courseCode));
         }
 
-        model.updateFilteredAssessmentList(
-                assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode));
+        model.showAssessmentsForCourse(courseCode);
         model.setDisplayMode(DisplayMode.ASSESSMENTS);
 
         if (model.getFilteredAssessmentList().isEmpty()) {

@@ -57,8 +57,8 @@ public class Assessment {
 
         return other != null
                 && courseCode.equalsIgnoreCase(other.courseCode)
-                && assessmentName.getNormalizedName()
-                        .equals(other.assessmentName.getNormalizedName());
+                && assessmentName.getCanonicalName()
+                        .equals(other.assessmentName.getCanonicalName());
     }
 
     @Override

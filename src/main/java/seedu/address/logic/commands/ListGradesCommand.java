@@ -5,10 +5,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ASSESSMENT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_COURSE_CODE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STUDENT_ID;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Optional;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
@@ -16,7 +14,6 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
-import seedu.address.model.grade.Grade;
 
 /**
  * Lists grades filtered by type and values (student, course, or assessment).
@@ -49,6 +46,7 @@ public class ListGradesCommand extends Command {
 
     /**
      * Constructs a ListGradesCommand with the specified filter type and values.
+     *
      * @param filterType      the type of filter
      * @param filterValue1    the value for the filter
      * @param assessmentIndex the index of the assessment
@@ -68,54 +66,111 @@ public class ListGradesCommand extends Command {
     @Override
     public CommandResult execute(Model model) throws CommandException {
         requireNonNull(model);
-
-        if ((filterType == FilterType.COURSE || filterType == FilterType.COURSE_ASSESSMENT)
-                && !model.hasCourse(filterValue1)) {
-            throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, filterValue1));
-        }
-
-        ObservableList<Grade> grades = getFilteredGrades(model);
-
-        if (grades.isEmpty()) {
-            model.updateFilteredGradeList(grade -> false);
-            model.setCurrentCourseForDisplay(java.util.Optional.empty());
-            model.setDisplayMode(DisplayMode.GRADES);
-            return new CommandResult(Messages.MESSAGE_NO_GRADES_FOUND);
-        }
-
-        Set<Grade> selectedGrades = new HashSet<>(grades);
-        model.updateFilteredGradeList(selectedGrades::contains);
-        model.setCurrentCourseForDisplay(java.util.Optional.empty());
-        model.setDisplayMode(DisplayMode.GRADES);
-
-        return new CommandResult(Messages.MESSAGE_LIST_GRADES_SUCCESS);
+        validateCourseExistsIfNeeded(model);
+        applyGradeFilter(model);
+        prepareGradeDisplay(model);
+        return buildResult(model);
     }
 
-    private ObservableList<Grade> getFilteredGrades(Model model) throws CommandException {
+    /**
+     * Validates that the referenced course exists when the filter type requires a
+     * course.
+     *
+     * @param model the model to query
+     * @throws CommandException if the course does not exist
+     */
+    private void validateCourseExistsIfNeeded(Model model) throws CommandException {
+        boolean requiresCourse = filterType == FilterType.COURSE || filterType == FilterType.COURSE_ASSESSMENT;
+        if (requiresCourse && !model.hasCourse(filterValue1)) {
+            throw new CommandException(String.format(Messages.MESSAGE_COURSE_NOT_FOUND, filterValue1));
+        }
+    }
+
+    /**
+     * Applies the correct saved grade filter based on the command's filter type.
+     *
+     * @param model the model to update
+     * @throws CommandException if the assessment index is invalid
+     */
+    private void applyGradeFilter(Model model) throws CommandException {
         switch (filterType) {
         case STUDENT:
-            return model.getGradesByStudentId(filterValue1);
+            model.showGradesForStudent(filterValue1);
+            break;
         case COURSE:
-            return FXCollections.observableArrayList(model.getGradesByCourse(filterValue1));
+            model.showGradesForCourse(filterValue1);
+            break;
         case COURSE_ASSESSMENT:
-            ObservableList<Assessment> courseAssessments = model
-                    .getAssessmentsForCourseInDisplayOrder(filterValue1);
-
-            if (courseAssessments.isEmpty()
-                    || assessmentIndex == null
-                    || assessmentIndex.getZeroBased() >= courseAssessments.size()) {
-                throw new CommandException(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX);
-            }
-
-            Assessment selectedAssessment = courseAssessments.get(assessmentIndex.getZeroBased());
-            String storedCourseCode = selectedAssessment.getCourseCode();
-            String assessmentName = selectedAssessment.getAssessmentName().toString();
-
-            return FXCollections.observableArrayList(
-                    model.getGradesByCourseAndAssessment(storedCourseCode, assessmentName));
+            applyCourseAssessmentFilter(model);
+            break;
         default:
             throw new IllegalStateException("Invalid filter type");
         }
+    }
+
+    /**
+     * Applies the grade filter for a specific assessment within a course.
+     *
+     * @param model the model to update
+     * @throws CommandException if the assessment index is invalid
+     */
+    private void applyCourseAssessmentFilter(Model model) throws CommandException {
+        Assessment selectedAssessment = getSelectedAssessment(model);
+        model.showGradesForCourseAssessment(
+                selectedAssessment.getCourseCode(),
+                selectedAssessment.getAssessmentName().toString());
+    }
+
+    /**
+     * Returns the selected assessment for the course-assessment filter.
+     *
+     * @param model the model to query
+     * @return the selected assessment
+     * @throws CommandException if the assessment index is invalid
+     */
+    private Assessment getSelectedAssessment(Model model) throws CommandException {
+        ObservableList<Assessment> courseAssessments = model.getAssessmentsForCourseInDisplayOrder(filterValue1);
+
+        if (isInvalidAssessmentIndex(courseAssessments)) {
+            throw new CommandException(Messages.MESSAGE_INVALID_ASSESSMENT_INDEX);
+        }
+
+        return courseAssessments.get(assessmentIndex.getZeroBased());
+    }
+
+    /**
+     * Returns true if the assessment index does not point to a valid assessment.
+     *
+     * @param courseAssessments the assessments in display order for the course
+     * @return true if the index is invalid
+     */
+    private boolean isInvalidAssessmentIndex(ObservableList<Assessment> courseAssessments) {
+        return courseAssessments.isEmpty()
+                || assessmentIndex == null
+                || assessmentIndex.getZeroBased() >= courseAssessments.size();
+    }
+
+    /**
+     * Prepares the UI to show the grade list.
+     *
+     * @param model the model to update
+     */
+    private void prepareGradeDisplay(Model model) {
+        model.setCurrentCourseForDisplay(Optional.empty());
+        model.setDisplayMode(DisplayMode.GRADES);
+    }
+
+    /**
+     * Builds the command result based on whether any grades are currently shown.
+     *
+     * @param model the model to query
+     * @return the command result
+     */
+    private CommandResult buildResult(Model model) {
+        if (model.getFilteredGradeList().isEmpty()) {
+            return new CommandResult(Messages.MESSAGE_NO_GRADES_FOUND);
+        }
+        return new CommandResult(Messages.MESSAGE_LIST_GRADES_SUCCESS);
     }
 
     @Override
@@ -128,7 +183,7 @@ public class ListGradesCommand extends Command {
         }
         ListGradesCommand otherCommand = (ListGradesCommand) other;
         return filterType.equals(otherCommand.filterType)
-            && filterValue1.equals(otherCommand.filterValue1)
-            && java.util.Objects.equals(assessmentIndex, otherCommand.assessmentIndex);
+                && filterValue1.equals(otherCommand.filterValue1)
+                && java.util.Objects.equals(assessmentIndex, otherCommand.assessmentIndex);
     }
 }

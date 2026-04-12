@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
@@ -63,6 +64,10 @@ public class AddGradeCommand extends Command {
         }
 
         model.addGrade(toAdd);
+        model.showGradesForCourseAssessment(
+                courseCode,
+                assessment.getAssessmentName().toString());
+        model.setDisplayMode(DisplayMode.GRADES);
         return new CommandResult(String.format(Messages.MESSAGE_ADD_GRADE_SUCCESS, toAdd));
     }
 

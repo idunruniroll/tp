@@ -26,6 +26,8 @@ title: Developer Guide
   - [Use cases](#use-cases)
   - [Non-Functional Requirements](#non-functional-requirements)
   - [Glossary](#glossary)
+- [Appendix: Planned Enhancements](#appendix-planned-enhancements)
+- [Appendix: Effort](#appendix-effort)
 - [Appendix: Instructions for manual testing](#appendix-instructions-for-manual-testing)
   - [Launch and shutdown](#launch-and-shutdown)
   - [Adding a course](#adding-a-course)
@@ -39,7 +41,12 @@ title: Developer Guide
 
 ## **Acknowledgements**
 
-- {list here sources of all reused/adapted ideas, code, documentation, and third-party libraries -- include links to the original source as well}
+- This project is based on the [AddressBook-Level3 project created by the SE-EDU initiative](https://github.com/se-edu/addressbook-level3). We adapted its architecture, code structure, documentation structure, and parts of its UI, logic, model, storage, testing, and configuration infrastructure for GradeBookPlus.
+- The developer documentation and diagrams were adapted from the AddressBook-Level3 Developer Guide and the [se-edu/guides documentation](https://se-education.org/guides/).
+- This project uses [JavaFX](https://openjfx.io/) for the graphical user interface.
+- This project uses [Jackson](https://github.com/FasterXML/jackson) for JSON serialization and storage.
+- This project uses [JUnit 5](https://junit.org/junit5/) for automated testing.
+- This project uses [Gradle](https://gradle.org/) for build automation and dependency management.
 
 ---
 
@@ -83,18 +90,18 @@ The bulk of the app's work is done by the following four components:
 
 **How the architecture components interact with each other**
 
-The _Sequence Diagram_ below shows how the main components interact when the user executes a command such as `removeassessment c/CS2103T as/1`.
+The _Sequence Diagram_ below shows how the main components interact when the user executes a command such as `removecourse c/CS2103`.
 
 <img src="images/ArchitectureSequenceDiagram.png" width="574" />
 
 This diagram stays at the component level. The parser and command objects involved in the deletion flow are intentionally abstracted away here and are described in the `Logic` section below.
 
-Each of the four main components (also shown in the diagram above),
+Each of the four main components shown in the diagram above,
 
-- defines its _API_ in an `interface` with the same name as the Component.
-- implements its functionality using a concrete `{Component Name}Manager` class (which follows the corresponding API `interface` mentioned in the previous point.
+- defines its _API_ in an `interface` with the same name as the component.
+- implements its functionality using a concrete `{Component Name}Manager` class, which follows the corresponding API `interface` mentioned in the previous point.
 
-For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class (reason: to prevent outside component's being coupled to the implementation of a component), as illustrated in the (partial) class diagram below.
+For example, the `Logic` component defines its API in the `Logic.java` interface and implements its functionality using the `LogicManager.java` class, which follows the `Logic` interface. Other components interact with a given component through its interface rather than the concrete class, to prevent outside components from being coupled to the implementation of that component, as illustrated in the partial class diagram below.
 
 <img src="images/ComponentManagers.png" width="300" />
 
@@ -267,7 +274,8 @@ Validation is split by responsibility:
 - `ParserUtil` performs type/value parsing (`parseAssessmentName`, `parseMaxScore`).
 - Command layer performs model-dependent validation (for example course existence, duplicate checks, and index bounds).
 
-`AddAssessmentCommand` additionally applies typo protection through `AssessmentNameSimilarityPolicy` to reduce accidental near-duplicate assessment names within the same course.
+`RemoveAssessmentCommand` removes the assessment identified by its course code and assessment index. When an assessment is removed, all grades associated with that assessment are also removed.
+
 
 ### Grade management
 
@@ -349,8 +357,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 | Priority | As a …                            | I want to …                                               | So that I can…                                            |
 | -------- | --------------------------------- | --------------------------------------------------------- | --------------------------------------------------------- |
-| `* * *`  | potential user exploring the app  | see the app populated with sample data                    | easily see how the app will look like when it is in use.  |
-| `* * *`  | first time user                   | see the available features                                | understand how the application works.                     |
+| `*`      | potential user exploring the app  | see the app populated with sample data                    | easily see how the app will look like when it is in use.  |
+| `* * *`  | first time user                   | view available commands                                   | understand how the application works.                     |
 | `* *`    | new user                          | to test the available features                            | see an example of how the application works.              |
 | `* * *`  | new user                          | start with a clean table                                  | not have extra unnecessary data                           |
 | `* * *`  | new user                          | create a new course in the system                         | manage assessment records for each course separately      |
@@ -359,25 +367,24 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | beginner user                     | remove student records                                    | keep my class list accurate when students drop the course |
 | `* * *`  | user who teaches multiple courses | switch between courses                                    | view and update the correct class records quickly         |
 | `* * *`  | user                              | add an assessment component                               | organize grades by assignments/tests/exams                |
-| `* * *`  | user                              | edit an assessment component                              | reflect changes in assessment structure                   |
+| `*`      | user                              | edit an assessment component                              | reflect changes in assessment structure                   |
 | `* * *`  | user                              | delete an assessment component                            | remove assessments that are no longer relevant            |
-| `* * *`  | user                              | record a student’s score for an assessment                | keep track of student performance                         |
-| `* * *`  | user                              | update a student’s score                                  | correct mistakes or reflect regrading                     |
-| `* * *`  | user                              | view a student’s scores                                   | understand how they performed across assessments          |
-| `* * *`  | user                              | view the overall grade for a student                      | quickly see their standing                                |
-| `* * *`  | user                              | list all students and their overall grades                | review the class performance at a glance                  |
+| `* * *`  | user                              | record a student’s grade for an assessment                | keep track of student performance                         |
+| `*`      | user                              | update a student’s grade                                  | correct mistakes or reflect regrading                     |
+| `* * *`  | user                              | view a student’s grade                                    | understand how they performed across assessments          |
+| `*`      | user                              | view the overall grade for a student                      | quickly see their standing                                |
+| `* * *`  | user                              | list recorded grades for a course                         | review the class performance at a glance                  |
 | `* *`    | user                              | search for a student by name or ID                        | locate records quickly in a large cohort                  |
-| `* *`    | user                              | filter students by performance band                       | identify students who need attention or who excel         |
-| `* *`    | user                              | sort students by name or overall grade                    | navigate the records more efficiently                     |
-| `* *`    | user                              | compute weighted totals automatically                     | save time and reduce calculation errors                   |
-| `* *`    | user                              | set weightages for assessment components                  | ensure overall grades are computed correctly              |
-| `* *`    | user                              | see grade breakdown for a student                         | explain how an overall grade was derived                  |
+| `*`      | user                              | filter students by performance band                       | identify students who need attention or who excel         |
+| `*`      | user                              | sort students by name or overall grade                    | navigate the records more efficiently                     |
+| `*`      | user                              | compute weighted totals automatically                     | save time and reduce calculation errors                   |
+| `*`      | user                              | set weightages for assessment components                  | ensure overall grades are computed correctly              |
+| `*`      | user                              | see grade breakdown for a student                         | explain how an overall grade was derived                  |
 | `* *`    | user                              | export grade data to CSV                                  | submit results or back up data                            |
-| `* *`    | user                              | import data from CSV                                      | reduce manual entry when setting up or migrating records  |
-| `* *`    | user                              | undo the last action                                      | recover from accidental edits                             |
-| `* *`    | user                              | view usage instructions                                   | refer to instructions when I forget how to use the app    |
+| `*`      | user                              | import data from CSV                                      | reduce manual entry when setting up or migrating records  |
+| `*`      | user                              | undo the last action                                      | recover from accidental edits                             |
 | `* *`    | user                              | get clear error messages for invalid commands             | fix mistakes quickly without guessing                     |
-| `* *`    | user                              | see confirmation before deleting important data           | avoid accidental loss of records                          |
+| `*`    | user                                | see confirmation before deleting important data           | avoid accidental loss of records                          |
 | `* *`    | user                              | save data automatically                                   | not lose progress if the app closes unexpectedly          |
 
 ### Use cases
@@ -443,14 +450,79 @@ The following activity diagram summarizes what happens when a user executes the 
 
 **MSS**
 
-1. User requests to add an assessment to an existing course, including the course code and the assessment name in the
-command.
-2. GradeBookPlus adds an assessment to the selected course.
+1. User requests to add an assessment to an existing course, including the course code, assessment name, and maximum score in the command.
+2. GradeBookPlus adds the assessment to the specified course.
 
 **Extensions**
 
+* 1a. Command format is invalid, or one or more required fields are missing.
+  * 1a1. GradeBookPlus shows "❌ Invalid command format!" followed by the correct `addassessment` command usage.
+
+    Use case ends.
+
+* 1b. Course code is invalid.
+  * 1b1. GradeBookPlus shows "❌ Invalid course code. Example: c/CS2103T".
+
+    Use case ends.
+
+* 1c. Assessment name is invalid.
+  * 1c1. GradeBookPlus shows "Assessment names should not be blank and should be at most 50 characters long."
+
+    Use case ends.
+
+* 1d. Maximum score is invalid.
+  * 1d1. GradeBookPlus shows "Max score must be greater than 0 and at most 999, with at most 1 decimal place."
+
+    Use case ends.
+
 * 2a. Specified course cannot be found.
-  * 2a1. GradeBookPlus shows an error message.
+  * 2a1. GradeBookPlus shows "Course COURSE_CODE not found."
+
+    Use case ends.
+
+* 2b. Assessment already exists in the specified course.
+  * 2b1. GradeBookPlus shows "This assessment already exists."
+
+    Use case ends.
+
+
+**Use case: Remove a course assessment**
+
+**MSS**
+
+1. User requests to remove an assessment from an existing course, including the course code and assessment index in the
+command.
+2. GradeBookPlus removes the assessment from the specified course.
+
+**Extensions**
+
+* 1a. Command format is invalid, or one or more required fields are missing.
+  * 1a1. GradeBookPlus shows "❌ Invalid command format!" followed by the correct `removeassessment` command usage.
+
+    Use case ends.
+
+* 1b. Course code is invalid.
+  * 1b1. GradeBookPlus shows "❌ Invalid course code. Example: c/CS2103T".
+
+    Use case ends.
+
+* 1c. Assessment index is not a non-zero unsigned integer.
+  * 1c1. GradeBookPlus shows "Index is not a non-zero unsigned integer."
+
+    Use case ends.
+
+* 2a. Specified course cannot be found.
+  * 2a1. GradeBookPlus shows "Course COURSE_CODE not found."
+
+    Use case ends.
+
+* 2b. Specified course has no assessments.
+  * 2b1. GradeBookPlus shows "No assessments found for course: COURSE_CODE".
+
+    Use case ends.
+
+* 2c. Assessment index is invalid.
+  * 2c1. GradeBookPlus shows "The assessment index provided is invalid."
 
     Use case ends.
 
@@ -458,56 +530,109 @@ command.
 
 **MSS**
 
-1. User requests to add score to a student in a course, including the student ID, course code, assessment name, and
-score in the command.
+1. User requests to add a score to a student in a course, including the student ID, course code, assessment index, and score in the command.
 2. GradeBookPlus adds the score to the specified student.
 
 **Extensions**
 
-* 2a. Student not found.
-  * 2a1. GradeBookPlus shows an error message.
+* 1a. Command format is invalid, or one or more required fields are missing.
+  * 1a1. GradeBookPlus shows "❌ Invalid command format!" followed by the correct `addgrade` command usage.
 
     Use case ends.
 
-* 3a. Course not found.
-  * 3a1. GradeBookPlus shows an error message.
+* 1b. Course code is invalid.
+  * 1b1. GradeBookPlus shows "❌ Invalid course code. Example: c/CS2103T".
 
     Use case ends.
 
-* 4a. Assessment not found.
-    * 4a1. GradeBookPlus shows an error message.
+* 1c. Student ID format is invalid.
+  * 1c1. GradeBookPlus shows "❌ Invalid student ID. Example: id/A0123456X".
 
-      Use case ends.
+    Use case ends.
+
+* 1d. Assessment index is not a non-zero unsigned integer.
+  * 1d1. GradeBookPlus shows "Index is not a non-zero unsigned integer."
+
+    Use case ends.
+
+* 1e. Score is invalid.
+  * 1e1. GradeBookPlus shows "Score must be a number 0 or above, with at most 1 decimal place."
+
+    Use case ends.
+
+* 2a. Course not found.
+  * 2a1. GradeBookPlus shows "Course COURSE_CODE not found."
+
+    Use case ends.
+
+* 2b. Student is not enrolled in the specified course.
+  * 2b1. GradeBookPlus shows "The student ID provided is not enrolled in this course."
+
+    Use case ends.
+
+* 2c. Assessment index is invalid.
+  * 2c1. GradeBookPlus shows "The assessment index provided is invalid."
+
+    Use case ends.
+
+* 2d. Score exceeds the assessment's maximum score.
+  * 2d1. GradeBookPlus shows "Score cannot be more than the assessment max score."
+
+    Use case ends.
+
+* 2e. A grade already exists for the student and assessment.
+  * 2e1. GradeBookPlus shows "This grade already exists for the student and assessment."
+
+    Use case ends.
 
 **Use case: Remove a student's grade**
 
 **MSS**
 
-1. User requests to remove score from an assessment in a course for a student, including the student ID, course code and
-assessment name in the command.
-2. GradeBookPlus removes the score in the assessment tied to the student in the course
+1. User requests to remove a score from an assessment in a course for a student, including the student ID, course code, and assessment index in the command.
+2. GradeBookPlus removes the grade for the specified student and assessment in the course.
 
 **Extensions**
 
-* 2a. Student not found.
-    * 2a1. GradeBookPlus shows an error message.
+* 1a. Command format is invalid, or one or more required fields are missing.
+  * 1a1. GradeBookPlus shows "❌ Invalid command format!" followed by the correct `removegrade` command usage.
 
-      Use case ends.
+    Use case ends.
 
-* 3a. Course not found.
-    * 3a1. GradeBookPlus shows an error message.
+* 1b. Course code is invalid.
+  * 1b1. GradeBookPlus shows "❌ Invalid course code. Example: c/CS2103T".
 
-      Use case ends.
+    Use case ends.
 
-* 4a. Assessment not found.
-    * 4a1. GradeBookPlus shows an error message.
+* 1c. Student ID format is invalid.
+  * 1c1. GradeBookPlus shows "❌ Invalid student ID. Example: id/A0123456X".
 
-      Use case ends.
+    Use case ends.
 
-* 5a. Score not found (assessment has no score to begin with).
-    * 5a1. GradeBookPlus shows an error message.
+* 1d. Assessment index is not a non-zero unsigned integer.
+  * 1d1. GradeBookPlus shows "Index is not a non-zero unsigned integer."
 
-      Use case ends.
+    Use case ends.
+
+* 2a. Course not found.
+  * 2a1. GradeBookPlus shows "Course COURSE_CODE not found."
+
+    Use case ends.
+
+* 2b. Student is not enrolled in the specified course.
+  * 2b1. GradeBookPlus shows "The student ID provided is not enrolled in this course."
+
+    Use case ends.
+
+* 2c. Assessment index is invalid.
+  * 2c1. GradeBookPlus shows "The assessment index provided is invalid."
+
+    Use case ends.
+
+* 2d. Grade not found.
+  * 2d1. GradeBookPlus shows "Grade not found."
+
+    Use case ends.
 
 _{More to be added}_
 
@@ -527,26 +652,36 @@ _{More to be added}_
 
 7. Scalability: Should support up to 20 courses simultaneously without performance degradation.
 
-8. Maintainability: Codebase should follow SOLID principles and have test coverage >80% for core logic (student/grade CRUD).
+8. Usability (Input Validation): All commands should validate parameters before processing and reject invalid inputs immediately with clear feedback.
 
-9. Usability (Input Validation): All commands should validate parameters before processing and reject invalid inputs immediately with clear feedback.
-
-10. Accessibility: Command syntax should be intuitive and consistent across features (e.g., all CRUD ops use c/COURSE_CODE id/STUDENT_ID prefix pattern).
+9. Accessibility: Command syntax should be intuitive and consistent across features (e.g., all CRUD ops use c/COURSE_CODE id/STUDENT_ID prefix pattern).
 
 ### Glossary
 
 - **Assessment component**: A graded item within a course (e.g., Assignment 1, Midterm, Final) that contributes to the overall grade.
-- **Weightage**: The percentage contribution of an assessment component to the overall grade (e.g., Midterm = 30%).
 - **Course**: A module/class identified by a course code (e.g., CS2103T) that contains students and assessment components.
 - **Course code**: A unique identifier for a course (e.g., CS2103T, CS2040S).
 - **Student ID**: A unique identifier for a student within the institution (format defined by the app).
 - **Roster**: The list of students enrolled in a course.
 - **Grade record**: A student’s stored scores across assessment components for a specific course.
-- **Overall grade**: The computed weighted total for a student in a course based on scores and weightages.
-- **Performance band**: A category/range used to group students by overall grade (e.g., A: ≥85, B: 70–84).
-- **Import**: Loading course/student/grade data from an external file (e.g., CSV) into GradeBookPlus.
 - **Export**: Saving course/student/grade data from GradeBookPlus into an external file (e.g., CSV).
 - **Mainstream OS**: Windows, macOS, Linux.
+--------------------------------------------------------------------------------------------------------------------
+
+## **Appendix: Planned Enhancements**
+
+1. Add a confirmation step before removing an assessment.
+
+   The current `removeassessment` command deletes the assessment immediately after command execution. We plan to add an
+   additional confirmation step to reduce accidental deletions, especially because removing an assessment also removes
+   its associated grades.
+
+## **Appendix: Effort**
+
+GradeBookPlus was adapted from the AddressBook-Level3 codebase into a course, student, assessment, and grade management
+application. The main effort came from replacing the original address book domain with a gradebook domain while keeping
+the layered architecture, storage, UI display modes, tests, and documentation consistent.
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**

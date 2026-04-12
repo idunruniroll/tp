@@ -46,7 +46,10 @@ else ([else])
 endif
 
 :add grade;
-:save changes in storage;
+:update grade list view;
+:return success to LogicManager;
+
+:LogicManager saves updated data in storage;
 
 if () then ([save failed?])
     :return "Unable to save changes";
@@ -54,6 +57,7 @@ if () then ([save failed?])
 else ([else])
 endif
 
-:update grade list view;
+:return success message;
 stop
+
 @enduml

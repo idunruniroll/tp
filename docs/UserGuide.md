@@ -182,6 +182,12 @@ Examples:
 * `addassessment c/CS2103T an/Quiz 1 m/10`
 * `addassessment c/CS2103T an/Final Exam m/100`
 
+Notes:
+* The course must already exist.
+* Assessment names cannot be blank and must be at most 50 characters long.
+* Maximum score must be greater than 0 and at most 999, with at most 1 decimal place.
+* The same assessment cannot be added twice to the same course.
+
 ![Example of AddAssessment](images/AssessmentCommands/addassessmentCommand.png)
 
 ### Listing assessments: `listassessments`
@@ -198,6 +204,10 @@ Examples:
 * `listassessments`
 * `listassessments c/CS2103T`
 
+Notes:
+* If a course code is provided, the course must already exist.
+* If no matching assessments are found, the app displays a message instead of an empty result.
+
 ![Example of ListAssessments](images/AssessmentCommands/listassessmentsCommand.png)
 
 ![Example of ListAssessmentsCourseFilter](images/AssessmentCommands/listassessmentsfiltercourseCommand.png)
@@ -213,7 +223,10 @@ Format: `removeassessment c/COURSE_CODE as/ASSESSMENT_INDEX`
 Example:
 * `removeassessment c/CS2103T as/1`
 
-> Removing an assessment also removes all grades associated with that assessment.
+Notes:
+* The course must already exist.
+* The assessment index must be a non-zero unsigned integer shown in the assessment list for that course.
+* Removing an assessment also removes all grades associated with that assessment.
 
 ![Example of ListAssessment](images/AssessmentCommands/removeassessmentCommand.png)
 
@@ -236,6 +249,12 @@ Examples:
 > The student must already be enrolled in the course.<br>
 > The score cannot exceed the assessment’s max score.
 
+Additional notes:
+* The course must already exist.
+* The assessment index must refer to an assessment in the specified course.
+* The score must be 0 or above, at most 999, and have at most 1 decimal place.
+* A student can have only one grade for the same assessment. To change a score, remove the existing grade first and add the new grade.
+
 ![Example of AddGrade](images/GradeCommands/addgradeCommand.png)
 
 ### Listing grades: `listgrades`
@@ -254,6 +273,12 @@ Examples:
 * `listgrades c/CS2103T as/1`
 * `listgrades id/A0123456X`
 
+Notes:
+* Use either `id/STUDENT_ID` alone, or `c/COURSE_CODE` with an optional `as/ASSESSMENT_INDEX`.
+* If a course code is provided, the course must already exist.
+* If an assessment index is provided, it must refer to an assessment in the specified course.
+* If no matching grades are found, the app displays a message instead of an empty result.
+
 ![Example of ListGrades](images/GradeCommands/listgradesCommand.png)
 
 ### Removing a grade: `removegrade`
@@ -266,6 +291,12 @@ Format: `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
 
 Example:
 * `removegrade c/CS2103T id/A0123456X as/1`
+
+Notes:
+* The course must already exist.
+* The student must already be enrolled in the course.
+* The assessment index must refer to an assessment in the specified course.
+* The grade must already exist.
 
 ![Example of RemoveGrades](images/GradeCommands/removegradeCommand.png)
 

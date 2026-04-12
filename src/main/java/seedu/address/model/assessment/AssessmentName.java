@@ -55,6 +55,10 @@ public class AssessmentName {
         return value.toLowerCase();
     }
 
+    public String getCanonicalName() {
+        return value.replaceAll("\\s+", "").toLowerCase();
+    }
+
     private static String formatWord(String word) {
         if (shouldPreserveUppercase(word)) {
             return word.toUpperCase();

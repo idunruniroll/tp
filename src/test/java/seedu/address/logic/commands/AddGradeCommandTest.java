@@ -356,7 +356,7 @@ public class AddGradeCommandTest {
 
         @Override
         public void setDisplayMode(DisplayMode displayMode) {
-            throw new AssertionError("This method should not be called.");
+            // Display mode updates are part of successful command execution.
         }
 
         @Override
@@ -382,6 +382,41 @@ public class AddGradeCommandTest {
         @Override
         public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
                 String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showAllAssessments() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showAssessmentsForCourse(String courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void refreshLastAssessmentListFilter() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForStudent(String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForCourse(String courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForCourseAssessment(String courseCode, String assessmentName) {
+            // Grade display updates are part of successful command execution.
+        }
+
+        @Override
+        public void refreshLastGradeListFilter() {
             throw new AssertionError("This method should not be called.");
         }
     }

@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 
@@ -58,7 +59,8 @@ public class RemoveAssessmentCommand extends Command {
 
         Assessment assessmentToRemove = filteredAssessments.get(assessmentIndex.getZeroBased());
         model.removeAssessment(assessmentToRemove);
-
+        model.showAssessmentsForCourse(courseCode);
+        model.setDisplayMode(DisplayMode.ASSESSMENTS);
         return new CommandResult(String.format(Messages.MESSAGE_REMOVE_ASSESSMENT_SUCCESS, assessmentToRemove));
     }
 

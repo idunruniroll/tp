@@ -83,18 +83,6 @@ public class AddAssessmentCommandTest {
     }
 
     @Test
-    public void execute_similarAssessmentName_throwsCommandException() {
-        Assessment existingAssessment = new Assessment("CS2103T",
-                new seedu.address.model.assessment.AssessmentName("Midterm"),
-                new seedu.address.model.assessment.MaxScore("100"));
-        AddAssessmentCommand command = new AddAssessmentCommand("CS2103T", "Midtrm", "100");
-        ModelStub modelStub = new ModelStubWithSimilarAssessment(existingAssessment);
-
-        assertThrows(CommandException.class, String.format(Messages.MESSAGE_SIMILAR_ASSESSMENT,
-                existingAssessment.getAssessmentName()), () -> command.execute(modelStub));
-    }
-
-    @Test
     public void equals() {
         AddAssessmentCommand addMidtermCommand = new AddAssessmentCommand("CS2103T", "Midterm", "100");
         AddAssessmentCommand addFinalCommand = new AddAssessmentCommand("CS2103T", "Final", "100");
@@ -273,7 +261,7 @@ public class AddAssessmentCommandTest {
 
         @Override
         public void setDisplayMode(DisplayMode displayMode) {
-            throw new AssertionError("This method should not be called.");
+            // Display mode updates are part of successful command execution.
         }
 
         @Override
@@ -299,6 +287,41 @@ public class AddAssessmentCommandTest {
         @Override
         public java.util.Optional<Assessment> getAssessmentForCourseByIndex(
                 String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showAllAssessments() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showAssessmentsForCourse(String courseCode) {
+            // Assessment display updates are part of successful command execution.
+        }
+
+        @Override
+        public void refreshLastAssessmentListFilter() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForStudent(String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForCourse(String courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForCourseAssessment(String courseCode, String assessmentName) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void refreshLastGradeListFilter() {
             throw new AssertionError("This method should not be called.");
         }
     }
@@ -377,34 +400,6 @@ public class AddAssessmentCommandTest {
         public boolean hasCourse(String courseCode) {
             requireNonNull(courseCode);
             return true;
-        }
-    }
-
-    /**
-     * A model stub that contains a similar assessment in the same course.
-     */
-    private class ModelStubWithSimilarAssessment extends ModelStub {
-        private final Assessment existingAssessment;
-
-        ModelStubWithSimilarAssessment(Assessment existingAssessment) {
-            this.existingAssessment = existingAssessment;
-        }
-
-        @Override
-        public boolean hasCourse(String courseCode) {
-            requireNonNull(courseCode);
-            return true;
-        }
-
-        @Override
-        public boolean hasAssessment(Assessment assessment) {
-            requireNonNull(assessment);
-            return false;
-        }
-
-        @Override
-        public ObservableList<Assessment> getAssessmentList() {
-            return FXCollections.observableArrayList(existingAssessment);
         }
     }
 }

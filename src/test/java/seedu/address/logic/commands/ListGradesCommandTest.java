@@ -341,5 +341,44 @@ public class ListGradesCommandTest {
                 String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void showAllAssessments() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showAssessmentsForCourse(String courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void refreshLastAssessmentListFilter() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForStudent(String studentId) {
+            requireNonNull(studentId);
+            filteredGrades.setAll(gradesByStudentId);
+        }
+
+        @Override
+        public void showGradesForCourse(String courseCode) {
+            requireNonNull(courseCode);
+            filteredGrades.setAll(gradesByCourse);
+        }
+
+        @Override
+        public void showGradesForCourseAssessment(String courseCode, String assessmentName) {
+            requireNonNull(courseCode);
+            requireNonNull(assessmentName);
+            filteredGrades.setAll(gradesByCourseAndAssessment);
+        }
+
+        @Override
+        public void refreshLastGradeListFilter() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 }

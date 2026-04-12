@@ -280,5 +280,40 @@ public class ListAssessmentsCommandTest {
                 String courseCode, seedu.address.commons.core.index.Index assessmentIndex) {
             throw new AssertionError("This method should not be called.");
         }
+
+        @Override
+        public void showAllAssessments() {
+            filteredAssessments.setPredicate(assessment -> true);
+        }
+
+        @Override
+        public void showAssessmentsForCourse(String courseCode) {
+            filteredAssessments.setPredicate(assessment -> assessment.getCourseCode().equalsIgnoreCase(courseCode));
+        }
+
+        @Override
+        public void refreshLastAssessmentListFilter() {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForStudent(String studentId) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForCourse(String courseCode) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void showGradesForCourseAssessment(String courseCode, String assessmentName) {
+            throw new AssertionError("This method should not be called.");
+        }
+
+        @Override
+        public void refreshLastGradeListFilter() {
+            throw new AssertionError("This method should not be called.");
+        }
     }
 }

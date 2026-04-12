@@ -4,10 +4,10 @@ import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.DisplayMode;
 import seedu.address.model.Model;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.AssessmentName;
-import seedu.address.model.assessment.AssessmentNameSimilarityPolicy;
 import seedu.address.model.assessment.MaxScore;
 
 /**
@@ -80,20 +80,9 @@ public class AddAssessmentCommand extends Command {
             throw new CommandException(Messages.MESSAGE_DUPLICATE_ASSESSMENT);
         }
 
-        for (Assessment existing : model.getAssessmentList()) {
-            if (existing.getCourseCode().equalsIgnoreCase(toAdd.getCourseCode())) {
-                String existingName = existing.getAssessmentName().getNormalizedName();
-                String newName = toAdd.getAssessmentName().getNormalizedName();
-
-                if (!existingName.equals(newName)
-                        && AssessmentNameSimilarityPolicy
-                                .areLikelyTypos(existingName, newName)) {
-                    throw new CommandException(String.format(
-                            Messages.MESSAGE_SIMILAR_ASSESSMENT, existing.getAssessmentName()));
-                }
-            }
-        }
         model.addAssessment(toAdd);
+        model.showAssessmentsForCourse(courseCode);
+        model.setDisplayMode(DisplayMode.ASSESSMENTS);
         return new CommandResult(String.format(Messages.MESSAGE_ADD_ASSESSMENT_SUCCESS, toAdd));
     }
 

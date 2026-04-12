@@ -158,4 +158,43 @@ public interface Model {
 
     /** Returns the assessment at the given display index for the specified course, if present. */
     Optional<Assessment> getAssessmentForCourseByIndex(String courseCode, Index assessmentIndex);
+
+    /**
+     * Show all assessment and saves this as the current assessment list filter.
+     */
+    void showAllAssessments();
+
+    /**
+     * Shows assessments belonging to the specified course
+     * and saves this as the current assessment list filter.
+     */
+    void showAssessmentsForCourse(String courseCode);
+
+    /**
+     * Reapplies the most recently used assessment list filter to refresh the assessment list.
+     */
+    void refreshLastAssessmentListFilter();
+
+    /**
+     * Shows grades belonging to the specified student in the grade list
+     * and saves this as the current grade list filter.
+     */
+    void showGradesForStudent(String studentId);
+
+    /**
+     * Shows grades belonging to the specified course in the grade list
+     * and saves this as the current grade list filter.
+     */
+    void showGradesForCourse(String courseCode);
+
+    /**
+     * Shows grades belonging to the specified assessment in the specified
+     * course and saves this as the current grade list filter.
+     */
+    void showGradesForCourseAssessment(String courseCode, String assessmentName);
+
+    /**
+     * Reapplies the most recently used grade list filter to refresh the grade list.
+     */
+    void refreshLastGradeListFilter();
 }

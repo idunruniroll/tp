@@ -37,6 +37,18 @@ public class ModelManager implements Model {
     private Optional<String> currentCourseForDisplay = Optional.empty();
     private final ObservableList<Student> filteredStudents = FXCollections.observableArrayList();
     private final ObservableList<Course> detailedCoursesForDisplay = FXCollections.observableArrayList();
+    private Optional<String> lastAssessmentCourseFilter = Optional.empty();
+    private GradeListFilterType lastGradeListFilterType = GradeListFilterType.NONE;
+    private Optional<String> lastGradeStudentId = Optional.empty();
+    private Optional<String> lastGradeCourseCode = Optional.empty();
+    private Optional<String> lastGradeAssessmentName = Optional.empty();
+
+    private enum GradeListFilterType {
+        NONE,
+        STUDENT,
+        COURSE,
+        COURSE_ASSESSMENT
+    }
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -192,6 +204,97 @@ public class ModelManager implements Model {
     public void updateFilteredGradeList(Predicate<Grade> predicate) {
         requireNonNull(predicate);
         filteredGrades.setPredicate(predicate);
+    }
+
+    @Override
+    public void showAllAssessments() {
+        lastAssessmentCourseFilter = Optional.empty();
+        updateFilteredAssessmentList(assessment -> true);
+    }
+
+    @Override
+    public void showAssessmentsForCourse(String courseCode) {
+        requireNonNull(courseCode);
+        String normalizedCourseCode = courseCode.trim().toUpperCase();
+        lastAssessmentCourseFilter = Optional.of(normalizedCourseCode);
+        updateFilteredAssessmentList(
+                assessment -> assessment.getCourseCode().equalsIgnoreCase(normalizedCourseCode));
+    }
+
+    @Override
+    public void refreshLastAssessmentListFilter() {
+        if (lastAssessmentCourseFilter.isEmpty()) {
+            showAllAssessments();
+        } else {
+            showAssessmentsForCourse(lastAssessmentCourseFilter.get());
+        }
+    }
+
+    @Override
+    public void showGradesForStudent(String studentId) {
+        requireNonNull(studentId);
+        String normalizedStudentId = studentId.trim().toUpperCase();
+
+        lastGradeListFilterType = GradeListFilterType.STUDENT;
+        lastGradeStudentId = Optional.of(normalizedStudentId);
+        lastGradeCourseCode = Optional.empty();
+        lastGradeAssessmentName = Optional.empty();
+
+        updateFilteredGradeList(
+                grade -> grade.getStudentId().toString().equalsIgnoreCase(normalizedStudentId));
+    }
+
+    @Override
+    public void showGradesForCourse(String courseCode) {
+        requireNonNull(courseCode);
+        String normalizedCourseCode = courseCode.trim().toUpperCase();
+
+        lastGradeListFilterType = GradeListFilterType.COURSE;
+        lastGradeStudentId = Optional.empty();
+        lastGradeCourseCode = Optional.of(normalizedCourseCode);
+        lastGradeAssessmentName = Optional.empty();
+
+        updateFilteredGradeList(
+                grade -> grade.getCourseCode().equalsIgnoreCase(normalizedCourseCode));
+    }
+
+    @Override
+    public void showGradesForCourseAssessment(String courseCode, String assessmentName) {
+        requireNonNull(courseCode);
+        requireNonNull(assessmentName);
+
+        String normalizedCourseCode = courseCode.trim().toUpperCase();
+        String normalizedAssessmentName = assessmentName.trim();
+
+        lastGradeListFilterType = GradeListFilterType.COURSE_ASSESSMENT;
+        lastGradeStudentId = Optional.empty();
+        lastGradeCourseCode = Optional.of(normalizedCourseCode);
+        lastGradeAssessmentName = Optional.of(normalizedAssessmentName);
+
+        updateFilteredGradeList(
+                grade -> grade.getCourseCode().equalsIgnoreCase(normalizedCourseCode)
+                        && grade.getAssessmentName().toString().equals(normalizedAssessmentName));
+    }
+
+    @Override
+    public void refreshLastGradeListFilter() {
+        switch (lastGradeListFilterType) {
+        case STUDENT:
+            showGradesForStudent(lastGradeStudentId.orElse(""));
+            break;
+        case COURSE:
+            showGradesForCourse(lastGradeCourseCode.orElse(""));
+            break;
+        case COURSE_ASSESSMENT:
+            showGradesForCourseAssessment(
+                    lastGradeCourseCode.orElse(""),
+                    lastGradeAssessmentName.orElse(""));
+            break;
+        case NONE:
+        default:
+            updateFilteredGradeList(grade -> false);
+            break;
+        }
     }
 
     // =========== Course / Student operations =============================================================
