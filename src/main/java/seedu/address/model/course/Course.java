@@ -22,7 +22,7 @@ import seedu.address.model.student.Student;
  */
 public class Course {
 
-    public static final String MESSAGE_CONSTRAINTS = "\u274C Invalid course code. Example: c/CS2103T";
+    public static final String MESSAGE_CONSTRAINTS = "\u274C Invalid course code. \nOnly 2 to 10 alphanumeric characters with no spaces are allowed\nExample: c/CS2103T";
     public static final String VALIDATION_REGEX = "[A-Z0-9]{2,10}";
 
     private final String courseCode;
