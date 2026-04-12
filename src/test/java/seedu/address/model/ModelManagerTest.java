@@ -9,13 +9,20 @@ import static seedu.address.testutil.Assert.assertThrows;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.collections.ListChangeListener;
 import seedu.address.commons.core.GuiSettings;
+import seedu.address.model.assessment.Assessment;
 import seedu.address.model.assessment.AssessmentName;
+import seedu.address.model.assessment.MaxScore;
+import seedu.address.model.course.Course;
 import seedu.address.model.grade.Grade;
 import seedu.address.model.grade.Score;
+import seedu.address.model.student.Student;
 import seedu.address.model.student.StudentId;
 
 public class ModelManagerTest {
@@ -113,6 +120,38 @@ public class ModelManagerTest {
 
         assertEquals(1, modelManager.getFilteredGradeList().size());
         assertIterableEquals(Arrays.asList(gradeOne), modelManager.getFilteredGradeList());
+    }
+
+    @Test
+    public void addAssessment_displayedDetailedCourse_refreshesDetailedCourseList() {
+        Course course = new Course("CS2101");
+        modelManager.addCourse(course);
+        modelManager.setDetailedCoursesForDisplay(List.of(course));
+        AtomicInteger changeCount = new AtomicInteger();
+        modelManager.getDetailedCourseList().addListener((ListChangeListener<Course>) change ->
+                changeCount.incrementAndGet());
+
+        modelManager.addAssessment(new Assessment("CS2101", new AssessmentName("Quiz"), new MaxScore("10")));
+
+        assertEquals(1, changeCount.get());
+        assertIterableEquals(List.of(course), modelManager.getDetailedCourseList());
+    }
+
+    @Test
+    public void addStudentToCourse_displayedDetailedCourse_refreshesDetailedCourseList() {
+        Course course = new Course("CS2101");
+        Student student = new Student("A0123456X", "Alex Yeoh");
+        modelManager.addCourse(course);
+        modelManager.setDetailedCoursesForDisplay(List.of(course));
+        AtomicInteger changeCount = new AtomicInteger();
+        modelManager.getDetailedCourseList().addListener((ListChangeListener<Course>) change ->
+                changeCount.incrementAndGet());
+
+        modelManager.addStudentToCourse("CS2101", student);
+
+        assertEquals(1, changeCount.get());
+        assertIterableEquals(List.of(course), modelManager.getDetailedCourseList());
+        assertTrue(course.hasStudent("A0123456X"));
     }
 
     @Test

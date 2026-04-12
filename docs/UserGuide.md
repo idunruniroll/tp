@@ -308,12 +308,13 @@ Notes:
 
 **Purpose:** Use this command to view a course’s detailed information, including its students and assessments, in one place.
 
-Displays assessments and students information for a course.
+Displays assessments and students information for one or more courses.
 
-Format: `listdetails c/COURSE_CODE`
+Format: `listdetails c/COURSE_CODE[,COURSE_CODE,...]`
 
 Example:
 * `listdetails c/CS2103T`
+* `listdetails c/CS2103T, CS2101`
 
 ![Example of ListDetails](images/CourseCommands/ListDetails.png)
 

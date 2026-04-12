@@ -128,6 +128,7 @@ public class ModelManager implements Model {
     @Override
     public void addAssessment(Assessment assessment) {
         addressBook.addAssessment(assessment);
+        refreshDetailedCoursesForDisplay(assessment.getCourseCode());
     }
 
     @Override
@@ -332,6 +333,7 @@ public class ModelManager implements Model {
     public void addStudentToCourse(String courseCode, Student student) {
         requireAllNonNull(courseCode, student);
         addressBook.addStudentToCourse(courseCode, student);
+        refreshDetailedCoursesForDisplay(courseCode);
         if (currentCourseForDisplay.isPresent()
                 && currentCourseForDisplay.get().equalsIgnoreCase(courseCode)) {
             refreshFilteredStudents();
@@ -388,6 +390,23 @@ public class ModelManager implements Model {
     public void setDetailedCoursesForDisplay(List<Course> courses) {
         requireNonNull(courses);
         detailedCoursesForDisplay.setAll(courses);
+    }
+
+    private void refreshDetailedCoursesForDisplay(String courseCode) {
+        requireNonNull(courseCode);
+        boolean isDetailedCourseDisplayed = detailedCoursesForDisplay.stream()
+                .anyMatch(course -> course.getCourseCode().equalsIgnoreCase(courseCode));
+
+        if (!isDetailedCourseDisplayed) {
+            return;
+        }
+
+        List<Course> refreshedCourses = detailedCoursesForDisplay.stream()
+                .map(course -> course.getCourseCode().equalsIgnoreCase(courseCode)
+                        ? addressBook.getCourse(course.getCourseCode()).orElse(course)
+                        : course)
+                .collect(Collectors.toList());
+        detailedCoursesForDisplay.setAll(refreshedCourses);
     }
 
     @Override

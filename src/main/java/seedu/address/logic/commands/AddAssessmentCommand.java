@@ -82,8 +82,16 @@ public class AddAssessmentCommand extends Command {
 
         model.addAssessment(toAdd);
         model.showAssessmentsForCourse(courseCode);
-        model.setDisplayMode(DisplayMode.ASSESSMENTS);
+        if (!isDisplayingDetailsForCourse(model)) {
+            model.setDisplayMode(DisplayMode.ASSESSMENTS);
+        }
         return new CommandResult(String.format(Messages.MESSAGE_ADD_ASSESSMENT_SUCCESS, toAdd));
+    }
+
+    private boolean isDisplayingDetailsForCourse(Model model) {
+        return model.getDisplayMode() == DisplayMode.COURSE_DETAILS
+                && model.getDetailedCourseList().stream()
+                        .anyMatch(course -> course.getCourseCode().equalsIgnoreCase(courseCode));
     }
 
     @Override
