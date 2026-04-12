@@ -363,7 +363,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 | `* * *`  | new user                          | start with a clean table                                  | not have extra unnecessary data                           |
 | `* * *`  | new user                          | create a new course in the system                         | manage assessment records for each course separately      |
 | `* * *`  | new user                          | add a list of students to a course using a single command | quickly initialize the class roster                       |
-| `* * *`  | new user                          | edit student records                                      | keep my class list accurate throughout the semester       |
+| `* *`    | new user                          | edit student records                                      | keep my class list accurate throughout the semester       |
 | `* * *`  | beginner user                     | remove student records                                    | keep my class list accurate when students drop the course |
 | `* * *`  | user who teaches multiple courses | switch between courses                                    | view and update the correct class records quickly         |
 | `* * *`  | user                              | add an assessment component                               | organize grades by assignments/tests/exams                |
@@ -675,6 +675,12 @@ _{More to be added}_
    The current `removeassessment` command deletes the assessment immediately after command execution. We plan to add an
    additional confirmation step to reduce accidental deletions, especially because removing an assessment also removes
    its associated grades.
+
+2. Add a confirmation step before removing a course.
+
+   The current `removecourse` command deletes the course, assessments, and students' grades immediately after command execution.
+   We plan to add an additional warning message and confirmation step to reduce accidental deletions:
+   "Remove CS2101? Removing a course will also remove all related assessments and student's grades."
 
 ## **Appendix: Effort**
 
