@@ -62,6 +62,18 @@ public class AddAssessmentCommandTest {
     }
 
     @Test
+    public void execute_courseDetailsDisplayed_addSuccessfulKeepsCourseDetailsDisplay() throws Exception {
+        ModelStubAcceptingAssessmentAdded modelStub = new ModelStubAcceptingAssessmentAdded();
+        modelStub.displayMode = DisplayMode.COURSE_DETAILS;
+        modelStub.detailedCourses = FXCollections.observableArrayList(new Course("CS2103T"));
+        AddAssessmentCommand command = new AddAssessmentCommand("CS2103T", "Midterm", "100");
+
+        command.execute(modelStub);
+
+        assertEquals(DisplayMode.COURSE_DETAILS, modelStub.displayMode);
+    }
+
+    @Test
     public void execute_courseDoesNotExist_throwsCommandException() {
         AddAssessmentCommand command = new AddAssessmentCommand("CS2103T", "Midterm", "100");
         ModelStub modelStub = new ModelStubWithoutCourse();
@@ -377,6 +389,8 @@ public class AddAssessmentCommandTest {
      */
     private class ModelStubAcceptingAssessmentAdded extends ModelStub {
         final ArrayList<Assessment> assessmentsAdded = new ArrayList<>();
+        private ObservableList<Course> detailedCourses = FXCollections.observableArrayList();
+        private DisplayMode displayMode = DisplayMode.ASSESSMENTS;
 
         @Override
         public Optional<Course> getCourse(String courseCode) {
@@ -394,6 +408,21 @@ public class AddAssessmentCommandTest {
         public void addAssessment(Assessment assessment) {
             requireNonNull(assessment);
             assessmentsAdded.add(assessment);
+        }
+
+        @Override
+        public ObservableList<Course> getDetailedCourseList() {
+            return detailedCourses;
+        }
+
+        @Override
+        public void setDisplayMode(DisplayMode displayMode) {
+            this.displayMode = displayMode;
+        }
+
+        @Override
+        public DisplayMode getDisplayMode() {
+            return displayMode;
         }
 
         @Override
