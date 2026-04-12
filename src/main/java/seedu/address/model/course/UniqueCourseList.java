@@ -20,6 +20,8 @@ public class UniqueCourseList implements Iterable<Course> {
     private final ObservableList<Course> internalUnmodifiableList =
             FXCollections.unmodifiableObservableList(internalList);
 
+    public static final String MESSAGE_NO_COURSES = "No courses added";
+
     /**
      * Returns true if the list contains an equivalent course.
      */

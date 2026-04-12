@@ -24,6 +24,8 @@ public class ListDetailsCommand extends Command {
             + "Parameters: c/COURSE_CODE[,COURSE_CODE,...]\n"
             + "Example: " + COMMAND_WORD + " c/CS2103T";
 
+    public static final String MESSAGE_SUCCESS = "\u2705 Displaying details for %s.";
+
     private final List<String> courseCodes;
 
     /**
@@ -42,7 +44,7 @@ public class ListDetailsCommand extends Command {
 
         List<Course> coursesToDisplay = getCoursesToDisplay(model);
         showCourseDetails(model, coursesToDisplay);
-        return new CommandResult("");
+        return new CommandResult(String.format(MESSAGE_SUCCESS, courseCodes.toString()));
     }
 
     @Override

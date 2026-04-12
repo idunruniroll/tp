@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.model.course.UniqueCourseList.MESSAGE_NO_COURSES;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,8 +17,11 @@ import seedu.address.model.course.Course;
 public class ListCoursesCommand extends Command {
 
     public static final String COMMAND_WORD = "listcourses";
+
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Lists all courses in the system.\n"
             + "Example: " + COMMAND_WORD;
+
+    public static final String MESSAGE_SUCCESS = "\u2705 Displaying all courses.";
 
     /**
      * Executes the list courses command.
@@ -35,9 +39,9 @@ public class ListCoursesCommand extends Command {
         model.setDisplayMode(DisplayMode.COURSES);
 
         if (courses.isEmpty()) {
-            return new CommandResult("No courses added");
+            return new CommandResult(String.format(MESSAGE_NO_COURSES));
         }
-        return new CommandResult("");
+        return new CommandResult(String.format(MESSAGE_SUCCESS));
     }
 
     @Override
