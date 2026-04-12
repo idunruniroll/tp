@@ -23,7 +23,9 @@ public class Messages {
     public static final String MESSAGE_ADD_ASSESSMENT_SUCCESS = "New assessment added: %1$s";
     public static final String MESSAGE_INVALID_STUDENT_ID = "The student ID provided is not enrolled in this course.";
     public static final String MESSAGE_INVALID_STUDENT_ID_FORMAT = "\u274C Invalid student ID. Example: id/A0123456X";
-    public static final String MESSAGE_INVALID_STUDENT_NAME_FORMAT = "\u274C Invalid name. Example: n/John Tan";
+    public static final String MESSAGE_INVALID_STUDENT_NAME_FORMAT =
+            "\u274C Invalid name. Name must be 2\u201360 characters and contain only letters, spaces, and . , ' / -"
+            + " (e.g. n/John Tan, n/S/O Ramasamy).";
     public static final String MESSAGE_INVALID_ASSESSMENT_INDEX = "The assessment index provided is invalid.";
 
     public static final String MESSAGE_ADD_GRADE_SUCCESS = "New grade added: %1$s";

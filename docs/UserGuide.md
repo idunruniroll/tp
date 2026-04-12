@@ -144,6 +144,11 @@ Examples:
 * `addstudent c/CS2103T id/A0123456X n/Alex Yeoh`
 * `addstudent c/CS2103T id/A0123456X n/Alex Yeoh e/alex@example.com`
 
+Notes:
+* `STUDENT_ID` must follow the format: one letter `A`, followed by exactly 7 digits, followed by one uppercase letter (e.g. `A0123456X`).
+* `NAME` must contain only letters, spaces, and the characters `. , ' / -`. Names with `s/o` or `d/o` are supported.
+* `EMAIL`, if provided, must be a valid address containing a domain with at least one dot (e.g. `user@example.com`). The local part (before `@`) may only contain alphanumeric characters and the special characters `+`, `_`, `.`, `-`. Characters such as `!`, `#`, `$`, `%`, `^`, `&` are not accepted.
+
 ### Listing students in a course: `liststudents`
 
 **Purpose:** Use this command to see all students currently enrolled in a specific course.
@@ -165,6 +170,8 @@ Format: `removestudent c/COURSE_CODE id/STUDENT_ID`
 
 Examples:
 * `removestudent c/CS2103T id/A0123456X`
+
+> **Note:** Removing a student also removes all grades associated with that student in the course.
 
 ---
 
@@ -321,12 +328,18 @@ Example:
 
 **Purpose:** Use this command to export the records of a course for external viewing, sharing, or backup.
 
-Exports course-related information.
+Exports all students, assessments, and grades for a course to a CSV file.
 
 Format: `exportcourse c/COURSE_CODE`
 
 Example:
 * `exportcourse c/CS2103T`
+
+Notes:
+* The output file is saved as `<COURSE_CODE>.csv` (e.g. `CS2103T.csv`) in the folder from which the app was launched.
+* The CSV contains one row per student, with columns: `Student ID`, `Name`, `Email`, followed by one column per assessment (with its max score shown in the header).
+* Cells for assessments where a grade has not been recorded are left empty.
+* The file is overwritten each time the command is run for the same course.
 
 ### Viewing overall summary: `viewall`
 
@@ -369,6 +382,9 @@ Format: `exit`
 
 **Q:** Where is my data stored?<br>
 **A:** Data is stored automatically in the app’s data folder as a JSON file.
+
+**Q:** Where is the CSV file saved when I use `exportcourse`?<br>
+**A:** The file is saved as `COURSE_CODE.csv` (e.g. `CS2103T.csv`) in the folder where you launched the app (i.e. the working directory).
 
 **Q:** Why does `removeassessment` or `removegrade` say the assessment index is invalid?<br>
 **A:** Assessment indexes are based on the currently displayed assessment list for the specified course. Run `listassessments c/COURSE_CODE` first, then use the index shown there.
