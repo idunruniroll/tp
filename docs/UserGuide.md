@@ -279,6 +279,7 @@ Notes:
 * If a course code is provided, the course must already exist.
 * If an assessment index is provided, it must refer to an assessment in the specified course.
 * If no matching grades are found, the app displays a message instead of an empty result.
+* Only students with grades added will be listed
 
 ![Example of ListGrades](images/GradeCommands/listgradesCommand.png)
 
