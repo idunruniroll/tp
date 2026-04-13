@@ -34,10 +34,15 @@ package UI <<Rectangle>> {
 
 package Model <<Rectangle>> {
     class HiddenModel #FFFFFF
+    class Student
+    class Course
+    class Assessment
+    class Grade
 }
 
 package Logic <<Rectangle>> {
     class HiddenLogic #FFFFFF
+    class Logic
 }
 
 class HiddenOutside #FFFFFF
@@ -85,11 +90,11 @@ GradeGroupCard --|> UiPart
 
 OverviewPanel ..> Logic
 
-StudentCard ..> Model
-CourseCard ..> Model
-CourseDetailCard ..> Model
-AssessmentGroupCard ..> Model
-GradeGroupCard ..> Model
+StudentCard ..> Student
+CourseCard ..> Course
+CourseDetailCard ..> Course
+AssessmentGroupCard ..> Assessment
+GradeGroupCard ..> Grade
 
 StudentListPanel -[hidden]left- HelpWindow
 HelpWindow -[hidden]left- CommandBox
