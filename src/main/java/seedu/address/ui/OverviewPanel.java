@@ -9,13 +9,20 @@ import javafx.scene.layout.Region;
 import seedu.address.logic.Logic;
 import seedu.address.model.assessment.Assessment;
 import seedu.address.model.grade.Grade;
+import seedu.address.model.student.Student;
 
 /**
- * Panel that displays an overview summary of assessments and grades.
+ * Panel that displays an overview summary of courses, students, assessments, and grades.
  */
 public class OverviewPanel extends UiPart<Region> {
 
     private static final String FXML = "OverviewPanel.fxml";
+
+    @FXML
+    private Label courseCountLabel;
+
+    @FXML
+    private Label studentCountLabel;
 
     @FXML
     private Label assessmentCountLabel;
@@ -27,9 +34,7 @@ public class OverviewPanel extends UiPart<Region> {
     private Label gradesPerAssessmentLabel;
 
     /**
-     * Creates an {@code OverviewPanel} and fills it with the current summary data.
-     *
-     * @param logic Logic component used to access the current data.
+     * Creates an overview panel using the current application data.
      */
     public OverviewPanel(Logic logic) {
         super(FXML);
@@ -37,13 +42,18 @@ public class OverviewPanel extends UiPart<Region> {
     }
 
     /**
-     * Fills the panel with the latest assessment and grade summary.
-     *
-     * @param logic Logic component used to access the current data.
+     * Fills the panel with the latest overview data.
      */
     private void fillOverview(Logic logic) {
+        int courseCount = logic.getAddressBook().getCourseList().size();
         int assessmentCount = logic.getAddressBook().getAssessmentList().size();
         int gradeCount = logic.getAddressBook().getGradeList().size();
+
+        int studentCount = (int) logic.getAddressBook().getCourseList().stream()
+                .flatMap(course -> course.getStudents().stream())
+                .map(Student::getStudentId)
+                .distinct()
+                .count();
 
         Map<String, Integer> gradesPerAssessment = new LinkedHashMap<>();
 
@@ -61,6 +71,8 @@ public class OverviewPanel extends UiPart<Region> {
             gradesPerAssessment.put(key, gradesPerAssessment.getOrDefault(key, 0) + 1);
         }
 
+        courseCountLabel.setText("Courses: " + courseCount);
+        studentCountLabel.setText("Students: " + studentCount);
         assessmentCountLabel.setText("Assessments: " + assessmentCount);
         gradeCountLabel.setText("Grades: " + gradeCount);
 
@@ -79,11 +91,7 @@ public class OverviewPanel extends UiPart<Region> {
     }
 
     /**
-     * Returns a display key for an assessment using course code and assessment name.
-     *
-     * @param courseCode Course code of the assessment.
-     * @param assessmentName Name of the assessment.
-     * @return Formatted assessment key.
+     * Returns a display key in the format CourseCode / AssessmentName.
      */
     private String formatAssessmentKey(String courseCode, String assessmentName) {
         return courseCode + " / " + assessmentName;

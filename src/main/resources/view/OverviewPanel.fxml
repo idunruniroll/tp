@@ -17,6 +17,14 @@
         <Label text="Overview Summary"
                style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;" />
 
+        <Label fx:id="courseCountLabel"
+               text="Courses: 0"
+               style="-fx-font-size: 17px; -fx-text-fill: white;" />
+
+        <Label fx:id="studentCountLabel"
+               text="Students: 0"
+               style="-fx-font-size: 17px; -fx-text-fill: white;" />
+
         <Label fx:id="assessmentCountLabel"
                text="Assessments: 0"
                style="-fx-font-size: 17px; -fx-text-fill: white;" />
@@ -27,6 +35,7 @@
 
         <Label fx:id="gradesPerAssessmentLabel"
                text="Grades per assessment:&#10;- None"
-               style="-fx-font-size: 17px; -fx-text-fill: white;" />
+               style="-fx-font-size: 17px; -fx-text-fill: white;"
+               wrapText="true" />
     </children>
 </VBox>

@@ -28,8 +28,8 @@ public class MainWindow extends UiPart<Stage> {
 
     private final Logger logger = LogsCenter.getLogger(getClass());
 
-    private Stage primaryStage;
-    private Logic logic;
+    private final Stage primaryStage;
+    private final Logic logic;
 
     // Independent Ui parts residing in this Ui container
     private StudentListPanel studentListPanel;
@@ -61,13 +61,11 @@ public class MainWindow extends UiPart<Stage> {
      */
     public MainWindow(Stage primaryStage, Logic logic) {
         super(FXML, primaryStage);
-
         this.primaryStage = primaryStage;
         this.logic = logic;
 
         setWindowDefaultSize(logic.getGuiSettings());
         setAccelerators();
-
         helpWindow = new HelpWindow();
     }
 
@@ -85,6 +83,7 @@ public class MainWindow extends UiPart<Stage> {
     /**
      * Sets the accelerator of a MenuItem.
      *
+     * @param menuItem the menu item
      * @param keyCombination the KeyCombination value of the accelerator
      */
     private void setAccelerator(MenuItem menuItem, KeyCombination keyCombination) {
@@ -139,24 +138,6 @@ public class MainWindow extends UiPart<Stage> {
                 gradeListPanel.getRoot(),
                 overviewPanel.getRoot());
 
-        studentListPanel.getRoot().setVisible(false);
-        studentListPanel.getRoot().setManaged(false);
-
-        assessmentListPanel.getRoot().setVisible(false);
-        assessmentListPanel.getRoot().setManaged(false);
-
-        gradeListPanel.getRoot().setVisible(false);
-        gradeListPanel.getRoot().setManaged(false);
-
-        courseListPanel.getRoot().setVisible(true);
-        courseListPanel.getRoot().setManaged(true);
-
-        courseDetailListPanel.getRoot().setVisible(false);
-        courseDetailListPanel.getRoot().setManaged(false);
-
-        overviewPanel.getRoot().setVisible(false);
-        overviewPanel.getRoot().setManaged(false);
-
         resultDisplay = new ResultDisplay();
         resultDisplayPlaceholder.getChildren().add(resultDisplay.getRoot());
 
@@ -169,6 +150,9 @@ public class MainWindow extends UiPart<Stage> {
         updateListVisibility();
     }
 
+    /**
+     * Updates which panel is visible based on the current display mode.
+     */
     private void updateListVisibility() {
         DisplayMode displayMode = logic.getDisplayMode();
 
@@ -196,6 +180,16 @@ public class MainWindow extends UiPart<Stage> {
 
         overviewPanel.getRoot().setVisible(showOverview);
         overviewPanel.getRoot().setManaged(showOverview);
+    }
+
+    /**
+     * Rebuilds the overview panel so it always shows the latest data.
+     */
+    private void refreshOverviewPanel() {
+        OverviewPanel newOverviewPanel = new OverviewPanel(logic);
+        int overviewIndex = personListPanelPlaceholder.getChildren().indexOf(overviewPanel.getRoot());
+        personListPanelPlaceholder.getChildren().set(overviewIndex, newOverviewPanel.getRoot());
+        overviewPanel = newOverviewPanel;
     }
 
     /**
@@ -252,10 +246,7 @@ public class MainWindow extends UiPart<Stage> {
             logger.info("Result: " + commandResult.getFeedbackToUser());
             resultDisplay.setFeedbackToUser(commandResult.getFeedbackToUser());
 
-            overviewPanel = new OverviewPanel(logic);
-            int overviewIndex = personListPanelPlaceholder.getChildren().size() - 1;
-            personListPanelPlaceholder.getChildren().set(overviewIndex, overviewPanel.getRoot());
-
+            refreshOverviewPanel();
             updateListVisibility();
 
             if (commandResult.isShowHelp()) {
