@@ -26,9 +26,6 @@ public class OverviewPanel extends UiPart<Region> {
     @FXML
     private Label gradesPerAssessmentLabel;
 
-    /**
-     * Creates an {@code OverviewPanel}.
-     */
     public OverviewPanel(Logic logic) {
         super(FXML);
         fillOverview(logic);
@@ -39,12 +36,18 @@ public class OverviewPanel extends UiPart<Region> {
         int gradeCount = logic.getAddressBook().getGradeList().size();
 
         Map<String, Integer> gradesPerAssessment = new LinkedHashMap<>();
+
         for (Assessment assessment : logic.getAddressBook().getAssessmentList()) {
-            gradesPerAssessment.put(assessment.getAssessmentName().toString(), 0);
+            String key = formatAssessmentKey(
+                    assessment.getCourseCode().toString(),
+                    assessment.getAssessmentName().toString());
+            gradesPerAssessment.put(key, 0);
         }
 
         for (Grade grade : logic.getAddressBook().getGradeList()) {
-            String key = grade.getAssessmentName().toString();
+            String key = formatAssessmentKey(
+                    grade.getCourseCode().toString(),
+                    grade.getAssessmentName().toString());
             gradesPerAssessment.put(key, gradesPerAssessment.getOrDefault(key, 0) + 1);
         }
 
@@ -63,5 +66,9 @@ public class OverviewPanel extends UiPart<Region> {
             }
             gradesPerAssessmentLabel.setText(sb.toString());
         }
+    }
+
+    private String formatAssessmentKey(String courseCode, String assessmentName) {
+        return courseCode + " / " + assessmentName;
     }
 }
