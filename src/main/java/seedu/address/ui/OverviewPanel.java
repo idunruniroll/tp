@@ -26,11 +26,21 @@ public class OverviewPanel extends UiPart<Region> {
     @FXML
     private Label gradesPerAssessmentLabel;
 
+    /**
+     * Creates an {@code OverviewPanel} and fills it with the current summary data.
+     *
+     * @param logic Logic component used to access the current data.
+     */
     public OverviewPanel(Logic logic) {
         super(FXML);
         fillOverview(logic);
     }
 
+    /**
+     * Fills the panel with the latest assessment and grade summary.
+     *
+     * @param logic Logic component used to access the current data.
+     */
     private void fillOverview(Logic logic) {
         int assessmentCount = logic.getAddressBook().getAssessmentList().size();
         int gradeCount = logic.getAddressBook().getGradeList().size();
@@ -68,6 +78,13 @@ public class OverviewPanel extends UiPart<Region> {
         }
     }
 
+    /**
+     * Returns a display key for an assessment using course code and assessment name.
+     *
+     * @param courseCode Course code of the assessment.
+     * @param assessmentName Name of the assessment.
+     * @return Formatted assessment key.
+     */
     private String formatAssessmentKey(String courseCode, String assessmentName) {
         return courseCode + " / " + assessmentName;
     }
