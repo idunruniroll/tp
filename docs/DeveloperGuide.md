@@ -421,7 +421,7 @@ The following activity diagram summarizes what happens when a user executes the 
 
 **MSS**
 
-1. User requests to delete a specific student in the list, including the student's name and course code in the command.
+1. User requests to delete a specific student in the list, including the student's ID and course code in the command.
 2. GradeBookPlus deletes the student
 
     Use case ends.

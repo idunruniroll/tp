@@ -30,7 +30,7 @@ public class ParserUtil {
     private static final String DOMAIN_PART_REGEX = ALPHANUMERIC_NO_UNDERSCORE
             + "(-" + ALPHANUMERIC_NO_UNDERSCORE + ")*";
     private static final String DOMAIN_LAST_PART_REGEX = "(" + DOMAIN_PART_REGEX + "){2,}$";
-    private static final String DOMAIN_REGEX = "(" + DOMAIN_PART_REGEX + "\\.)*" + DOMAIN_LAST_PART_REGEX;
+    private static final String DOMAIN_REGEX = "(" + DOMAIN_PART_REGEX + "\\.)+" + DOMAIN_LAST_PART_REGEX;
     private static final String EMAIL_VALIDATION_REGEX = LOCAL_PART_REGEX + "@" + DOMAIN_REGEX;
 
     /**
@@ -164,7 +164,7 @@ public class ParserUtil {
     public static String parseStudentId(String value) throws ParseException {
         requireNonNull(value);
         String trimmed = value.trim().toUpperCase();
-        if (!trimmed.matches("[A-Z0-9]{6,12}")) {
+        if (!trimmed.matches("A[0-9]{7}[A-Z]")) {
             throw new ParseException(Messages.MESSAGE_INVALID_STUDENT_ID_FORMAT);
         }
         return trimmed;
@@ -179,9 +179,9 @@ public class ParserUtil {
     public static String parseStudentName(String value) throws ParseException {
         requireNonNull(value);
         String collapsed = value.trim().replaceAll("\\s+", " ");
-        if (collapsed.isEmpty()
+        if (collapsed.length() < 2
                 || collapsed.length() > 60
-                || !collapsed.matches("[\\p{L} .,'-]+")) {
+                || !collapsed.matches("[\\p{L} .,'/−-]+")) {
             throw new ParseException(Messages.MESSAGE_INVALID_STUDENT_NAME_FORMAT);
         }
         return collapsed;
