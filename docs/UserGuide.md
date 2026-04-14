@@ -922,10 +922,6 @@ Use `viewall` when you want a quick summary of overall assessment and grade data
 
 --------------------------------------------------------------------------------------------------------------------
 
-<div class="page-break"></div>
-
-<div markdown="1" class="keep-together">
-
 ## Command summary
 
 Action | Format
@@ -947,5 +943,3 @@ Action | Format
 **View all** | `viewall`
 **Help** | `help`
 **Exit** | `exit`
-
-</div>
