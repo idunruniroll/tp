@@ -123,7 +123,8 @@ Example:
 * `removecourse c/CS2103T`
 * `removecourse c/CS2103T, cs2102`
 
-> Removing a course also removes all students and assessments associated with that course.
+Notes:
+* Removing a course also removes all students and assessments associated with that course.
 
 ![Example of RemoveCourse](images/CourseCommands/RemoveCourse.png)
 
@@ -171,7 +172,8 @@ Format: `removestudent c/COURSE_CODE id/STUDENT_ID`
 Examples:
 * `removestudent c/CS2103T id/A0123456X`
 
-> **Note:** Removing a student also removes all grades associated with that student in the course.
+Notes:
+* Removing a student also removes all grades associated with that student in the course.
 
 ---
 
@@ -254,13 +256,12 @@ Examples:
 * `addgrade c/CS2103T id/A0123456X as/1 g/8`
 * `addgrade c/CS2103T id/A0123456X as/2 g/85`
 
-> The student must already be enrolled in the course.<br>
-> The score cannot exceed the assessment’s max score.
-
-Additional notes:
+Notes:
 * The course must already exist.
+* The student must already be enrolled in the course.
 * The assessment index must refer to an assessment in the specified course.
 * The score must be 0 or above, at most 999, and have at most 1 decimal place.
+* The score cannot exceed the assessment’s max score.
 * A student can have only one grade for the same assessment. To change a score, remove the existing grade first and add the new grade.
 
 ![Example of AddGrade](images/GradeCommands/addgradeCommand.png)
