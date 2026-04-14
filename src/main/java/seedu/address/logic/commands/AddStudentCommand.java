@@ -10,6 +10,7 @@ import java.util.Optional;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
+import seedu.address.model.course.Course;
 import seedu.address.model.student.Student;
 
 /**
@@ -39,6 +40,9 @@ public class AddStudentCommand extends Command {
     public static final String MESSAGE_SUCCESS = "\u2705 Student added: %s %s (Course: %s).";
     public static final String MESSAGE_COURSE_NOT_FOUND = "\u274C Course %s not found.";
     public static final String MESSAGE_DUPLICATE_STUDENT = "\u274C Student %s already exists in %s.";
+    public static final String MESSAGE_ID_NAME_CONFLICT =
+            "\u274C Student ID %s is already registered as \"%s\" in another course. "
+            + "Use the same name to enrol this student in multiple courses.";
 
     private final String courseCode;
     private final Student studentToAdd;
@@ -71,6 +75,16 @@ public class AddStudentCommand extends Command {
         if (duplicate) {
             throw new CommandException(String.format(MESSAGE_DUPLICATE_STUDENT,
                     studentToAdd.getStudentId(), courseCode));
+        }
+
+        for (Course course : model.getCourseList()) {
+            for (Student existing : course.getStudents()) {
+                if (existing.getStudentId().equalsIgnoreCase(studentToAdd.getStudentId())
+                        && !existing.getStudentName().equalsIgnoreCase(studentToAdd.getStudentName())) {
+                    throw new CommandException(String.format(MESSAGE_ID_NAME_CONFLICT,
+                            studentToAdd.getStudentId(), existing.getStudentName()));
+                }
+            }
         }
 
         model.addStudentToCourse(courseCode, studentToAdd);
