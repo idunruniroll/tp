@@ -50,6 +50,30 @@ title: User Guide
       break-inside: avoid;
     }
 
+    .page-break:last-child {
+      display: none !important;
+    }
+
+    hr:last-of-type {
+      display: none !important;
+    }
+
+    body > *:last-child {
+      margin-bottom: 0 !important;
+      page-break-after: auto !important;
+      break-after: auto !important;
+    }
+
+    h2:last-child,
+    h3:last-child,
+    table:last-child,
+    div:last-child,
+    p:last-child {
+      page-break-after: auto !important;
+      break-after: auto !important;
+      margin-bottom: 0 !important;
+    }
+
     p, li {
       orphans: 3;
       widows: 3;
