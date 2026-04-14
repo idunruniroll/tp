@@ -5,38 +5,33 @@ title: User Guide
 
 <style>
   h2 {
-    margin-top: 1.8rem;
-    margin-bottom: 0.45rem;
-  }
-
-  h3 {
     margin-top: 1.1rem;
     margin-bottom: 0.3rem;
   }
 
-  p,
-  ul,
-  ol {
-    margin-top: 0.35rem;
-    margin-bottom: 0.75rem;
+  h3 {
+    margin-top: 0.75rem;
+    margin-bottom: 0.2rem;
+  }
+
+  p, ul, ol {
+    margin-top: 0.2rem;
+    margin-bottom: 0.45rem;
+  }
+
+  li {
+    margin-bottom: 0.12rem;
   }
 
   hr {
-    margin: 1.1rem 0;
+    margin: 0.75rem 0;
   }
 
   img {
     display: block;
-    margin: 0.8rem auto 1rem;
+    margin: 0.45rem auto 0.7rem;
     max-width: 100%;
     height: auto;
-  }
-
-  .command-section,
-  .faq-item,
-  .keep-together {
-    margin-top: 0.35rem;
-    margin-bottom: 1rem;
   }
 
   @media print {
@@ -45,49 +40,46 @@ title: User Guide
       break-before: page;
     }
 
-    h2,
-    h3 {
+    h2, h3 {
       page-break-after: avoid;
       break-after: avoid-page;
     }
 
-    img,
-    table,
-    pre,
-    blockquote,
-    .alert,
-    .command-section,
-    .faq-item,
-    .keep-together {
+    img, table, pre, blockquote, .alert {
       page-break-inside: avoid;
       break-inside: avoid;
     }
 
-    p,
-    li {
+    p, li {
       orphans: 3;
       widows: 3;
     }
 
     h2 {
-      margin-top: 0.9rem !important;
-      margin-bottom: 0.35rem !important;
+      margin-top: 0.65rem !important;
+      margin-bottom: 0.2rem !important;
     }
 
     h3 {
-      margin-top: 0.75rem !important;
-      margin-bottom: 0.25rem !important;
+      margin-top: 0.5rem !important;
+      margin-bottom: 0.15rem !important;
     }
 
-    p,
-    ul,
-    ol {
-      margin-top: 0.2rem !important;
-      margin-bottom: 0.55rem !important;
+    p, ul, ol {
+      margin-top: 0.12rem !important;
+      margin-bottom: 0.32rem !important;
+    }
+
+    li {
+      margin-bottom: 0.08rem !important;
     }
 
     hr {
-      margin: 0.7rem 0 0.9rem !important;
+      margin: 0.45rem 0 0.6rem !important;
+    }
+
+    img {
+      margin: 0.35rem auto 0.55rem !important;
     }
   }
 </style>
@@ -129,6 +121,7 @@ This guide does **not** assume that you already know:
 * how to run a `.jar` file
 
 --------------------------------------------------------------------------------------------------------------------
+<div class="page-break"></div>
 
 ## Quick start
 
