@@ -3,40 +3,167 @@ layout: page
 title: User Guide
 ---
 
+<style>
+@media print {
+  .page-break {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  img, table, pre, blockquote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+</style>
+
 # GradeBookPlus User Guide
 
-GradeBookPlus is a **desktop gradebook application** for managing courses, students, assessments, and grades. It is optimized for use via a **Command Line Interface** while still providing a **Graphical User Interface** for viewing data clearly.
+GradeBookPlus is a **desktop gradebook application** for managing **courses, students, assessments, and grades**. It is optimized for users who prefer a **Command Line Interface (CLI)** for speed, while still providing a **Graphical User Interface (GUI)** to display records clearly.
 
-If you prefer typing commands quickly, GradeBookPlus helps you manage class records faster than clicking through menus.
+GradeBookPlus is designed for **educators, teaching assistants, and student leaders** who need to manage course records quickly and accurately. It is most suitable for users who are comfortable with basic computer operations such as downloading files and typing short commands, but it **does not assume prior knowledge of Java or terminal commands**.
+
+If you prefer typing commands instead of clicking through menus, GradeBookPlus can help you update class records faster and with less repetition.
 
 * Table of Contents
 {:toc}
 
 --------------------------------------------------------------------------------------------------------------------
 
+## Who this guide is for
+
+This guide is written for users who:
+
+* manage course rosters, assessments, and grades regularly
+* prefer keyboard-based workflows for repetitive tasks
+* may be new to Java setup or the terminal
+* want quick command references without reading technical documentation
+
+### Assumptions about users
+
+This guide assumes that you:
+
+* know how to download a file from a browser
+* can create or open a folder on your computer
+* can copy and paste text
+
+This guide does **not** assume that you already know:
+
+* how to check your Java version
+* what a terminal is
+* how to run a `.jar` file
+
+--------------------------------------------------------------------------------------------------------------------
+
 ## Quick start
 
-1. Ensure you have **Java 17 or above** installed on your computer.
+Follow these steps the first time you use GradeBookPlus.
 
-2. Download the latest `.jar` file from your team’s release page.
+### Step 1: Check whether Java 17 or above is installed
 
-3. Copy the `.jar` file into the folder you want to use as the app’s home folder.
+GradeBookPlus requires **Java 17 or above**.
 
-4. Open a terminal in that folder and run:
+On **Windows**:
 
-   `java -jar GradeBookPlus.jar`
+1. Press the **Windows key**.
+2. Type **Command Prompt** or **PowerShell**.
+3. Open the app.
+4. Type `java -version` and press **Enter**.
 
-5. Wait a few seconds for the application window to appear.
+On **macOS**:
 
-6. Type commands into the command box and press Enter to execute them.
+1. Press **Command + Space**.
+2. Type **Terminal**.
+3. Open the app.
+4. Type `java -version` and press **Return**.
 
-Some example commands you can try:
+**Expected outcome:**
 
-* `addcourse c/CS2103T`
-* `addstudent c/CS2103T id/A0123456X n/Alex Yeoh e/alex@example.com`
-* `addassessment c/CS2103T an/Quiz 1 m/10`
-* `addgrade c/CS2103T id/A0123456X as/1 g/8`
-* `listgrades c/CS2103T`
+* If you see a version number such as `17`, `18`, `21`, or higher, your computer is ready.
+* If you see an error saying Java is not installed or the command is not recognized, install Java 17 or above before continuing.
+
+<div markdown="block" class="alert alert-info">
+
+**What is a terminal?**
+
+A terminal is a text-based window where you type commands for your computer.
+On Windows, this is usually **Command Prompt** or **PowerShell**.
+On macOS, this is usually **Terminal**.
+
+</div>
+
+### Step 2: Download the app
+
+1. Download the latest `.jar` file from your team’s release page.
+2. Create a folder for GradeBookPlus.
+3. Move the downloaded `.jar` file into that folder.
+
+### Step 3: Open the folder in a terminal
+
+On **Windows**:
+
+1. Open the folder containing `GradeBookPlus.jar`.
+2. Click the address bar in File Explorer.
+3. Type `powershell` and press **Enter**.
+
+On **macOS**:
+
+1. Open **Terminal**.
+2. Type `cd ` (including the space after `cd`).
+3. Drag your GradeBookPlus folder into the Terminal window.
+4. Press **Return**.
+
+### Step 4: Run GradeBookPlus
+
+Type the following command and press **Enter**:
+
+```bash
+java -jar GradeBookPlus.jar
+```
+
+**Expected outcome:**
+
+* The GradeBookPlus window appears after a few seconds.
+* You should see the command input box where you can type commands.
+
+### Step 5: Try your first commands
+
+Type each command below and press **Enter** after each one:
+
+```text
+addcourse c/CS2103T
+addstudent c/CS2103T id/A0123456X n/Alex Yeoh e/alex@example.com
+addassessment c/CS2103T an/Quiz 1 m/10
+addgrade c/CS2103T id/A0123456X as/1 g/8
+listgrades c/CS2103T
+```
+
+**Expected outcome:**
+
+* a course named `CS2103T` is added
+* a student is added to that course
+* an assessment named `Quiz 1` is added
+* a grade is recorded for that student
+* the recorded grade is displayed in the GUI
+
+### Overview of the UI
+
+GradeBookPlus has a GUI that helps you confirm the results of the commands you enter.
+
+The main window contains:
+
+* a **command box** where you type commands
+* a **result display** where success or error messages appear
+* a **main list panel** where courses, students, assessments, or grades are shown depending on the command used
+
+<div markdown="block" class="alert alert-success">
+
+**Tip:**
+
+When learning the app for the first time, alternate between an `add...` command and a `list...` command.
+This makes it easier to confirm that the data shown in the GUI matches the command you entered.
+
+</div>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -44,19 +171,15 @@ Some example commands you can try:
 
 <div markdown="block" class="alert alert-info">
 
-**Notes about the command format:**<br>
+**Notes about the command format:**
 
-* Words in `UPPER_CASE` are parameters to be supplied by the user.<br>
+* Words in `UPPER_CASE` are parameters to be supplied by the user.
   e.g. in `addcourse c/COURSE_CODE`, `COURSE_CODE` is a parameter.
-
-* Items in square brackets are optional.<br>
+* Items in square brackets are optional.
   e.g. `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
-
 * Parameters can be in any order unless stated otherwise.
-
-* Course codes are case-insensitive.<br>
+* Course codes are case-insensitive.
   e.g. `c/cs2103t` and `c/CS2103T` are treated as the same course.
-
 * Assessment indexes refer to the indexes shown in the displayed assessment list for that course.
 
 </div>
@@ -67,16 +190,18 @@ Some example commands you can try:
 
 Opens the Help window, which displays a summary of supported commands and their usage.
 
-Format: `help`
+**Format:** `help`
 
-Example:
+**Example:**
+
 * `help`
 
-Expected outcome:
+**Expected outcome:**
+
 * The Help window opens.
 * You can refer to the listed commands without leaving the app.
 
-![Example of Help](images/Help/helpCommand.png)
+<img src="images/Help/helpCommand.png" alt="Help window" width="700">
 
 ---
 
@@ -88,14 +213,28 @@ Expected outcome:
 
 Adds one or more courses to the database.
 
-Format: `addcourse c/COURSE_CODE[,COURSE_CODE,...]`
+**Format:** `addcourse c/COURSE_CODE[,COURSE_CODE,...]`
 
-Examples:
+**Examples:**
+
 * `addcourse c/CS2103T`
 * `addcourse c/CS2103T, CS2101, CS2102`
 
-![Example of AddCourse](images/CourseCommands/AddCourse.png)
+**Expected outcome:**
 
+* The specified course or courses are added.
+* The updated course list is shown in the GUI.
+
+<div markdown="block" class="alert alert-success">
+
+**Tip:**
+
+Add all your course codes first before adding students or assessments.
+This reduces repeated switching between courses during setup.
+
+</div>
+
+<img src="images/CourseCommands/AddCourse.png" alt="Adding a course" width="700">
 
 ### Listing all courses: `listcourses`
 
@@ -103,13 +242,17 @@ Examples:
 
 Lists all existing courses.
 
-Format: `listcourses`
+**Format:** `listcourses`
 
-Examples:
+**Example:**
+
 * `listcourses`
 
-![Example of ListCourses](images/CourseCommands/ListCourses.png)
+**Expected outcome:**
 
+* All stored courses are displayed in the main list panel.
+
+<img src="images/CourseCommands/ListCourses.png" alt="Listing courses" width="700">
 
 ### Removing a course: `removecourse`
 
@@ -117,17 +260,28 @@ Examples:
 
 Removes one or more courses using course code.
 
-Format: `removecourse c/COURSE_CODE[,COURSE_CODE,...]`
+**Format:** `removecourse c/COURSE_CODE[,COURSE_CODE,...]`
 
-Example:
+**Examples:**
+
 * `removecourse c/CS2103T`
 * `removecourse c/CS2103T, cs2102`
 
-Notes:
-* Removing a course also removes all students and assessments associated with that course.
+**Expected outcome:**
 
-![Example of RemoveCourse](images/CourseCommands/RemoveCourse.png)
+* The specified course or courses are removed.
+* The updated course list is shown.
 
+<div markdown="block" class="alert alert-warning">
+
+**Warning:**
+
+Removing a course also removes all students, assessments, and grades associated with that course.
+Use this command only when you are sure the course record is no longer needed.
+
+</div>
+
+<img src="images/CourseCommands/RemoveCourse.png" alt="Removing a course" width="700">
 
 ---
 
@@ -139,16 +293,31 @@ Notes:
 
 Adds a student to a course roster.
 
-Format: `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
+**Format:** `addstudent c/COURSE_CODE id/STUDENT_ID n/NAME [e/EMAIL]`
 
-Examples:
+**Examples:**
+
 * `addstudent c/CS2103T id/A0123456X n/Alex Yeoh`
 * `addstudent c/CS2103T id/A0123456X n/Alex Yeoh e/alex@example.com`
 
-Notes:
+**Expected outcome:**
+
+* The student is added to the specified course.
+* The updated roster is shown when you run `liststudents c/COURSE_CODE`.
+
+**Notes:**
+
 * `STUDENT_ID` must follow the format: one letter `A`, followed by exactly 7 digits, followed by one uppercase letter (e.g. `A0123456X`).
 * `NAME` must contain only letters, spaces, and the characters `. , ' / -`. Names with `s/o` or `d/o` are supported. The name must be between 2 and 60 characters long.
 * `EMAIL`, if provided, must be a valid address containing a domain with at least one dot (e.g. `user@example.com`). The local part (before `@`) may only contain alphanumeric characters and the special characters `+`, `_`, `.`, `-`. Characters such as `!`, `#`, `$`, `%`, `^`, `&` are not accepted.
+
+<div markdown="block" class="alert alert-success">
+
+**Tip:**
+
+Include the email address when available. This makes exported course records more complete later.
+
+</div>
 
 ### Listing students in a course: `liststudents`
 
@@ -156,10 +325,15 @@ Notes:
 
 Lists all students enrolled in the specified course.
 
-Format: `liststudents c/COURSE_CODE`
+**Format:** `liststudents c/COURSE_CODE`
 
-Examples:
+**Example:**
+
 * `liststudents c/CS2103T`
+
+**Expected outcome:**
+
+* All students in the specified course are displayed.
 
 ### Removing a student from a course: `removestudent`
 
@@ -167,15 +341,27 @@ Examples:
 
 Removes a student from the specified course.
 
-Format: `removestudent c/COURSE_CODE id/STUDENT_ID`
+**Format:** `removestudent c/COURSE_CODE id/STUDENT_ID`
 
-Examples:
+**Example:**
+
 * `removestudent c/CS2103T id/A0123456X`
 
-Notes:
-* Removing a student also removes all grades associated with that student in the course.
+**Expected outcome:**
+
+* The student is removed from the specified course.
+
+<div markdown="block" class="alert alert-warning">
+
+**Warning:**
+
+Removing a student also removes all grades associated with that student in the course.
+
+</div>
 
 ---
+
+<div class="page-break"></div>
 
 ## Assessment management
 
@@ -185,20 +371,36 @@ Notes:
 
 Adds an assessment to a course.
 
-Format: `addassessment c/COURSE_CODE an/ASSESSMENT_NAME m/MAX_SCORE`
+**Format:** `addassessment c/COURSE_CODE an/ASSESSMENT_NAME m/MAX_SCORE`
 
-Examples:
+**Examples:**
+
 * `addassessment c/CS2103T an/Quiz 1 m/10`
 * `addassessment c/CS2103T an/Final Exam m/100`
 
-Notes:
+**Expected outcome:**
+
+* The assessment is added to the specified course.
+* The new assessment appears when you run `listassessments c/COURSE_CODE`.
+
+**Notes:**
+
 * The course must already exist.
 * Assessment names cannot be blank and must be at most 50 characters long.
 * Maximum score must be greater than 0 and at most 999, with at most 1 decimal place.
 * The same assessment cannot be added twice to the same course. Assessment names are compared after ignoring case and spaces.
   For example, `Quiz 1`, `quiz   1`, and `QUIZ1` are considered the same assessment name in the same course.
 
-![Example of AddAssessment](images/AssessmentCommands/addassessmentCommand.png)
+<div markdown="block" class="alert alert-success">
+
+**Tip:**
+
+Use short, consistent assessment names such as `Quiz 1`, `Midterm`, and `Final Exam`.
+This makes exported files and grade listings easier to read.
+
+</div>
+
+<img src="images/AssessmentCommands/addassessmentCommand.png" alt="Adding an assessment" width="700">
 
 ### Listing assessments: `listassessments`
 
@@ -206,21 +408,36 @@ Notes:
 
 Lists all assessments, optionally filtered by course.
 
-Format:
+**Format:**
+
 * `listassessments`
 * `listassessments c/COURSE_CODE`
 
-Examples:
+**Examples:**
+
 * `listassessments`
 * `listassessments c/CS2103T`
 
-Notes:
+**Expected outcome:**
+
+* All assessments are displayed, or only the assessments for the specified course if a filter is used.
+
+**Notes:**
+
 * If a course code is provided, the course must already exist.
 * If no matching assessments are found, the app displays a message instead of an empty result.
 
-![Example of ListAssessments](images/AssessmentCommands/listassessmentsCommand.png)
+<div markdown="block" class="alert alert-success">
 
-![Example of ListAssessmentsCourseFilter](images/AssessmentCommands/listassessmentsfiltercourseCommand.png)
+**Tip:**
+
+Run `listassessments c/COURSE_CODE` before using `addgrade` or `removeassessment` so that you can confirm the correct assessment index.
+
+</div>
+
+<img src="images/AssessmentCommands/listassessmentsCommand.png" alt="Listing assessments" width="700">
+
+<img src="images/AssessmentCommands/listassessmentsfiltercourseCommand.png" alt="Listing assessments for one course" width="700">
 
 ### Removing an assessment: `removeassessment`
 
@@ -228,17 +445,30 @@ Notes:
 
 Removes an assessment from a course using its displayed index.
 
-Format: `removeassessment c/COURSE_CODE as/ASSESSMENT_INDEX`
+**Format:** `removeassessment c/COURSE_CODE as/ASSESSMENT_INDEX`
 
-Example:
+**Example:**
+
 * `removeassessment c/CS2103T as/1`
 
-Notes:
+**Expected outcome:**
+
+* The assessment is removed from the specified course.
+
+**Notes:**
+
 * The course must already exist.
 * The assessment index must be a non-zero unsigned integer shown in the assessment list for that course.
-* Removing an assessment also removes all grades associated with that assessment.
 
-![Example of ListAssessment](images/AssessmentCommands/removeassessmentCommand.png)
+<div markdown="block" class="alert alert-warning">
+
+**Warning:**
+
+Removing an assessment also removes all grades associated with that assessment.
+
+</div>
+
+<img src="images/AssessmentCommands/removeassessmentCommand.png" alt="Removing an assessment" width="700">
 
 ---
 
@@ -250,13 +480,20 @@ Notes:
 
 Adds a grade for a student in a course assessment.
 
-Format: `addgrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX g/SCORE`
+**Format:** `addgrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX g/SCORE`
 
-Examples:
+**Examples:**
+
 * `addgrade c/CS2103T id/A0123456X as/1 g/8`
 * `addgrade c/CS2103T id/A0123456X as/2 g/85`
 
-Notes:
+**Expected outcome:**
+
+* The grade is added to the student’s record.
+* The result message confirms the student, assessment, and score.
+
+**Notes:**
+
 * The course must already exist.
 * The student must already be enrolled in the course.
 * The assessment index must refer to an assessment in the specified course.
@@ -264,7 +501,15 @@ Notes:
 * The score cannot exceed the assessment’s max score.
 * A student can have only one grade for the same assessment. To change a score, remove the existing grade first and add the new grade.
 
-![Example of AddGrade](images/GradeCommands/addgradeCommand.png)
+<div markdown="block" class="alert alert-success">
+
+**Tip:**
+
+If you are entering several grades for one course, keep the relevant `listassessments c/COURSE_CODE` output visible so that you can reuse the correct assessment indexes.
+
+</div>
+
+<img src="images/GradeCommands/addgradeCommand.png" alt="Adding a grade" width="700">
 
 ### Listing grades: `listgrades`
 
@@ -272,24 +517,31 @@ Notes:
 
 Lists grades by course, by assessment within a course, or by student ID.
 
-Format:
+**Format:**
+
 * `listgrades c/COURSE_CODE`
 * `listgrades c/COURSE_CODE as/ASSESSMENT_INDEX`
 * `listgrades id/STUDENT_ID`
 
-Examples:
+**Examples:**
+
 * `listgrades c/CS2103T`
 * `listgrades c/CS2103T as/1`
 * `listgrades id/A0123456X`
 
-Notes:
+**Expected outcome:**
+
+* Matching grades are displayed in the GUI.
+* If no matching grades are found, the app shows a message instead of an empty result.
+
+**Notes:**
+
 * Use either `id/STUDENT_ID` alone, or `c/COURSE_CODE` with an optional `as/ASSESSMENT_INDEX`.
 * If a course code is provided, the course must already exist.
 * If an assessment index is provided, it must refer to an assessment in the specified course.
-* If no matching grades are found, the app displays a message instead of an empty result.
-* Only students with grades added will be listed
+* Only students with grades added will be listed.
 
-![Example of ListGrades](images/GradeCommands/listgradesCommand.png)
+<img src="images/GradeCommands/listgradesCommand.png" alt="Listing grades" width="700">
 
 ### Removing a grade: `removegrade`
 
@@ -297,20 +549,29 @@ Notes:
 
 Removes a grade for a student from a course assessment.
 
-Format: `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
+**Format:** `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
 
-Example:
+**Example:**
+
 * `removegrade c/CS2103T id/A0123456X as/1`
 
-Notes:
+**Expected outcome:**
+
+* The specified grade is removed.
+* The result message confirms the affected student and assessment.
+
+**Notes:**
+
 * The course must already exist.
 * The student must already be enrolled in the course.
 * The assessment index must refer to an assessment in the specified course.
 * The grade must already exist.
 
-![Example of RemoveGrades](images/GradeCommands/removegradeCommand.png)
+<img src="images/GradeCommands/removegradeCommand.png" alt="Removing a grade" width="700">
 
 ---
+
+<div class="page-break"></div>
 
 ## Other commands
 
@@ -320,13 +581,18 @@ Notes:
 
 Displays assessments and students information for one or more courses.
 
-Format: `listdetails c/COURSE_CODE[,COURSE_CODE,...]`
+**Format:** `listdetails c/COURSE_CODE[,COURSE_CODE,...]`
 
-Example:
+**Examples:**
+
 * `listdetails c/CS2103T`
 * `listdetails c/CS2103T, CS2101`
 
-![Example of ListDetails](images/CourseCommands/ListDetails.png)
+**Expected outcome:**
+
+* The selected course details are displayed together so that you can review students and assessments without running multiple commands.
+
+<img src="images/CourseCommands/ListDetails.png" alt="Listing detailed course information" width="700">
 
 ### Exporting a course: `exportcourse`
 
@@ -334,105 +600,146 @@ Example:
 
 Exports all students, assessments, and grades for a course to a CSV file.
 
-Format: `exportcourse c/COURSE_CODE`
+**Format:** `exportcourse c/COURSE_CODE`
 
-Example:
+**Example:**
+
 * `exportcourse c/CS2103T`
 
-Notes:
+**Expected outcome:**
+
+* A CSV file for the specified course is created in the folder where the app was launched.
+
+**Notes:**
+
 * The output file is saved as `<COURSE_CODE>.csv` (e.g. `CS2103T.csv`) in the folder from which the app was launched.
 * The CSV contains one row per student, with columns: `Student ID`, `Name`, `Email`, followed by one column per assessment (with its max score shown in the header).
 * Cells for assessments where a grade has not been recorded are left empty.
 * The file is overwritten each time the command is run for the same course.
 
+<div markdown="block" class="alert alert-warning">
+
+**Warning:**
+
+Running `exportcourse` again for the same course replaces the previous CSV file with a new one.
+
+</div>
+
 ### Viewing overall summary: `viewall`
+
+**Purpose:** Use this command to view a quick summary of the current assessment and grade data.
 
 Displays an overview summary of the current assessment and grade data.
 
-Format: `viewall`
+**Format:** `viewall`
 
-Example:
+**Example:**
+
 * `viewall`
 
-Expected outcome:
+**Expected outcome:**
+
 * Displays the total number of assessments currently stored in the app.
 * Displays the total number of grades currently stored in the app.
 * Displays the number of grades recorded for each assessment.
 
-Typical usage:
+**Typical usage:**
+
 * Use `viewall` after adding or removing assessments to confirm that the assessment count has updated as expected.
 * Use `viewall` after adding or removing grades to quickly verify that the overall grade count has changed.
 * Use `viewall` when you want a quick summary without manually switching through multiple list commands.
 
-Notes:
+**Notes:**
+
 * `viewall` is intended as a lightweight overview command rather than a full detailed report.
 * The command is useful for quickly checking whether recent updates to assessment and grade records have been reflected in the system.
 * In an empty state, `viewall` still provides a quick way to confirm that there are currently no assessments or grades recorded.
 
 ### Exiting the program: `exit`
 
-**Purpose**: Use this command to close GradeBookPlus safely.
+**Purpose:** Use this command to close GradeBookPlus safely.
 
 Exits the application.
 
-Format: `exit`
+**Format:** `exit`
+
+**Expected outcome:**
+
+* The application closes.
 
 --------------------------------------------------------------------------------------------------------------------
 
+<div class="page-break"></div>
+
 ## FAQ
 
-**Q:** How do I move my data to another computer?<br>
-**A:** Copy the data file from the old computer into the data folder used by GradeBookPlus on the new computer.
+**How do I move my data to another computer?**
 
-**Q:** Where is my data stored?<br>
-**A:** Data is stored automatically in the app’s data folder as a JSON file.
+Copy the data file from the old computer into the data folder used by GradeBookPlus on the new computer.
 
-**Q:** Where is the CSV file saved when I use `exportcourse`?<br>
-**A:** The file is saved as `COURSE_CODE.csv` (e.g. `CS2103T.csv`) in the folder where you launched the app (i.e. the working directory).
+**Where is my data stored?**
 
-**Q:** Why does `removeassessment` or `removegrade` say the assessment index is invalid?<br>
-**A:** Assessment indexes are based on the currently displayed assessment list for the specified course. Run `listassessments c/COURSE_CODE` first, then use the index shown there.
+Data is stored automatically in the app’s data folder as a JSON file.
 
-**Q:** Why can’t I add a grade for a student?<br>
-**A:** The student must already be enrolled in that course, the assessment index must exist for that course, and the score must not exceed the assessment max score.
+**Where is the CSV file saved when I use `exportcourse`?**
 
-**Q:** Can the same student be in multiple courses?<br>
-**A:** Yes. Students are enrolled per course, so the same student ID can appear in different course rosters.
+The file is saved as `COURSE_CODE.csv` (e.g. `CS2103T.csv`) in the folder where you launched the app (that is, the working directory).
 
-**Q:** What happens if I remove a course?<br>
-**A:** Removing a course also removes all assessments and grades associated with that course.
+**Why does `removeassessment` or `removegrade` say the assessment index is invalid?**
 
-**Q:** What happens if I remove an assessment?<br>
-**A:** Removing an assessment also removes all grades tied to that assessment in the same course.
+Assessment indexes are based on the currently displayed assessment list for the specified course. Run `listassessments c/COURSE_CODE` first, then use the index shown there.
 
-**Q:** Why do I see "Course ... not found" even though my command format is correct?<br>
-**A:** Format checks and data checks are different. A command can be syntactically valid but still fail if the referenced course does not exist in your current data.
+**Why can’t I add a grade for a student?**
 
-**Q:** Are command keywords and course codes case-sensitive?<br>
-**A:** Command keywords should be typed as documented. Course codes are case-insensitive (for example, `cs2103t` and `CS2103T` refer to the same course).
+The student must already be enrolled in that course, the assessment index must exist for that course, and the score must not exceed the assessment max score.
 
-**Q:** What does "No grades found" or "No assessments found" mean?<br>
-**A:** The command ran successfully, but there are no matching records for the filter you requested.
+**Can the same student be in multiple courses?**
 
-**Q:** Why does adding an assessment fail with "This assessment already exists"?<br>
-**A:** GradeBookPlus rejects duplicate assessment names in the same course after ignoring case and spaces. For example, if `Quiz 1` already exists in `CS2103T`, adding `quiz   1` or `QUIZ1` to `CS2103T` will fail.
+Yes. Students are enrolled per course, so the same student ID can appear in different course rosters.
 
-**Q:** When should I use `viewall` instead of the other list commands?<br>
-**A:** Use `viewall` when you want a quick summary of overall assessment and grade data. Use commands such as `liststudents`, `listassessments`, and `listgrades` when you need more detailed records.
+**What happens if I remove a course?**
+
+Removing a course also removes all assessments and grades associated with that course.
+
+**What happens if I remove an assessment?**
+
+Removing an assessment also removes all grades tied to that assessment in the same course.
+
+**Why do I see `Course ... not found` even though my command format is correct?**
+
+Format checks and data checks are different. A command can be syntactically valid but still fail if the referenced course does not exist in your current data.
+
+**Are command keywords and course codes case-sensitive?**
+
+Command keywords should be typed as documented. Course codes are case-insensitive. For example, `cs2103t` and `CS2103T` refer to the same course.
+
+**What does `No grades found` or `No assessments found` mean?**
+
+The command ran successfully, but there are no matching records for the filter you requested.
+
+**Why does adding an assessment fail with `This assessment already exists`?**
+
+GradeBookPlus rejects duplicate assessment names in the same course after ignoring case and spaces. For example, if `Quiz 1` already exists in `CS2103T`, adding `quiz   1` or `QUIZ1` to `CS2103T` will fail.
+
+**When should I use `viewall` instead of the other list commands?**
+
+Use `viewall` when you want a quick summary of overall assessment and grade data. Use `liststudents`, `listassessments`, and `listgrades` when you need more detailed records.
 
 --------------------------------------------------------------------------------------------------------------------
 
 ## Known issues
 
 1. If you move the application between multiple monitors, the window may reopen off-screen. Delete `preferences.json` and relaunch the app.
-2. If the Help window is minimized, reopening help may not restore it automatically. Restore it manually.
+2. If the Help window is minimized, reopening `help` may not restore it automatically. Restore it manually.
 
 --------------------------------------------------------------------------------------------------------------------
+
+<div class="page-break"></div>
 
 ## Command summary
 
 Action | Format
---------|------------------
+--------|--------
 **Add course** | `addcourse c/COURSE_CODE[,COURSE_CODE]...`
 **List courses** | `listcourses`
 **Remove course** | `removecourse c/COURSE_CODE[,COURSE_CODE]...`
@@ -445,7 +752,7 @@ Action | Format
 **Add grade** | `addgrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX g/SCORE`
 **Remove grade** | `removegrade c/COURSE_CODE id/STUDENT_ID as/ASSESSMENT_INDEX`
 **List grades** | `listgrades c/COURSE_CODE` / `listgrades c/COURSE_CODE as/ASSESSMENT_INDEX` / `listgrades id/STUDENT_ID`
-**List details** | `listdetails c/COURSE_CODE`
+**List details** | `listdetails c/COURSE_CODE[,COURSE_CODE,...]`
 **Export course** | `exportcourse c/COURSE_CODE`
 **View all** | `viewall`
 **Help** | `help`
