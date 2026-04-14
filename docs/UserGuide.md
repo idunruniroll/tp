@@ -811,6 +811,8 @@ Displays an overview summary of the current assessment and grade data.
 
 </div>
 
+<div class="page-break"></div>
+
 <div markdown="1" class="command-section">
 
 ### Exiting the program: `exit`
