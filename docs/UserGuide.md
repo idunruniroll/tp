@@ -4,17 +4,92 @@ title: User Guide
 ---
 
 <style>
-@media print {
-  .page-break {
-    page-break-before: always;
-    break-before: page;
+  h2 {
+    margin-top: 1.8rem;
+    margin-bottom: 0.45rem;
   }
 
-  img, table, pre, blockquote {
-    page-break-inside: avoid;
-    break-inside: avoid;
+  h3 {
+    margin-top: 1.1rem;
+    margin-bottom: 0.3rem;
   }
-}
+
+  p,
+  ul,
+  ol {
+    margin-top: 0.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  hr {
+    margin: 1.1rem 0;
+  }
+
+  img {
+    display: block;
+    margin: 0.8rem auto 1rem;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .command-section,
+  .faq-item,
+  .keep-together {
+    margin-top: 0.35rem;
+    margin-bottom: 1rem;
+  }
+
+  @media print {
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    h2,
+    h3 {
+      page-break-after: avoid;
+      break-after: avoid-page;
+    }
+
+    img,
+    table,
+    pre,
+    blockquote,
+    .alert,
+    .command-section,
+    .faq-item,
+    .keep-together {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+
+    p,
+    li {
+      orphans: 3;
+      widows: 3;
+    }
+
+    h2 {
+      margin-top: 0.9rem !important;
+      margin-bottom: 0.35rem !important;
+    }
+
+    h3 {
+      margin-top: 0.75rem !important;
+      margin-bottom: 0.25rem !important;
+    }
+
+    p,
+    ul,
+    ol {
+      margin-top: 0.2rem !important;
+      margin-bottom: 0.55rem !important;
+    }
+
+    hr {
+      margin: 0.7rem 0 0.9rem !important;
+    }
+  }
 </style>
 
 # GradeBookPlus User Guide
@@ -184,6 +259,8 @@ This makes it easier to confirm that the data shown in the GUI matches the comma
 
 </div>
 
+<div markdown="1" class="command-section">
+
 ### Viewing help: `help`
 
 **Purpose:** Use this command to open the Help window for a quick reference to GradeBookPlus commands.
@@ -203,9 +280,13 @@ Opens the Help window, which displays a summary of supported commands and their 
 
 <img src="images/Help/helpCommand.png" alt="Help window" width="700">
 
+</div>
+
 ---
 
 ## Course management
+
+<div markdown="1" class="command-section">
 
 ### Adding a course: `addcourse`
 
@@ -236,6 +317,10 @@ This reduces repeated switching between courses during setup.
 
 <img src="images/CourseCommands/AddCourse.png" alt="Adding a course" width="700">
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Listing all courses: `listcourses`
 
 **Purpose:** Use this command to view all courses currently stored in GradeBookPlus.
@@ -253,6 +338,10 @@ Lists all existing courses.
 * All stored courses are displayed in the main list panel.
 
 <img src="images/CourseCommands/ListCourses.png" alt="Listing courses" width="700">
+
+</div>
+
+<div markdown="1" class="command-section">
 
 ### Removing a course: `removecourse`
 
@@ -283,9 +372,13 @@ Use this command only when you are sure the course record is no longer needed.
 
 <img src="images/CourseCommands/RemoveCourse.png" alt="Removing a course" width="700">
 
+</div>
+
 ---
 
 ## Student management
+
+<div markdown="1" class="command-section">
 
 ### Adding a student to a course: `addstudent`
 
@@ -319,6 +412,10 @@ Include the email address when available. This makes exported course records mor
 
 </div>
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Listing students in a course: `liststudents`
 
 **Purpose:** Use this command to see all students currently enrolled in a specific course.
@@ -334,6 +431,10 @@ Lists all students enrolled in the specified course.
 **Expected outcome:**
 
 * All students in the specified course are displayed.
+
+</div>
+
+<div markdown="1" class="command-section">
 
 ### Removing a student from a course: `removestudent`
 
@@ -359,11 +460,15 @@ Removing a student also removes all grades associated with that student in the c
 
 </div>
 
+</div>
+
 ---
 
 <div class="page-break"></div>
 
 ## Assessment management
+
+<div markdown="1" class="command-section">
 
 ### Adding an assessment: `addassessment`
 
@@ -402,6 +507,10 @@ This makes exported files and grade listings easier to read.
 
 <img src="images/AssessmentCommands/addassessmentCommand.png" alt="Adding an assessment" width="700">
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Listing assessments: `listassessments`
 
 **Purpose:** Use this command to view all assessments, either across all courses or within one specific course.
@@ -439,6 +548,10 @@ Run `listassessments c/COURSE_CODE` before using `addgrade` or `removeassessment
 
 <img src="images/AssessmentCommands/listassessmentsfiltercourseCommand.png" alt="Listing assessments for one course" width="700">
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Removing an assessment: `removeassessment`
 
 **Purpose:** Use this command to delete an assessment from a course when it is no longer needed or was added by mistake.
@@ -470,9 +583,15 @@ Removing an assessment also removes all grades associated with that assessment.
 
 <img src="images/AssessmentCommands/removeassessmentCommand.png" alt="Removing an assessment" width="700">
 
+</div>
+
 ---
 
+<div class="page-break"></div>
+
 ## Grade management
+
+<div markdown="1" class="command-section">
 
 ### Adding a grade: `addgrade`
 
@@ -511,6 +630,10 @@ If you are entering several grades for one course, keep the relevant `listassess
 
 <img src="images/GradeCommands/addgradeCommand.png" alt="Adding a grade" width="700">
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Listing grades: `listgrades`
 
 **Purpose:** Use this command to view recorded grades by course, by assessment, or by student.
@@ -543,6 +666,10 @@ Lists grades by course, by assessment within a course, or by student ID.
 
 <img src="images/GradeCommands/listgradesCommand.png" alt="Listing grades" width="700">
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Removing a grade: `removegrade`
 
 **Purpose:** Use this command to delete an incorrect or outdated grade entry for a student’s assessment.
@@ -569,11 +696,15 @@ Removes a grade for a student from a course assessment.
 
 <img src="images/GradeCommands/removegradeCommand.png" alt="Removing a grade" width="700">
 
+</div>
+
 ---
 
 <div class="page-break"></div>
 
 ## Other commands
+
+<div markdown="1" class="command-section">
 
 ### Viewing detailed course information: `listdetails`
 
@@ -593,6 +724,10 @@ Displays assessments and students information for one or more courses.
 * The selected course details are displayed together so that you can review students and assessments without running multiple commands.
 
 <img src="images/CourseCommands/ListDetails.png" alt="Listing detailed course information" width="700">
+
+</div>
+
+<div markdown="1" class="command-section">
 
 ### Exporting a course: `exportcourse`
 
@@ -625,6 +760,10 @@ Running `exportcourse` again for the same course replaces the previous CSV file 
 
 </div>
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Viewing overall summary: `viewall`
 
 **Purpose:** Use this command to view a quick summary of the current assessment and grade data.
@@ -655,6 +794,10 @@ Displays an overview summary of the current assessment and grade data.
 * The command is useful for quickly checking whether recent updates to assessment and grade records have been reflected in the system.
 * In an empty state, `viewall` still provides a quick way to confirm that there are currently no assessments or grades recorded.
 
+</div>
+
+<div markdown="1" class="command-section">
+
 ### Exiting the program: `exit`
 
 **Purpose:** Use this command to close GradeBookPlus safely.
@@ -667,63 +810,117 @@ Exits the application.
 
 * The application closes.
 
+</div>
+
 --------------------------------------------------------------------------------------------------------------------
 
 <div class="page-break"></div>
 
 ## FAQ
 
+<div markdown="1" class="faq-item">
+
 **How do I move my data to another computer?**
 
 Copy the data file from the old computer into the data folder used by GradeBookPlus on the new computer.
+
+</div>
+
+<div markdown="1" class="faq-item">
 
 **Where is my data stored?**
 
 Data is stored automatically in the app’s data folder as a JSON file.
 
+</div>
+
+<div markdown="1" class="faq-item">
+
 **Where is the CSV file saved when I use `exportcourse`?**
 
 The file is saved as `COURSE_CODE.csv` (e.g. `CS2103T.csv`) in the folder where you launched the app (that is, the working directory).
+
+</div>
+
+<div markdown="1" class="faq-item">
 
 **Why does `removeassessment` or `removegrade` say the assessment index is invalid?**
 
 Assessment indexes are based on the currently displayed assessment list for the specified course. Run `listassessments c/COURSE_CODE` first, then use the index shown there.
 
+</div>
+
+<div markdown="1" class="faq-item">
+
 **Why can’t I add a grade for a student?**
 
 The student must already be enrolled in that course, the assessment index must exist for that course, and the score must not exceed the assessment max score.
+
+</div>
+
+<div markdown="1" class="faq-item">
 
 **Can the same student be in multiple courses?**
 
 Yes. Students are enrolled per course, so the same student ID can appear in different course rosters.
 
+</div>
+
+<div markdown="1" class="faq-item">
+
 **What happens if I remove a course?**
 
 Removing a course also removes all assessments and grades associated with that course.
+
+</div>
+
+<div markdown="1" class="faq-item">
 
 **What happens if I remove an assessment?**
 
 Removing an assessment also removes all grades tied to that assessment in the same course.
 
+</div>
+
+<div markdown="1" class="faq-item">
+
 **Why do I see `Course ... not found` even though my command format is correct?**
 
 Format checks and data checks are different. A command can be syntactically valid but still fail if the referenced course does not exist in your current data.
+
+</div>
+
+<div markdown="1" class="faq-item">
 
 **Are command keywords and course codes case-sensitive?**
 
 Command keywords should be typed as documented. Course codes are case-insensitive. For example, `cs2103t` and `CS2103T` refer to the same course.
 
+</div>
+
+<div markdown="1" class="faq-item">
+
 **What does `No grades found` or `No assessments found` mean?**
 
 The command ran successfully, but there are no matching records for the filter you requested.
+
+</div>
+
+<div markdown="1" class="faq-item">
 
 **Why does adding an assessment fail with `This assessment already exists`?**
 
 GradeBookPlus rejects duplicate assessment names in the same course after ignoring case and spaces. For example, if `Quiz 1` already exists in `CS2103T`, adding `quiz   1` or `QUIZ1` to `CS2103T` will fail.
 
+</div>
+
+<div markdown="1" class="faq-item">
+
 **When should I use `viewall` instead of the other list commands?**
 
 Use `viewall` when you want a quick summary of overall assessment and grade data. Use `liststudents`, `listassessments`, and `listgrades` when you need more detailed records.
+
+</div>
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -735,6 +932,8 @@ Use `viewall` when you want a quick summary of overall assessment and grade data
 --------------------------------------------------------------------------------------------------------------------
 
 <div class="page-break"></div>
+
+<div markdown="1" class="keep-together">
 
 ## Command summary
 
@@ -757,3 +956,5 @@ Action | Format
 **View all** | `viewall`
 **Help** | `help`
 **Exit** | `exit`
+
+</div>
