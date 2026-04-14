@@ -693,8 +693,6 @@ Removes a grade for a student from a course assessment.
 
 ---
 
-<div class="page-break"></div>
-
 ## Other commands
 
 <div markdown="1" class="command-section">
